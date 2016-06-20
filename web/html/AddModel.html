@@ -1,0 +1,58 @@
+<form id="addModelForm" action="JavaScript:addModel()" class="form-horizontal">
+    <fieldset>
+
+        <!-- Form Name -->
+        <legend>Add Model</legend>
+
+        <!-- Select Basic -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="processName">Process to add to</label>
+            <div class="col-md-4">
+                <select id="processName" name="processName" class="form-control">
+                    <option value="Process 1">Process 1</option>
+                    <option value="Process 2">Process 2</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Select Basic -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="abstractionLevel">Abstraction Level</label>
+            <div class="col-md-4">
+                <select id="abstractionLevel" name="abstractionLevel" class="form-control">
+                    <option value="Business">Business</option>
+                    <option value="IT">IT</option>
+                    <option value="IT-Execution">IT-Execution</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- File Button -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="bpmnFile">BPMN File</label>
+            <div class="col-md-4">
+                <input id="bpmnFile" name="bpmnFile" class="input-file" type="file">
+            </div>
+        </div>
+
+        <!-- Multiple Checkboxes (inline) -->
+        <div class="form-group">
+            <label class="col-md-4 control-label">Add Level Prefix to Filename?</label>
+            <div class="col-md-4">
+                <label class="checkbox-inline" for="prefix-0">
+                    <input type="checkbox" name="prefix" id="prefix-0" value="">
+                    Yes
+                </label>
+            </div>
+        </div>
+
+        <!-- Button -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="btnNewProcess"></label>
+            <div class="col-md-4">
+                <button id="btnNewProcess" name="btnNewProcess" class="btn btn-primary">Create Process</button>
+            </div>
+        </div>
+
+    </fieldset>
+</form>
