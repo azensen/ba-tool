@@ -1,0 +1,33 @@
+[
+  {
+    "text" : "Project Level",
+    "data" : { "nodetype" : "project", "path" : "../../projects/Project Level/"},
+    "children" : [
+      {
+        "text" : "Abstraction Level",
+        "data" : { "nodetype" : "level", "path" : "../../projects/Project Level/Abstraction Level/"},
+        "children" : [
+          {
+            "text" : "Process Level",
+            "data" : { "nodetype" : "process", "path" : "../../projects/Project Level/Abstraction Level/Process Level/"},
+            "children" : [
+              {
+                "text" : "Model.bpmn",
+                "data" : { "nodetype" : "model", "path" : "../../projects/Project Level/Abstraction Level/Process Level/"}
+              },
+              {
+                "text" : "Model.corr",
+                "data" : { "nodetype" : "correspondence", "path" : "../../projects/Project Level/Abstraction Level/Process Level/"}
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "text" : "project.pcfg",
+        "data" : { "nodetype" : "config", "path" : "../../projects/Project Level/"},
+        "children" : []
+      }
+    ]
+  }
+]

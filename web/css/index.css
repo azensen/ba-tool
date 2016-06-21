@@ -1,0 +1,47 @@
+#content {
+    padding: 0;
+    overflow:scroll;
+}
+
+#browser-area {
+    padding: 0;
+    border:1px solid silver;
+    width: 29%;
+    height: 800px;
+    float:left;
+}
+
+#browser {
+    border:1px solid silver;
+    min-height:200px;
+}
+
+#modelling-area {
+    width: 69%;
+    padding: 0;
+    float: right;
+}
+
+#sourceView {
+    height: 400px;
+    padding: 0;
+    border:1px solid silver;
+}
+
+#targetView {
+    height: 400px;
+    padding: 0;
+    border:1px solid silver;
+}
+
+.highlight-overlay {
+    background-color: #80ffbf; /* color elements as green */
+    opacity: 0.3;
+    pointer-events: none; /* no pointer events, allows clicking through onto the element */
+    border-radius: 10px;
+}
+
+.highlight:not(.djs-connection) .djs-visual > :nth-child(1) {
+    fill: green !important; /* color elements as green */
+    opacity: 0.3;
+}
