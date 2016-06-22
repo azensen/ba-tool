@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
   <title>Vertical Consistency Tool v01 - New Project</title>
-
+	<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>-->
   <style type="text/css">
 	
   </style>
@@ -15,9 +15,9 @@
 
 <div id="newProject">
 
-<h2>New Project</h2>
+<h2>New Project AJAX</h2>
 
-<form action="newProject.php" method="post">
+<form id="newProjectForm" action="JavaScript:showSerialized()">
 <p>Project Name: <input type="text" name="name" /></p>
 <table>
 <tr><td><p>Levels of abstraction:</p></td></tr>
@@ -27,7 +27,22 @@
 </table>
 <p><button id="btnCreateProject" type="submit">Create Project</button>
 </form>
-
+<script>
+function showSerialized() {
+var serialized = $("#newProjectForm").serialize();
+console.log(serialized);
+$.ajax({
+  method: "POST",
+  url: "../php/newProject.php",
+  data: serialized
+})
+  .done(function( msg ) {
+    alert( "Data Saved: " + msg );
+	refreshTree();
+	clearSubmenu();
+  });
+}
+</script>
 </div><!-- div newProject -->
 
 </body>

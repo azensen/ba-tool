@@ -5,8 +5,8 @@ var ViewManager = function(htmlDivSource, htmlDivTarget) {
 
 };
 
-ViewManager.prototype.sourceView = {};
-ViewManager.prototype.targetView = {};
+ViewManager.prototype.sourceView = "";
+ViewManager.prototype.targetView = "";
 ViewManager.prototype.loadSource = function(filePath) {};
 ViewManager.prototype.loadTarget = function(filePath) {};
 ViewManager.prototype.saveSource = function(filePath) {};

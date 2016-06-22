@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Vertical Consistency Tool v01 - Add Process Model</title>
+
+  <style type="text/css">
+	
+  </style>
+</head>
+<body>
+
+<div id="addProcessModel">
+
+<h2>Add Model To Process</h2>
+<form id="addProcessForm" action="addModel.php" method="POST" enctype="multipart/form-data">
+	<label>Add to Project:
+		<select id="addToProject" name="projectName" size="1">
+		<!--<option>Project1</option>-->
+		</select>
+	</label>
+	<br><br>
+	<label>Process Name:
+		<select id="addToProcess" name="processName" size="1">
+		<!--<option>Process1</option>-->
+		</select>
+	</label>
+	<br><br>
+	<label>Abstraction Level:
+		<select id="selectProcessForm" name="levelName" size="1">
+		 <!--<option>Business</option>
+		 <option>IT-Architecture</option>
+		 <option>IT-Implementation</option>-->
+		</select>
+	</label>
+  
+	<p>Choose a BPMN 2.0 file (*.bpmn) from your PC:</p>
+	<p><input name="bpmnFile" type="file" size="50" accept=".bpmn"></p>
+	<p><input type="checkbox" name="prefix" value="prefix" checked>Add Prefix to Model Name?</p>
+	<button type="submit">Add Process</button>
+</form>
+<script>
+
+/*
+ (function() {
+ alert('Hello World');
+ })();
+
+ for anonym functions
+	 */
+(function() {
+	var processNode = tool.projectBrowser.getCurrentNode();
+	var levelNode = $(tool.projectBrowser.treeDiv).jstree(true).get_node(processNode.parent);
+	var projectNode = $(tool.projectBrowser.treeDiv).jstree(true).get_node(levelNode.parent);
+
+	var projectName = projectNode.text;
+	var projectOption = '<option>' + projectName + '</option>';
+	$('#addToProject').append(projectOption);
+
+	var processName = processNode.text;
+	var processOption = '<option>' + processName + '</option>';
+	$('#addToProcess').append(processOption);
+
+	var projectPath = {projectPath : projectNode.data.path};
+	console.log(projectPath);
+
+//read levels into combobox via JSON response from PHP readLevels with input projectPath
+	$.ajax({
+		method: "POST",
+		url: "../php/readLevels.php",
+		data: projectPath
+	})
+			.done(function( levelsJSON ) {
+				console.log(levelsJSON);
+				var levels = JSON.parse(levelsJSON);
+				var option = "";
+				for (i = 0; i < levels.length; i++) {
+					option = '<option>' + levels[i].name + '</option>">';
+					$('#selectProcessForm').append(option);
+				}
+			});
+})	();
+
+</script>
+</div><!-- div addProcess -->
+
+</body>
+</html>

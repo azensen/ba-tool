@@ -4,8 +4,10 @@
 "use strict";
 
 var CorrespondenceManager = function() {
-    this.corrList = [];
+    this.correspondenceList = [];
+    this.association = "";
 };
+
 
 CorrespondenceManager.prototype.addCorr = function (corr) {
     this.corrList.push(corr);

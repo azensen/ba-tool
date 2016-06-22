@@ -1,58 +1,74 @@
-<form id="addModelForm" action="JavaScript:addModel()" class="form-horizontal">
-    <fieldset>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-        <!-- Form Name -->
-        <legend>Add Model</legend>
+  <title>Vertical Consistency Tool v01 - Add Process Model</title>
 
-        <!-- Select Basic -->
-        <div class="form-group">
-            <label class="col-md-4 control-label" for="processName">Process to add to</label>
-            <div class="col-md-4">
-                <select id="processName" name="processName" class="form-control">
-                    <option value="Process 1">Process 1</option>
-                    <option value="Process 2">Process 2</option>
-                </select>
-            </div>
-        </div>
+  <style type="text/css">
+	
+  </style>
+</head>
+<body>
 
-        <!-- Select Basic -->
-        <div class="form-group">
-            <label class="col-md-4 control-label" for="abstractionLevel">Abstraction Level</label>
-            <div class="col-md-4">
-                <select id="abstractionLevel" name="abstractionLevel" class="form-control">
-                    <option value="Business">Business</option>
-                    <option value="IT">IT</option>
-                    <option value="IT-Execution">IT-Execution</option>
-                </select>
-            </div>
-        </div>
+<div id="addProcessModel">
 
-        <!-- File Button -->
-        <div class="form-group">
-            <label class="col-md-4 control-label" for="bpmnFile">BPMN File</label>
-            <div class="col-md-4">
-                <input id="bpmnFile" name="bpmnFile" class="input-file" type="file">
-            </div>
-        </div>
-
-        <!-- Multiple Checkboxes (inline) -->
-        <div class="form-group">
-            <label class="col-md-4 control-label">Add Level Prefix to Filename?</label>
-            <div class="col-md-4">
-                <label class="checkbox-inline" for="prefix-0">
-                    <input type="checkbox" name="prefix" id="prefix-0" value="">
-                    Yes
-                </label>
-            </div>
-        </div>
-
-        <!-- Button -->
-        <div class="form-group">
-            <label class="col-md-4 control-label" for="btnNewProcess"></label>
-            <div class="col-md-4">
-                <button id="btnNewProcess" name="btnNewProcess" class="btn btn-primary">Create Process</button>
-            </div>
-        </div>
-
-    </fieldset>
+<h2>Add Process Model</h2>
+<form id="addProcessForm" action="addProcessModel.php" method="POST" enctype="multipart/form-data">
+	<label>Add to Project:
+		<select id="addToProject" name="projectName" size="1">
+		<!--<option>Project1</option>-->
+		</select>
+	</label>
+	<br><br>
+	<label>Process Name:
+		<select id="addToProcess" name="processName" size="1">
+		<!--<option>Project1</option>-->
+		</select>
+	</label>
+	<br><br>
+	<label>Abstraction Level:
+		<select id="selectProcessForm" name="levelName" size="1">
+		 <!--<option>Business</option>
+		 <option>IT-Architecture</option>
+		 <option>IT-Implementation</option>-->
+		</select>
+	</label>
+  
+	<p>Choose a BPMN 2.0 file (*.bpmn) from your PC:</p>
+	<p><input name="bpmnFile" type="file" size="50" accept=".bpmn"></p>
+	<p><input type="checkbox" name="prefix" value="prefix" checked>Add Prefix to Model Name?</p>
+	<button type="submit">Add Process</button>
 </form>
+<script>
+var projectPath = {projectPath : tool.projectBrowser.getCurrentNode().data.path + tool.projectBrowser.getCurrentNode().text};
+console.log(projectPath);
+
+//read levels into combobox via JSON response from PHP readLevels with input projectPath
+$.ajax({
+  method: "POST",
+  url: "readLevels.php",
+  data: projectPath
+})
+  .done(function( levelsJSON ) {
+	console.log(levelsJSON);
+	var levels = JSON.parse(levelsJSON);
+	var option = "";
+	for (i = 0; i < levels.length; i++) { 
+		option = '<option>' + levels[i].name + '</option>">';
+		$('#selectProcessForm').append(option);		
+	}
+});
+
+
+var projectName = getSelectedNode().text;
+var projectOption = '<option>' + projectName + '</option>';
+$('#addToProject').append(projectOption);
+
+</script>
+</div><!-- div addProcess -->
+
+</body>
+</html>

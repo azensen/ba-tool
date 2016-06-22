@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Vertical Consistency Tool</title>
-
+    <!-- tool styles -->
+    <link rel="stylesheet" href="../css/index.css" />
     <!-- jsTree theme-->
     <link rel="stylesheet" href="../js/jsTree/themes/default/style.min.css" />
     <!-- dependencies
@@ -13,23 +14,56 @@
     <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script> -->
     <script src="../js/jquery/jquery-1.12.4.js"></script>
     <script src="../js/jsTree/jstree.min.js"></script>
-    <script src="../js/bpmn-js/bpmn-modeler.js"></script>
+    <!--<script src="../js/bpmn-js/bpmn-modeler.js"></script>-->
 
+    <!-- Tool dependencies -->
+    <script src="../js/tool/Tool.js"></script>
+    <script src="../js/tool/ProjectBrowser.js"></script>
+    <script src="../js/tool/CorrespondenceManager.js"></script>
+    <script src="../js/tool/ViewManager.js"></script>
 </head>
 <body>
 <div id="container">
 
     <div id="projectBrowser">
         <div id="jsTree"></div>
-        <div id="submenu"></div>
+        <div id="menu">
+
+            <p>
+                <button id="btnRefreshTree" onclick="tool.projectBrowser.refreshTree()">Refresh Tree</button>
+                <button id="btnNewProject" onclick="tool.projectBrowser.newProjectMenu()" >New Project</button>
+                <button id="btnAddProcess" onclick="tool.projectBrowser.addProcessMenu()" disabled>Add Process</button>
+                <button id="btnAddModel" onclick="tool.projectBrowser.addModelMenu()" disabled>Add Model</button>
+                <button id="btnCloneModel" onclick="tool.projectBrowser.cloneModelMenu()" disabled>Clone Model</button>
+                <a id="downloadLink" href="file.doc"><button id="btnDownloadModel" onclick="" disabled>Download Model</button></a>
+
+            </p>
+
+        </div>
+        <div id="submenu">Browser Submenu</div>
+        <div id="correspondenceMenu">
+            Correspondence Menu<br><br>
+            Associated Model: it_model.bpmn<br>
+            Type: 1-m<br>
+            Source(s): <input type="checkbox" name="source" value="Task1">Task1<br>
+            Target(s):
+                <input type="checkbox" name="target" value="Task1">Task1
+                <input type="checkbox" name="target" value="Task1">Task2<br>
+            <p>
+                <input type="button" value="Delete Selected">
+                <input type="button" value="Delete Correspondence">
+                <input type="button" onclick="" value="Console Tester">
+            </p>
+        </div>
     </div>
 
     <div id="views">
-        <div id="sourceView"></div>
-        <div id="correspondenceMenu"></div>
-        <div id="targetView"></div>
+        <div id="sourceView">Source View</div>
+        <div id="targetView">Target View</div>
     </div>
-
+<script type="text/javascript"></script>
 </div>
+<!-- initial load -->
+<script src="../js/index.js"></script>
 </body>
 </html>

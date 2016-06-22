@@ -1,0 +1,50 @@
+<form id="newProjectForm" action="JavaScript:newProject()" class="form-horizontal">
+    <fieldset>
+
+        <!-- Form Name -->
+        <legend>New Project</legend>
+
+        <!-- Text input-->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="projectName">Project Name</label>
+            <div class="col-md-4">
+                <input id="projectName" name="projectName" type="text" placeholder="Example Project" class="form-control input-md" required="">
+
+            </div>
+        </div>
+
+        <!-- Multiple Checkboxes -->
+        <div class="form-group">
+            <label class="col-md-4 control-label">Abstraction Levels</label>
+            <div class="col-md-4">
+                <div class="checkbox">
+                    <label for="abstractionLevel[]-0">
+                        <input type="checkbox" name="abstractionLevel[]" id="abstractionLevel[]-0" value="Business">
+                        Business
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label for="abstractionLevel[]-1">
+                        <input type="checkbox" name="abstractionLevel[]" id="abstractionLevel[]-1" value="IT">
+                        IT
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label for="abstractionLevel[]-2">
+                        <input type="checkbox" name="abstractionLevel[]" id="abstractionLevel[]-2" value="IT-Execution">
+                        IT-Execution
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Button -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="btnNewProject"></label>
+            <div class="col-md-4">
+                <button id="btnNewProject" name="btnNewProject" class="btn btn-primary">Create Project</button>
+            </div>
+        </div>
+
+    </fieldset>
+</form>

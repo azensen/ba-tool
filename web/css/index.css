@@ -3,7 +3,7 @@
     overflow:scroll;
 }
 
-#browser-area {
+#projectBrowser {
     padding: 0;
     border:1px solid silver;
     width: 29%;
@@ -11,12 +11,22 @@
     float:left;
 }
 
-#browser {
+#jsTree {
     border:1px solid silver;
     min-height:200px;
 }
 
-#modelling-area {
+#submenu {
+    border:1px solid silver;
+    min-height:200px;
+}
+
+#correspondenceMenu {
+    border:1px solid silver;
+    min-height:200px;
+}
+
+#views {
     width: 69%;
     padding: 0;
     float: right;
@@ -41,7 +51,22 @@
     border-radius: 10px;
 }
 
-.highlight:not(.djs-connection) .djs-visual > :nth-child(1) {
+.highlight-green:not(.djs-connection) .djs-visual > :nth-child(1) {
     fill: green !important; /* color elements as green */
+    opacity: 0.3;
+}
+
+.highlight-red:not(.djs-connection) .djs-visual > :nth-child(1) {
+    fill: red !important; /* color elements as red */
+    opacity: 0.3;
+}
+
+.highlight-blue:not(.djs-connection) .djs-visual > :nth-child(1) {
+    fill: blue !important; /* color elements as blue */
+    opacity: 0.3;
+}
+
+.highlight-yellow:not(.djs-connection) .djs-visual > :nth-child(1) {
+    fill: yellow !important; /* color elements as yellow */
     opacity: 0.3;
 }
