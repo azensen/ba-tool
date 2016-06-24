@@ -1,0 +1,47 @@
+[
+  {
+    "corrType": "onezero",
+    "source": "Source1"
+  },
+  {
+    "corrType": "zeroone",
+    "target": "Target1"
+  },
+  {
+    "corrType": "onemany",
+    "source": "Source1",
+    "target": [
+      "Target1",
+      "Target2"
+    ]
+  },
+  {
+    "corrType": "manyone",
+    "source": [
+      "Source1",
+      "Source1"
+    ],
+    "target": "Target1"
+  },
+  {
+    "corrType": "oneone",
+    "source": "find",
+    "target": "me"
+  },
+  {
+    "corrType": "onemany",
+    "source": "findmanysource",
+    "target": [
+      "findmanytarget",
+      "findmanytarget2"
+    ]
+  },
+  {
+    "corrType": "manyone",
+    "source": [
+      "manyoneSource1",
+      "manyoneSource2"
+    ],
+    "target": "ManyoneTarget"
+  }
+]

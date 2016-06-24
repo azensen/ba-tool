@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title>Vertical Consistency Tool v01 - Add Process Model</title>
+  <title>Vertical Consistency Tool v01 - Clone Process Model</title>
 
   <style type="text/css">
 	
@@ -15,22 +15,22 @@
 
 <div id="cloneModel">
 
-<h2>Clone Process Model To Abstraction Level</h2>
+<h2>Clone Process Model</h2>
 <form id="cloneModelForm" action="Javascript:cloneModel()" method="POST" enctype="multipart/form-data">
-	<label>Add to Project:
-		<select id="addToProject" name="projectName" size="1">
-		<!--<option>Project1</option>-->
-		</select>
+	<label>Selected Project:
+		<input id="project" name="project" readonly="true">
 	</label>
-	<br><br>
-	<label>Process Name:
-		<select id="addToProcess" name="processName" size="1">
-		<!--<option>Process1</option>-->
-		</select>
+	<br>
+	<label>Selected Process:
+		<input id="process" name="process" readonly="true">
 	</label>
-	<br><br>
-	<label>Abstraction Level:
-		<select id="selectedLevel" name="levelName" size="1">
+	<br>
+	<label>Clone from Level:
+		<input id="in_level" name="in_level" readonly="true">
+	</label>
+	<br>
+	<label>Clone to Level:
+		<select id="out_level" name="out_level" size="1">
 		 <!--<option>Business</option>
 		 <option>IT-Architecture</option>
 		 <option>IT-Implementation</option>-->
@@ -39,79 +39,61 @@
 	<p><input type="checkbox" name="initCorr" value="initCorr" checked>Initialize Correspondence Model?</p>
 	<p><input type="checkbox" name="prefix" value="prefix" checked>Add Prefix to Model Name?</p>
 	<input type="submit" value="Clone Model"/>
-	<input type="hidden" name="filePathIn" value="">
-	<input type="hidden" name="filePathOut" value="">
-	<input type="hidden" name="corrModelName" value="">
-	<input type="hidden" name="corrPath" value="">
-	<input type="hidden" name="fileName" value="">
-	<input type="hidden" name="originalFileName" value="">
+	<input type="hidden" id="model" name="model">
 </form>
 <script>
 
-/*
-$filePathIn = $_POST['filePathIn']; // full path to .bpmn project/process/level/model.bpmn
-$filePathOut = $_POST['filePathOut']; //is equal to project/process/desired_level/model.bpmn
-$corrModelName = $_POST['corrModelName']; //modelname.corr
-$corrPath = $_POST['corrPath']; //is equal to project/process/level/ path where original model resides in
-*/
-var treeDiv = tool.projectBrowser.treeDiv;
-var selectionId = tool.projectBrowser.getCurrentNode();
-var modelNode = $(treeDiv).jstree(true).get_node(selectionId);
-var processNode = $(treeDiv).jstree(true).get_node(modelNode.parent);
-var levelNode = $(treeDiv).jstree(true).get_node(processNode.parent);
-var projectNode = $(treeDiv).jstree(true).get_node(levelNode.parent);
+	(function() {
+		//collect used nodes
+		var treeDiv = tool.projectBrowser.treeDiv;
+		var selectionId = tool.projectBrowser.getCurrentNode();
+		var modelNode = $(treeDiv).jstree(true).get_node(selectionId);
+		var processNode = $(treeDiv).jstree(true).get_node(modelNode.parent);
+		var levelNode = $(treeDiv).jstree(true).get_node(processNode.parent);
+		var projectNode = $(treeDiv).jstree(true).get_node(levelNode.parent);
 
-var projectName = projectNode.text;
-var projectOption = '<option>' + projectName + '</option>';
-$('#addToProject').append(projectOption);
+		//set input field values
+		var projectName = projectNode.text;
+		$('#project').val(projectName);
+		var processName = processNode.text;
+		$('#process').val(processName);
+		var in_levelName = levelNode.text;
+		$('#in_level').val(in_levelName);
+		var modelName =  modelNode.text;
+		$('#model').val(modelName);
 
-var processName = processNode.text;
-var processOption = '<option>' + processName + '</option>';
-$('#addToProcess').append(processOption);
+		//read levels into combobox via JSON response from PHP readLevels with input projectPath
+		var projectPath = {projectPath: projectNode.data.path};
+		console.log("Project Path to send: " + projectNode.data.path);
 
-var projectPath = {projectPath : projectNode.data.path};
-console.log("Project Path to send: " + projectNode.data.path);
-
-//read levels into combobox via JSON response from PHP readLevels with input projectPath
-$.ajax({
-  method: "POST",
-  url: "../php/readLevels.php",
-  data: projectPath
-})
-  .done(function( levelsJSON ) {
-	console.log(levelsJSON);
-	var levels = JSON.parse(levelsJSON);
-	var option = "";
-	for (i = 0; i < levels.length; i++) { 
-		if(levels[i].name != levelNode.text)
-		{
-		option = '<option>' + levels[i].name + '</option>">';
-		$('#selectedLevel').append(option);
-		}		
-	}
-});
+		$.ajax({
+			method: "POST",
+			url: "../php/readLevels.php",
+			data: projectPath
+		})
+				.done(function (levelsJSON) {
+					console.log(levelsJSON);
+					var levels = JSON.parse(levelsJSON);
+					var option = "";
+					for (i = 0; i < levels.length; i++) {
+						if (levels[i].name != levelNode.text) {
+							option = '<option>' + levels[i].name + '</option>">';
+							$('#out_level').append(option);
+						}
+					}
+				});
+	}());
 
 function cloneModel() {
-	$("input[name=filePathIn]").val(modelNode.data.path);
-	var selectedLevel = $('#selectedLevel').find(":selected").text();
-	var selectedProcess = $('#addToProcess').find(":selected").text();
-	$("input[name=filePathOut]").val(projectNode.data.path + selectedLevel + "/" + selectedProcess + "/");
-	$("input[name=corrModelName]").val(modelNode.text + ".corr");
-	$("input[name=corrPath]").val(modelNode.data.path);
-	$("input[name=fileName]").val(modelNode.text);
-	
-	var originalLevel = levelNode.text.toLowerCase() + "_";
-	$("input[name=originalFileName]").val(modelNode.text.replace(originalLevel, ""));
-	
 	var serialized = $("#cloneModelForm").serialize();
 	console.log(serialized);
 	$.ajax({
 	  method: "POST",
-	  url: "cloneModel.php",
+	  url: "../php/cloneModel.php",
 	  data: serialized
 	})
 	  .done(function( msg ) {
-		alert( "Response: " + msg );
+		console.log( "Response from cloneModel.php: " + msg );
 		refreshTree();
 		clearSubmenu();
 	});

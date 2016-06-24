@@ -72,6 +72,9 @@ function getNodes($path, $nodetype) {
 			} elseif ($info->getExtension() == 'corr') {
 				$node = new Node($file, 'correspondences', $path . $file);
 				array_push($nodes, $node);
+			} elseif ($info->getExtension() == 'asso') {
+				$node = new Node($file, 'association', $path . $file);
+				array_push($nodes, $node);
 			} else {
 				//$node = new Node($file, 'file', $path);
 				//array_push($nodes, $node);

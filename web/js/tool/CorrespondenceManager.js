@@ -5,16 +5,39 @@
 
 var CorrespondenceManager = function() {
     this.correspondenceList = [];
-    this.association = "";
+    this.association = {};
 };
 
+CorrespondenceManager.prototype.loadAssociations = function (filePath) {
+    var _this = this;
+    var assoFile = filePath.substr(0, filePath.lastIndexOf(".")) + ".asso";
+    $.get(assoFile, _this.parseAssociationFile, 'text');
+}
+
+CorrespondenceManager.parseAssociationFile = function (assoContent) {
+    var assoContent = assoContent;
+    var parsedContent = $.parseJSON(assoContent);
+    this.association = parsedContent;
+};
+
+CorrespondenceManager.prototype.loadCorrespondences = function (filePath) {
+    var _this = this;
+    var corrFile = filePath.substr(0, filePath.lastIndexOf(".")) + ".corr";
+    $.get(corrFile, _this.parseCorrespondenceFile, 'text');
+}
+
+CorrespondenceManager.parseCorrespondenceFile = function (corrContent) {
+    var corrContent = corrContent;
+    var parsedContent = $.parseJSON(corrContent);
+    this.correspondenceList = parsedContent;
+};
 
 CorrespondenceManager.prototype.addCorr = function (corr) {
     this.corrList.push(corr);
 };
 
 CorrespondenceManager.prototype.removeCorrespondence = function (corr) {
-    var corrList = this.corrList;
+    var corrList = this.correspondenceList;
 
     for(var i = 0; i < corrList.length; i++) {
         if(corr == corrList[i]) {
@@ -29,13 +52,14 @@ CorrespondenceManager.prototype.removeElementFromCorr = function (elementID) {
 
     if(corrType == "oneone" || corrType == "onezero" || corrType == "zeroone") {
         this.removeCorrespondence(corrToEdit);
+        //TODO Transformation
     } else if (corrType == "manyone") {
 
     }
 };
 
 CorrespondenceManager.prototype.getCorr = function (elementID) {
-    var corrList = this.corrList;
+    var corrList = this.correspondenceList;
     var corr;
     for (var i = 0; i < corrList.length; i++) {
         corr = corrList[i];

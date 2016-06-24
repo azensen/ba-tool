@@ -1,0 +1,6 @@
+[
+	{
+		"sourceFile" : "../../projects/level1/process/filename.bpmn",
+		"targetFile" : "../../projects/level2/process/filename.bpmn"
+	}
+]

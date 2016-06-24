@@ -5,22 +5,11 @@
     <title>Vertical Consistency Tool</title>
     <!-- tool styles -->
     <link rel="stylesheet" href="../css/index.css" />
+    <!-- bpmn-js styles -->
+    <link rel="stylesheet" href="../js/bpmn-js/assets/diagram-js.css" />
+    <link rel="stylesheet" href="../js/bpmn-js/assets/bpmn-font/css/bpmn-embedded.css" />
     <!-- jsTree theme-->
     <link rel="stylesheet" href="../js/jsTree/themes/default/style.min.css" />
-    <!-- dependencies
-    jQuery, jsTree, bpmn-modeler
-    -->
-
-    <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script> -->
-    <script src="../js/jquery/jquery-1.12.4.js"></script>
-    <script src="../js/jsTree/jstree.min.js"></script>
-    <!--<script src="../js/bpmn-js/bpmn-modeler.js"></script>-->
-
-    <!-- Tool dependencies -->
-    <script src="../js/tool/Tool.js"></script>
-    <script src="../js/tool/ProjectBrowser.js"></script>
-    <script src="../js/tool/CorrespondenceManager.js"></script>
-    <script src="../js/tool/ViewManager.js"></script>
 </head>
 <body>
 <div id="container">
@@ -52,7 +41,7 @@
             <p>
                 <input type="button" value="Delete Selected">
                 <input type="button" value="Delete Correspondence">
-                <input type="button" onclick="" value="Console Tester">
+                <input type="button" onclick="tester()" value="Console Tester">
             </p>
         </div>
     </div>
@@ -63,6 +52,25 @@
     </div>
 <script type="text/javascript"></script>
 </div>
+<script>
+    //Quick tester
+    function tester() {
+        var filePath = tool.projectBrowser.getCurrentNode().data.path;
+        tool.viewManager.loadSource(filePath);
+    }
+</script>
+
+<!-- dependencies jQuery, jsTree, bpmn-modeler -->
+<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script> -->
+<script src="../js/jquery/jquery-1.12.4.js"></script>
+<script src="../js/jsTree/jstree.min.js"></script>
+<script src="../js/bpmn-js/bpmn-modeler.js"></script>
+
+<!-- Tool dependencies -->
+<script src="../js/tool/Tool.js"></script>
+<script src="../js/tool/ProjectBrowser.js"></script>
+<script src="../js/tool/CorrespondenceManager.js"></script>
+<script src="../js/tool/ViewManager.js"></script>
 <!-- initial load -->
 <script src="../js/index.js"></script>
 </body>
