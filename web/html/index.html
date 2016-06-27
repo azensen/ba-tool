@@ -31,8 +31,8 @@
         </div>
         <div id="submenu">Browser Submenu</div>
         <div id="correspondenceMenu">
-            Correspondence Menu<br><br>
-            Associated Model: it_model.bpmn<br>
+            <h2>Correspondence Menu</h2><br><br>
+            Associated Model: it_model.bpmn<br><br>
             Type: 1-m<br>
             Source(s): <input type="checkbox" name="source" value="Task1">Task1<br>
             Target(s):
@@ -55,8 +55,16 @@
 <script>
     //Quick tester
     function tester() {
-        var filePath = tool.projectBrowser.getCurrentNode().data.path;
-        tool.viewManager.loadSource(filePath);
+        var targetModelPath = tool.projectBrowser.getCurrentNode().data.path;
+        tool.correspondenceManager.loadAssociation(targetModelPath);
+        tool.correspondenceManager.loadCorrespondences(targetModelPath);
+        var association = tool.correspondenceManager.association;
+        var correspondences = tool.correspondenceManager.correspondenceList;
+        console.log("");console.log("");console.log("Association and Correspondences Objects: ");
+        console.log(Object.keys(association));
+        console.log(Object.keys(correspondences));
+        //tool.viewManager.loadSource(association.sourceFile);
+        //tool.viewManager.loadTarget(association.targetFile);
     }
 </script>
 
