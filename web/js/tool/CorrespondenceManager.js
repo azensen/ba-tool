@@ -23,11 +23,11 @@ CorrespondenceManager.prototype.loadAssociation = function (filePath) {
                 console.log(xhr);
                 console.log(Object.keys(xhr));
             });
-}
+};
 
 CorrespondenceManager.prototype.setAssociation = function (association) {
     this.association = association;
-}
+};
 
 CorrespondenceManager.prototype.loadCorrespondences = function (filePath) {
     var corrFile = filePath.substr(0, filePath.lastIndexOf(".")) + ".corr";
@@ -44,14 +44,69 @@ CorrespondenceManager.prototype.loadCorrespondences = function (filePath) {
             console.log(xhr);
             console.log(Object.keys(xhr));
         });
-}
+};
 
 CorrespondenceManager.prototype.setCorrespondences = function (data) {
     this.correspondenceList = data;
-}
+};
 
-CorrespondenceManager.prototype.addCorr = function (corr) {
-    this.corrList.push(corr);
+CorrespondenceManager.prototype.addCorr = function (newCorr) {
+    var existingCorrMatchesBySource = [];
+    var existingCorrMatchesByTarget = [];
+
+    if(newCorr.corrType == 'oneone') {
+        //get both corrs by source and target, push one, check for equality, if not equal push other corr as well
+        var existingSourceCorr = this.getCorrBySource(newCorr.source);
+        var existingTargetCorr = this.getCorrByTarget(newCorr.target);
+        console.log("Pushing CorrMatchBySource:");
+        console.log(existingSourceCorr);
+        if(existingSourceCorr != null) {
+            existingCorrMatchesBySource.push(existingSourceCorr);
+            if(existingTargetCorr != null) {
+                if(existingSourceCorr != existingTargetCorr) {
+                    existingCorrMatchesByTarget.push(existingTargetCorr);
+                }
+            }
+        }
+
+    } else if (newCorr.corrType == 'onemany') {
+        //get corr by source, get corrs by target and check each for equality with found source corr, push if not equal
+        var existingSourceCorr = this.getCorrBySource(newCorr.source);
+        existingCorrMatchesBySource.push(existingSourceCorr);
+        for(var i = 0; i < newCorr.target.length; i++) {
+            var existingTargetCorr = this.getCorrByTarget(newCorr.target[i]);
+            if(existingSourceCorr != existingTargetCorr) {
+                existingCorrMatchesByTarget.push(existingTargetCorr);
+            }
+        }
+    } else if (newCorr.corrType == 'manyone') {
+        //get corr by target, get corrs by source and check each for equality with found target corr, push if not equal
+        var existingTargetCorr = this.getCorrByTarget(newCorr.target);
+        existingCorrMatchesByTarget.push(existingTargetCorr);
+        for(var i = 0; newCorr.source.length; i++) {
+            var existingSourceCorr = this.getCorrBySource(newCorr.source[i]);
+            if(existingTargetCorr != existingSourceCorr) {
+                existingCorrMatchesBySource.push(existingSourceCorr);
+            }
+        }
+    }
+    console.log("Number of CorrMatchesBySource: " + existingCorrMatchesBySource.length);
+    console.log("Number of CorrMatchesByTarget: " + existingCorrMatchesByTarget.length);
+    //remove or transform matching correspondences
+    for(var k = 0; k < existingCorrMatchesBySource.length; k++) {
+        //TODO transformations first if matching corr != oneone or onemany
+        console.log("Removing source correspondence:");
+        console.log(existingCorrMatchesBySource[k]);
+        this.removeCorrespondence(existingCorrMatchesBySource[k]);
+    }
+    for(var l = 0; l < existingCorrMatchesByTarget.length; l++) {
+        //TODO transformations first if matching corr != oneone or manyone
+        console.log("Removing target correspondence:");
+        console.log(existingCorrMatchesBySource[l]);
+        console.log(Object.keys(existingCorrMatchesBySource[l]));
+        this.removeCorrespondence(existingCorrMatchesByTarget[l]);
+    }
+    this.correspondenceList.push(newCorr);
 };
 
 CorrespondenceManager.prototype.removeCorrespondence = function (corr) {
@@ -64,21 +119,23 @@ CorrespondenceManager.prototype.removeCorrespondence = function (corr) {
     }
 };
 
-CorrespondenceManager.prototype.removeElementFromCorr = function (elementID) {
+CorrespondenceManager.prototype.removeElementFromCorr = function (sourceId, targetId) {
     var corrToEdit = this.getCorr(elementID);
     var corrType = corrToEdit.corrType;
 
     if(corrType == "oneone" || corrType == "onezero" || corrType == "zeroone") {
         this.removeCorrespondence(corrToEdit);
-        //TODO Transformation
+        //TODO Transformation of existing corrs with then removed element
     } else if (corrType == "manyone") {
 
+    } else if (corrType == "onemany") {
+        
     }
 };
 
 CorrespondenceManager.prototype.getCorr = function (elementID) {
     var corrList = this.correspondenceList;
-    var corr;
+    var corr = null;
     for (var i = 0; i < corrList.length; i++) {
         corr = corrList[i];
         var corrType = corr.corrType;
@@ -117,48 +174,46 @@ CorrespondenceManager.prototype.getCorr = function (elementID) {
             }
         }
     }
-    return corr = new Correspondence("not_found", "", "");
+    console.log("No CorrespondenceById found.");
+    return corr;
 };
 
 CorrespondenceManager.prototype.getCorrBySource = function (elementID) {
     var corrList = this.correspondenceList;
-    var corr;
+    var corr = null;
     for (var i = 0; i < corrList.length; i++) {
         corr = corrList[i];
         var corrType = corr.corrType;
         //var n = str1.localeCompare(str2);
-        if(corrType == "oneone") {
-            if(corr.source == elementID) {
+        if (corrType == "oneone") {
+            if (corr.source == elementID) {
                 return corr;
             }
         } else if (corrType == "onezero") {
-            if(corr.source == elementID) {
+            if (corr.source == elementID) {
                 return corr;
             }
         } else if (corrType == "zeroone") {
             continue;
         } else if (corrType == "onemany") {
-            if(corr.source == elementID) {
+            if (corr.source == elementID) {
                 return corr;
-            } else {
-                continue;
-            }
-        } else if (corrType == "manyone") {
-            for (var k = 0; k < corr.source.length; k++) {
-                if(corr.source[k] == elementID) {
-                    return corr;
-                } else {
-                    continue;
+            } else if (corrType == "manyone") {
+                for (var k = 0; k < corr.source.length; k++) {
+                    if (corr.source[k] == elementID) {
+                        return corr;
+                    }
                 }
             }
+            console.log("No CorrespondenceBySource found.");
+            return corr;
         }
     }
-    return corr = new Correspondence("not_found", "", "");
 };
 
 CorrespondenceManager.prototype.getCorrByTarget = function (elementID) {
     var corrList = this.correspondenceList;
-    var corr;
+    var corr = null;
     for (var i = 0; i < corrList.length; i++) {
         corr = corrList[i];
         var corrType = corr.corrType;
@@ -182,12 +237,11 @@ CorrespondenceManager.prototype.getCorrByTarget = function (elementID) {
         } else if (corrType == "manyone") {
             if (corr.target == elementID) {
                 return corr;
-            } else {
-                continue;
             }
         }
+        console.log("No CorrespondenceByTarget found.");
+        return corr;
     }
-    return corr = new Correspondence("not_found", "", "");
 };
 /*
  Structure of correspondence types
@@ -238,4 +292,48 @@ function Correspondence(corrType, source, target) {
             this.source = source;
             this.target = target;
     }
+};
+
+CorrespondenceManager.prototype.createCorrespondence = function (selectionSource, selectionTarget) {
+    var existingCorrespondencesWithElements = [];
+    var newSources = [];
+    var newTargets = [];
+
+    for (var i = 0; i < selectionSource.length; i++) {
+        newSources.push(selectionSource[i].id);
+    }
+
+    for (var j = 0; j < selectionTarget.length; j++) {
+        newTargets.push(selectionTarget[j].id);
+    }
+
+    if(newSources.length > 1 && newTargets.length > 1) {
+        console.log("Error: Only 1-m or m-1 permitted, m-m selected.");
+        return null;
+    } else if (newSources.length == 1 && newTargets.length == 1) {
+        var newCorr = new Correspondence("oneone", newSources[0], newTargets[0]);
+        return newCorr;
+    } else if (newSources.length == 1 && newTargets.length > 1) {
+        var newCorr = new Correspondence("onemany", newSources[0], newTargets);
+        return newCorr;
+    } else if (newSources.length > 1 && newTargets.length == 1) {
+        var newCorr = new Correspondence("manyone", newSources, newTargets[0]);
+        return newCorr;
+    } else {
+        console.log("Source and Target Selections:");
+        console.log(newSources);
+        console.log(newTargets);
+        return null;
+    }
+};
+
+/*
+Transformations
+1-1 to 1-m
+1-1 to m-1
+1-m to 1-1
+m-1 to 1-1
+ */
+CorrespondenceManager.prototype.transformCorr = function (newCorr, oldCorr) {
+
 };

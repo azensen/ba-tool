@@ -90,7 +90,7 @@ ViewManager.prototype.loadSource = function(filePath) {
                     console.log("businessObject Type: " + businessObject.$type);
 
                     var selectedElements = sourceView.get('selection').get();
-                    console.log("Selected Elements: ");
+                    console.log("Selected Source Elements: ");
                     console.log(selectedElements);
                     /*
                     var extElements = businessObject.extensionElements;
@@ -127,6 +127,8 @@ ViewManager.prototype.loadSource = function(filePath) {
                     //extElem0.$children[1].value = 'YXXXXsuperIT';
 
                     //log(event, 'on', e.element.id);
+                    tool.viewManager.removeAllHighlights();
+                    tool.viewManager.highlightCorrespondenceBySource(e.element.id);
                 });
             });
         });
@@ -183,7 +185,7 @@ ViewManager.prototype.loadTarget = function(filePath) {
                     console.log("businessObject Type: " + businessObject.$type);
 
                     var selectedElements = targetView.get('selection').get();
-                    console.log("Selected Elements: ");
+                    console.log("Selected Target Elements: ");
                     console.log(selectedElements);
                     /*
                      var extElements = businessObject.extensionElements;
@@ -220,6 +222,8 @@ ViewManager.prototype.loadTarget = function(filePath) {
                     //extElem0.$children[1].value = 'YXXXXsuperIT';
 
                     //log(event, 'on', e.element.id);
+                    tool.viewManager.removeAllHighlights();
+                    tool.viewManager.highlightCorrespondenceByTarget(e.element.id);
                 });
             });
         });
@@ -249,17 +253,88 @@ ViewManager.prototype.saveSource = function(filePath) {
 };
 ViewManager.prototype.saveTarget = function(filePath) {};
 
-ViewManager.prototype.displayCorrespondenceBySource = function (sourceElementId) {
+ViewManager.prototype.highlightCorrespondenceBySource = function (sourceElementId) {
     var correspondence = tool.correspondenceManager.getCorrBySource(sourceElementId);
+
+    if(correspondence != null) {
+        /*var elementRegistrySource = this.sourceView.get('elementRegistry');
+        var elementRegistryTarget = this.targetView.get('elementRegistry');
+
+        var overlaysSource = this.sourceView.get('overlays');
+        var overlaysSource = this.targetView.get('overlays');
+        */
+
+        var sourceCanvas = this.sourceView.get('canvas');
+        var targetCanvas = this.targetView.get('canvas');
+        var sourceIds = correspondence.source;
+        var targetIds = correspondence.target;
+        // highlight via CSS class
+
+        sourceCanvas.addMarker(sourceIds, 'highlight-green');
+        targetCanvas.addMarker(targetIds, 'highlight-green');
+
+    } else {
+        console.log("No correspondence found for element id " + sourceElementId);
+    }
+};
+
+ViewManager.prototype.highlightCorrespondenceByTarget = function (sourceElementId) {
+    var correspondence = tool.correspondenceManager.getCorrByTarget(sourceElementId);
+
+    if(correspondence != null) {
+        /*var elementRegistrySource = this.sourceView.get('elementRegistry');
+         var elementRegistryTarget = this.targetView.get('elementRegistry');
+
+         var overlaysSource = this.sourceView.get('overlays');
+         var overlaysSource = this.targetView.get('overlays');
+         */
+
+        var sourceCanvas = this.sourceView.get('canvas');
+        var targetCanvas = this.targetView.get('canvas');
+        var sourceIds = correspondence.source;
+        var targetIds = correspondence.target;
+        // highlight via CSS class
+        sourceCanvas.addMarker(sourceIds, 'highlight-green');
+        targetCanvas.addMarker(targetIds, 'highlight-green');
+
+    } else {
+        console.log("No correspondence found for element id " + sourceElementId);
+    }
+};
+
+ViewManager.prototype.removeAllHighlights = function() {
+    var sourceCanvas = this.sourceView.get('canvas');
+    var targetCanvas = this.targetView.get('canvas');
+
     var elementRegistrySource = this.sourceView.get('elementRegistry');
     var elementRegistryTarget = this.targetView.get('elementRegistry');
 
-    var overlaysSource = this.sourceView.get('overlays');
-    var overlaysSource = this.targetView.get('overlays');
+    var allSourceElements = elementRegistrySource.getAll();
+    var allTargetElements = elementRegistryTarget.getAll();
+    console.log(allSourceElements);
+    console.log(Object.keys(allSourceElements));
+    console.log(allTargetElements);
+    console.log(Object.keys(allTargetElements));
 
-    if(correspondence != null) {
-        
-    } else {
-        
-    }
+    for (var i = 0; i < allSourceElements.length; i++) {
+        this.removeHighlight(allSourceElements[i], sourceCanvas);
+    };
+
+    for (var j = 0; j < allTargetElements.length; j++) {
+        this.removeHighlight(allTargetElements[j].id, targetCanvas);
+    };
+};
+
+ViewManager.prototype.removeHighlight = function removeHighlight(elementId, canvas) {
+    canvas.removeMarker(elementId, 'highlight-green');
+};
+
+ViewManager.prototype.getSelectedSource = function () {
+    var selectedElements = this.sourceView.get('selection').get();
+    return selectedElements;
+};
+
+ViewManager.prototype.getSelectedTarget = function () {
+    var selectedElements = this.targetView.get('selection').get();
+    return selectedElements;
 };
