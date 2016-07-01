@@ -25,6 +25,7 @@
                 <button id="btnAddModel" onclick="tool.projectBrowser.addModelMenu()" disabled>Add Model</button>
                 <button id="btnCloneModel" onclick="tool.projectBrowser.cloneModelMenu()" disabled>Clone Model</button>
                 <a id="downloadLink" href="file.doc"><button id="btnDownloadModel" onclick="" disabled>Download Model</button></a>
+                <button id="loadModel" onClick="tool.viewManager.loadModel()" disabled>Load Model</button>
 
             </p>
 
@@ -55,16 +56,22 @@
 <script>
     //Quick tester
     function tester() {
-        var targetModelPath = tool.projectBrowser.getCurrentNode().data.path;
-        tool.correspondenceManager.loadAssociation(targetModelPath);
-        tool.correspondenceManager.loadCorrespondences(targetModelPath);
-        var association = tool.correspondenceManager.association;
-        var correspondences = tool.correspondenceManager.correspondenceList;
-        console.log("");console.log("");console.log("Association and Correspondences Objects: ");
-        console.log(Object.keys(association));
-        console.log(Object.keys(correspondences));
-        //tool.viewManager.loadSource(association.sourceFile);
-        //tool.viewManager.loadTarget(association.targetFile);
+        display();
+
+        tool.viewManager.loadModels();
+
+        function display() {
+            var association = tool.correspondenceManager.association;
+            var correspondences = tool.correspondenceManager.correspondenceList;
+            console.log("");console.log("");
+            console.log("Association and Correspondences Objects: ");
+            console.log(Object.keys(association));
+            console.log(Object.keys(correspondences));
+        }
+
+/*        Promise.all([request1, request2]).then(function(results) {
+
+        });*/
     }
 </script>
 

@@ -9,17 +9,14 @@ function CorrespondenceManager () {
 };
 
 CorrespondenceManager.prototype.loadAssociation = function (filePath) {
-    var assoFile = filePath.substr(0, filePath.lastIndexOf(".")) + ".json";
+    var assoFile = filePath.substr(0, filePath.lastIndexOf(".")) + ".asso";
     console.log(assoFile);
     //$.get(assoFile, _this.parseAssociationFile, 'text');
-/*    $.getJSON(filePath, function (data) {
-        console.log("Success getJSON");
-        console.log(data);
-    });*/
+
     var _this = this;
     $.getJSON(assoFile, function(data) {
-        console.log("Successfully loaded asso-JSON:");
-        console.log(data);
+        console.log("Successfully loaded associations.");
+        //console.log(data);
         _this.setAssociation(data);
         })
             .error(function(xhr) {
@@ -36,14 +33,11 @@ CorrespondenceManager.prototype.loadCorrespondences = function (filePath) {
     var corrFile = filePath.substr(0, filePath.lastIndexOf(".")) + ".corr";
     console.log(corrFile);
     //$.get(assoFile, _this.parseAssociationFile, 'text');
-    /*    $.getJSON(filePath, function (data) {
-     console.log("Success getJSON");
-     console.log(data);
-     });*/
+
     var _this = this;
     $.getJSON(corrFile, function(data) {
-        console.log("Successfully loaded corr-JSON:");
-        console.log(data);
+        console.log("Successfully loaded correspondences.");
+        //console.log(data);
         _this.setCorrespondences(data);
     })
         .error(function(xhr) {
@@ -228,7 +222,7 @@ CorrespondenceManager.prototype.getCorrByTarget = function (elementID) {
  Input: correspondence type, source(s) and target(s) as single object / elementID or array of objects / elementIDs
  Output: correspondence according to type
  */
-var Correspondence = function (corrType, source, target) {
+function Correspondence(corrType, source, target) {
 
     this.corrType = corrType;
 

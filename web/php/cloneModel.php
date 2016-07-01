@@ -89,7 +89,7 @@ function saveModelOut($modelPath_in, $modelPath_out, $processPath_out) {
 	if (!file_exists($processPath_out)) {
 		mkdir($processPath_out, 0777, true);
 	}
-	file_put_contents($modelPath_out, $modelPath_in);
+	copy($modelPath_in, $modelPath_out);
 }
 
 //creates an association JSON encoding with the file paths of the in_model and out_model

@@ -104,6 +104,9 @@ ProjectBrowser.prototype.checkButton = function(selectedID) {
             $('#downloadLink').attr("href", this.getCurrentNode().data.path + this.getCurrentNode().text);
             $('#btnDownloadModel').removeAttr("disabled");
             $('#btnCloneModel').removeAttr("disabled");
+            var targetModelPath = tool.projectBrowser.getCurrentNode().data.path;
+            tool.correspondenceManager.loadAssociation(targetModelPath);
+            tool.correspondenceManager.loadCorrespondences(targetModelPath);
             break;
     }
 

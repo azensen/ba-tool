@@ -5,13 +5,39 @@ var ViewManager = function(htmlDivSource, htmlDivTarget) {
     this.htmlDivSource = htmlDivSource;
     this.htmlDivTarget = htmlDivTarget;
 
+    this.sourceView = null;
+    this.targetView = null;
+
+};
+
+/*
+load source and target via filepath of selected model
+then load association and correspondence files
+with association data load source and target models into respective modellers
+ */
+ViewManager.prototype.loadModels = function() {
+
+    var association = tool.correspondenceManager.association;
+    var sourceModelName = association.sourceModel;
+    $(this.htmlDivSource).text(sourceModelName);
+    var targetModelName = association.targetModel;
+    $(this.htmlDivTarget).text(targetModelName);
+
     this.sourceView =  new BpmnJS({
-        container: htmlDivSource
+        container: this.htmlDivSource
     });
 
     this.targetView =  new BpmnJS({
-        container: htmlDivTarget
+        container: this.htmlDivTarget
     });
+
+    var sourceFilePath = association.sourceFile;
+    var targetFilePath = association.targetFile;
+    console.log("Loading Source Model via " + sourceFilePath);
+    this.loadSource(sourceFilePath);
+    console.log("Loading Target Model via " + targetFilePath);
+    this.loadTarget(targetFilePath);
+
 };
 
 ViewManager.prototype.loadSource = function(filePath) {
@@ -105,11 +131,12 @@ ViewManager.prototype.loadSource = function(filePath) {
             });
         });
     };
-}
+};
+
 ViewManager.prototype.loadTarget = function(filePath) {
 
     $.get(filePath, importXML, 'text');
-    var targetView = this.sourceView;
+    var targetView = this.targetView;
     // import function
     function importXML(xml) {
 
@@ -197,7 +224,7 @@ ViewManager.prototype.loadTarget = function(filePath) {
             });
         });
     };
-}
+};
 
 ViewManager.prototype.saveSource = function(filePath) {
 
@@ -221,3 +248,18 @@ ViewManager.prototype.saveSource = function(filePath) {
     });
 };
 ViewManager.prototype.saveTarget = function(filePath) {};
+
+ViewManager.prototype.displayCorrespondenceBySource = function (sourceElementId) {
+    var correspondence = tool.correspondenceManager.getCorrBySource(sourceElementId);
+    var elementRegistrySource = this.sourceView.get('elementRegistry');
+    var elementRegistryTarget = this.targetView.get('elementRegistry');
+
+    var overlaysSource = this.sourceView.get('overlays');
+    var overlaysSource = this.targetView.get('overlays');
+
+    if(correspondence != null) {
+        
+    } else {
+        
+    }
+};
