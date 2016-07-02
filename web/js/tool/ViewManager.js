@@ -59,7 +59,7 @@ ViewManager.prototype.loadSource = function(filePath) {
             // zoom to fit full viewport
             canvas.zoom('fit-viewport');
 
-            var eventBusTop = sourceView.get('eventBus');
+            var eventBusSource = sourceView.get('eventBus');
 
             // you may hook into any of the following events
             var events = [
@@ -73,13 +73,13 @@ ViewManager.prototype.loadSource = function(filePath) {
 
             events.forEach(function (event) {
 
-                eventBusTop.on(event, function (e) {
+                eventBusSource.on(event, function (e) {
                     // e.element = the model element
                     // e.gfx = the graphical element
                     //document.getElementById("element-info-top").innerHTML = "Top-Element: " + e.element.id + " " + e.element.label;
                     console.log("e: " + Object.keys(e));
                     console.log("e.element: " + Object.keys(e.element));
-                    console.log("TopModeller: " + Object.keys(sourceView));
+                    console.log("SourceModeller: " + Object.keys(sourceView));
                     //Get element via elementRegistry
                     var elementRegistry = sourceView.get('elementRegistry');
                     var shape = elementRegistry.get(e.element.id);
@@ -128,7 +128,8 @@ ViewManager.prototype.loadSource = function(filePath) {
 
                     //log(event, 'on', e.element.id);
                     tool.viewManager.removeAllHighlights();
-                    tool.viewManager.highlightCorrespondenceBySource(e.element.id);
+                    if(selectedElements.length > 0)
+                        tool.viewManager.highlightCorrespondenceBySource(e.element.id);
                 });
             });
         });
@@ -154,7 +155,7 @@ ViewManager.prototype.loadTarget = function(filePath) {
             // zoom to fit full viewport
             canvas.zoom('fit-viewport');
 
-            var eventBusTop = targetView.get('eventBus');
+            var eventBusTarget = targetView.get('eventBus');
 
             // you may hook into any of the following events
             var events = [
@@ -168,13 +169,13 @@ ViewManager.prototype.loadTarget = function(filePath) {
 
             events.forEach(function (event) {
 
-                eventBusTop.on(event, function (e) {
+                eventBusTarget.on(event, function (e) {
                     // e.element = the model element
                     // e.gfx = the graphical element
                     //document.getElementById("element-info-top").innerHTML = "Top-Element: " + e.element.id + " " + e.element.label;
                     console.log("e: " + Object.keys(e));
                     console.log("e.element: " + Object.keys(e.element));
-                    console.log("TopModeller: " + Object.keys(targetView));
+                    console.log("TargetModeller: " + Object.keys(targetView));
                     //Get element via elementRegistry
                     var elementRegistry = targetView.get('elementRegistry');
                     var shape = elementRegistry.get(e.element.id);
@@ -223,7 +224,8 @@ ViewManager.prototype.loadTarget = function(filePath) {
 
                     //log(event, 'on', e.element.id);
                     tool.viewManager.removeAllHighlights();
-                    tool.viewManager.highlightCorrespondenceByTarget(e.element.id);
+                    if(selectedElements.length > 0)
+                        tool.viewManager.highlightCorrespondenceByTarget(e.element.id);
                 });
             });
         });
@@ -272,15 +274,17 @@ ViewManager.prototype.highlightCorrespondenceBySource = function (sourceElementI
 
         sourceCanvas.addMarker(sourceIds, 'highlight-green');
         targetCanvas.addMarker(targetIds, 'highlight-green');
-
+        //select all correspondence elements on canvas
+        this.selectElementsInCorr(correspondence);
     } else {
         console.log("No correspondence found for element id " + sourceElementId);
     }
 };
 
-ViewManager.prototype.highlightCorrespondenceByTarget = function (sourceElementId) {
-    var correspondence = tool.correspondenceManager.getCorrByTarget(sourceElementId);
-
+ViewManager.prototype.highlightCorrespondenceByTarget = function (targetElementId) {
+    var correspondence = tool.correspondenceManager.getCorrByTarget(targetElementId);
+    console.log("Corr found by Target:");
+    console.log(correspondence);
     if(correspondence != null) {
         /*var elementRegistrySource = this.sourceView.get('elementRegistry');
          var elementRegistryTarget = this.targetView.get('elementRegistry');
@@ -288,7 +292,7 @@ ViewManager.prototype.highlightCorrespondenceByTarget = function (sourceElementI
          var overlaysSource = this.sourceView.get('overlays');
          var overlaysSource = this.targetView.get('overlays');
          */
-
+        //TODO implement other relations, not only 1-1
         var sourceCanvas = this.sourceView.get('canvas');
         var targetCanvas = this.targetView.get('canvas');
         var sourceIds = correspondence.source;
@@ -296,9 +300,10 @@ ViewManager.prototype.highlightCorrespondenceByTarget = function (sourceElementI
         // highlight via CSS class
         sourceCanvas.addMarker(sourceIds, 'highlight-green');
         targetCanvas.addMarker(targetIds, 'highlight-green');
-
+        //select all correspondence elements on canvas
+        this.selectElementsInCorr(correspondence);
     } else {
-        console.log("No correspondence found for element id " + sourceElementId);
+        console.log("No correspondence found for element id " + targetElementId);
     }
 };
 
@@ -321,12 +326,20 @@ ViewManager.prototype.removeAllHighlights = function() {
     };
 
     for (var j = 0; j < allTargetElements.length; j++) {
-        this.removeHighlight(allTargetElements[j].id, targetCanvas);
+        this.removeHighlight(allTargetElements[j], targetCanvas);
     };
 };
 
 ViewManager.prototype.removeHighlight = function removeHighlight(elementId, canvas) {
     canvas.removeMarker(elementId, 'highlight-green');
+};
+
+ViewManager.prototype.selectElementsInCorr = function (correspondence) {
+    var sourceSelectionService = this.sourceView.get('selection');
+    var targetSelectionService = this.targetView.get('selection');
+    //selection service takes either string or array of strings of IDs as param for selection
+    sourceSelectionService.select(correspondence.source);
+    targetSelectionService.select(correspondence.target);
 };
 
 ViewManager.prototype.getSelectedSource = function () {

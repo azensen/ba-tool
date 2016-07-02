@@ -206,9 +206,9 @@ CorrespondenceManager.prototype.getCorrBySource = function (elementID) {
                 }
             }
             console.log("No CorrespondenceBySource found.");
-            return corr;
         }
     }
+    return corr;
 };
 
 CorrespondenceManager.prototype.getCorrByTarget = function (elementID) {
@@ -223,7 +223,7 @@ CorrespondenceManager.prototype.getCorrByTarget = function (elementID) {
                 return corr;
             }
         } else if (corrType == "onezero") {
-            continue;
+
         } else if (corrType == "zeroone") {
             if (corr.target == elementID) {
                 return corr;
@@ -238,10 +238,11 @@ CorrespondenceManager.prototype.getCorrByTarget = function (elementID) {
             if (corr.target == elementID) {
                 return corr;
             }
+        } else {
+            console.log("No CorrespondenceByTarget found.");
         }
-        console.log("No CorrespondenceByTarget found.");
-        return corr;
     }
+    return corr;
 };
 /*
  Structure of correspondence types
