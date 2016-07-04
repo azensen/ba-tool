@@ -20,6 +20,7 @@ CorrespondenceManager.prototype.loadAssociation = function (filePath) {
         _this.setAssociation(data);
         })
             .error(function(xhr) {
+                console.log("Unable to load associations from .asso at " + assoFile);
                 console.log(xhr);
                 console.log(Object.keys(xhr));
             });
@@ -41,13 +42,18 @@ CorrespondenceManager.prototype.loadCorrespondences = function (filePath) {
         _this.setCorrespondences(data);
     })
         .error(function(xhr) {
+            console.log("Unable to load correspondences from .corr at " + corrFile);
             console.log(xhr);
             console.log(Object.keys(xhr));
         });
 };
 
 CorrespondenceManager.prototype.setCorrespondences = function (data) {
-    this.correspondenceList = data;
+    var newCorrList = [];
+    for(var i = 0; i < data.length; i++) {
+        newCorrList.push($.extend(new Correspondence(), data[i]));
+    }
+    this.correspondenceList = newCorrList;
 };
 
 CorrespondenceManager.prototype.addCorr = function (newCorr) {
@@ -198,17 +204,17 @@ CorrespondenceManager.prototype.getCorrBySource = function (elementID) {
         } else if (corrType == "onemany") {
             if (corr.source == elementID) {
                 return corr;
-            } else if (corrType == "manyone") {
-                for (var k = 0; k < corr.source.length; k++) {
-                    if (corr.source[k] == elementID) {
-                        return corr;
-                    }
+            }
+        } else if (corrType == "manyone") {
+            for (var k = 0; k < corr.source.length; k++) {
+                if (corr.source[k] == elementID) {
+                    return corr;
                 }
             }
-            console.log("No CorrespondenceBySource found.");
         }
     }
-    return corr;
+console.log("No CorrespondenceBySource found.");
+return null;
 };
 
 CorrespondenceManager.prototype.getCorrByTarget = function (elementID) {
@@ -238,11 +244,10 @@ CorrespondenceManager.prototype.getCorrByTarget = function (elementID) {
             if (corr.target == elementID) {
                 return corr;
             }
-        } else {
-            console.log("No CorrespondenceByTarget found.");
         }
     }
-    return corr;
+    console.log("No CorrespondenceByTarget found.");
+    return null;
 };
 /*
  Structure of correspondence types

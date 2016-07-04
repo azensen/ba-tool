@@ -128,6 +128,7 @@ ViewManager.prototype.loadSource = function(filePath) {
 
                     //log(event, 'on', e.element.id);
                     tool.viewManager.removeAllHighlights();
+                    tool.viewManager.deselectAll();
                     if(selectedElements.length > 0)
                         tool.viewManager.highlightCorrespondenceBySource(e.element.id);
                 });
@@ -224,6 +225,7 @@ ViewManager.prototype.loadTarget = function(filePath) {
 
                     //log(event, 'on', e.element.id);
                     tool.viewManager.removeAllHighlights();
+                    tool.viewManager.deselectAll();
                     if(selectedElements.length > 0)
                         tool.viewManager.highlightCorrespondenceByTarget(e.element.id);
                 });
@@ -255,10 +257,22 @@ ViewManager.prototype.saveSource = function(filePath) {
 };
 ViewManager.prototype.saveTarget = function(filePath) {};
 
+ViewManager.prototype.deselectAll = function() {
+    var sourceSelectionService = this.sourceView.get('selection');
+    var targetSelectionService = this.targetView.get('selection');
+
+    //deselect via passing null
+    sourceSelectionService.select(null);
+    targetSelectionService.select(null);
+}
+
+//highlight and select all elements in a correspondence
 ViewManager.prototype.highlightCorrespondenceBySource = function (sourceElementId) {
     var correspondence = tool.correspondenceManager.getCorrBySource(sourceElementId);
 
     if(correspondence != null) {
+        console.log("Corr found by Source for elementId " + sourceElementId + ":");
+        console.log(correspondence);
         /*var elementRegistrySource = this.sourceView.get('elementRegistry');
         var elementRegistryTarget = this.targetView.get('elementRegistry');
 
@@ -270,10 +284,11 @@ ViewManager.prototype.highlightCorrespondenceBySource = function (sourceElementI
         var targetCanvas = this.targetView.get('canvas');
         var sourceIds = correspondence.source;
         var targetIds = correspondence.target;
-        // highlight via CSS class
 
+        // highlight via CSS class
         sourceCanvas.addMarker(sourceIds, 'highlight-green');
         targetCanvas.addMarker(targetIds, 'highlight-green');
+
         //select all correspondence elements on canvas
         this.selectElementsInCorr(correspondence);
     } else {
@@ -283,9 +298,11 @@ ViewManager.prototype.highlightCorrespondenceBySource = function (sourceElementI
 
 ViewManager.prototype.highlightCorrespondenceByTarget = function (targetElementId) {
     var correspondence = tool.correspondenceManager.getCorrByTarget(targetElementId);
-    console.log("Corr found by Target:");
-    console.log(correspondence);
+
     if(correspondence != null) {
+        console.log("Corr found by Target for elementId " + targetElementId + ":");
+        console.log(correspondence);
+
         /*var elementRegistrySource = this.sourceView.get('elementRegistry');
          var elementRegistryTarget = this.targetView.get('elementRegistry');
 
