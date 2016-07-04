@@ -25,7 +25,7 @@
                 <button id="btnAddModel" onclick="tool.projectBrowser.addModelMenu()" disabled>Add Model</button>
                 <button id="btnCloneModel" onclick="tool.projectBrowser.cloneModelMenu()" disabled>Clone Model</button>
                 <a id="downloadLink" href="file.doc"><button id="btnDownloadModel" onclick="" disabled>Download Model</button></a>
-                <button id="loadModel" onClick="tool.viewManager.loadModel()" disabled>Load Model</button>
+                <button id="loadModel" onClick="tool.projectBrowser.loadModels()" disabled>Load Model(s)</button>
 
             </p>
 
@@ -33,6 +33,7 @@
         <div id="submenu">Browser Submenu</div>
         <div id="correspondenceMenu">
             <h2>Correspondence Menu</h2><br><br>
+            <!--
             Associated Model: it_model.bpmn<br><br>
             Type: 1-m<br>
             Source(s): <input type="checkbox" name="source" value="Task1">Task1<br>
@@ -44,6 +45,13 @@
                 <input type="button" value="Delete Correspondence">
                 <input type="button" onclick="tester()" value="Console Tester">
             </p>
+            -->
+            <input id="editMode" type="checkbox">Edit Mode<br>
+            <input id="keepSelection" type="checkbox" value="keepSelection" name="keepSelection">Keep selection<br>
+            <input id="keepHighlights" type="checkbox" value="keepHighlights" name="keepHighlights">Keep highlights<br>
+            <button id="removeHighlights" onClick="tool.viewManager.removeAllHighlights()" >Remove highlights</button>
+            <button id="deselectAll" onClick="tool.viewManager.deselectAll()" >Deselect all</button>
+            <button id="createCorrespondenceFromSelection" onClick="tool.viewManager.createCorrespondenceFromSelection()" >Turn selection into correspondence</button>
         </div>
     </div>
 

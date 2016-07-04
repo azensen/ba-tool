@@ -80,6 +80,7 @@ ProjectBrowser.prototype.checkButton = function(selectedID) {
     $('#btnAddModel').attr("disabled","disabled");
     $('#btnCloneModel').attr("disabled","disabled");
     $('#btnDownloadModel').attr("disabled","disabled");
+    $('#loadModel').attr("disabled", "disabled");
 
     //var selectedNode = $(this.treeDiv).jstree(true).get_node(selectedID);
     var selectedNode = this.getCurrentNode();
@@ -107,6 +108,7 @@ ProjectBrowser.prototype.checkButton = function(selectedID) {
             var targetModelPath = tool.projectBrowser.getCurrentNode().data.path;
             tool.correspondenceManager.loadAssociation(targetModelPath);
             tool.correspondenceManager.loadCorrespondences(targetModelPath);
+            $('#loadModel').removeAttr("disabled");
             break;
     }
 
@@ -123,3 +125,7 @@ ProjectBrowser.prototype.btnDownloadFile = function() {
     var onClickRef = windowRef + pathRef + "'";
     $('#btnDownloadModel').attr('onclick', onClickRef)
 }
+
+ProjectBrowser.prototype.loadModels = function() {
+    tool.viewManager.loadModels();
+};

@@ -16,27 +16,32 @@ then load association and correspondence files
 with association data load source and target models into respective modellers
  */
 ViewManager.prototype.loadModels = function() {
+    if(tool.correspondenceManager.association != undefined && tool.correspondenceManager.association != null) {
+        var association = tool.correspondenceManager.association;
+        var sourceModelName = association.sourceModel;
+        $(this.htmlDivSource).text(sourceModelName);
+        var targetModelName = association.targetModel;
+        $(this.htmlDivTarget).text(targetModelName);
 
-    var association = tool.correspondenceManager.association;
-    var sourceModelName = association.sourceModel;
-    $(this.htmlDivSource).text(sourceModelName);
-    var targetModelName = association.targetModel;
-    $(this.htmlDivTarget).text(targetModelName);
+        //create bpmn-js in respective div containers
+        this.sourceView =  new BpmnJS({
+            container: this.htmlDivSource
+        });
 
-    this.sourceView =  new BpmnJS({
-        container: this.htmlDivSource
-    });
+        this.targetView =  new BpmnJS({
+            container: this.htmlDivTarget
+        });
 
-    this.targetView =  new BpmnJS({
-        container: this.htmlDivTarget
-    });
-
-    var sourceFilePath = association.sourceFile;
-    var targetFilePath = association.targetFile;
-    console.log("Loading Source Model via " + sourceFilePath);
-    this.loadSource(sourceFilePath);
-    console.log("Loading Target Model via " + targetFilePath);
-    this.loadTarget(targetFilePath);
+        var sourceFilePath = association.sourceFile;
+        var targetFilePath = association.targetFile;
+        //load models into modelers
+        console.log("Loading Source Model via " + sourceFilePath);
+        this.loadSource(sourceFilePath);
+        console.log("Loading Target Model via " + targetFilePath);
+        this.loadTarget(targetFilePath);
+    } else {
+        alert("Cannot load models. No association file loaded!");
+    }
 
 };
 
@@ -127,10 +132,18 @@ ViewManager.prototype.loadSource = function(filePath) {
                     //extElem0.$children[1].value = 'YXXXXsuperIT';
 
                     //log(event, 'on', e.element.id);
-                    tool.viewManager.removeAllHighlights();
-                    tool.viewManager.deselectAll();
-                    if(selectedElements.length > 0)
-                        tool.viewManager.highlightCorrespondenceBySource(e.element.id);
+
+                    var editMode = $('#editMode').prop('checked');
+                    var keepHighlights = $('#keepHighlights').prop('checked');
+                    var keepSelection = $('#keepSelection').prop('checked');
+
+                    if(!editMode) {
+                        tool.viewManager.removeAllHighlights();
+                        tool.viewManager.deselectAll();
+
+                        if(selectedElements.length > 0)
+                            tool.viewManager.highlightCorrespondenceBySource(e.element.id);
+                    }
                 });
             });
         });
@@ -224,10 +237,17 @@ ViewManager.prototype.loadTarget = function(filePath) {
                     //extElem0.$children[1].value = 'YXXXXsuperIT';
 
                     //log(event, 'on', e.element.id);
-                    tool.viewManager.removeAllHighlights();
-                    tool.viewManager.deselectAll();
-                    if(selectedElements.length > 0)
-                        tool.viewManager.highlightCorrespondenceByTarget(e.element.id);
+                    var editMode = $('#editMode').prop('checked');
+                    var keepHighlights = $('#keepHighlights').prop('checked');
+                    var keepSelection = $('#keepSelection').prop('checked');
+
+                    if(!editMode) {
+                        tool.viewManager.removeAllHighlights();
+                        tool.viewManager.deselectAll();
+
+                        if(selectedElements.length > 0)
+                            tool.viewManager.highlightCorrespondenceByTarget(e.element.id);
+                    }
                 });
             });
         });
@@ -269,7 +289,7 @@ ViewManager.prototype.deselectAll = function() {
 //highlight and select all elements in a correspondence
 ViewManager.prototype.highlightCorrespondenceBySource = function (sourceElementId) {
     var correspondence = tool.correspondenceManager.getCorrBySource(sourceElementId);
-
+    //TODO handle all corrTypes
     if(correspondence != null) {
         console.log("Corr found by Source for elementId " + sourceElementId + ":");
         console.log(correspondence);
@@ -280,14 +300,30 @@ ViewManager.prototype.highlightCorrespondenceBySource = function (sourceElementI
         var overlaysSource = this.targetView.get('overlays');
         */
 
-        var sourceCanvas = this.sourceView.get('canvas');
-        var targetCanvas = this.targetView.get('canvas');
         var sourceIds = correspondence.source;
         var targetIds = correspondence.target;
 
-        // highlight via CSS class
-        sourceCanvas.addMarker(sourceIds, 'highlight-green');
-        targetCanvas.addMarker(targetIds, 'highlight-green');
+        var sourceCanvas = this.sourceView.get('canvas');
+        var targetCanvas = this.targetView.get('canvas');
+
+        if(correspondence.corrType == "oneone") {
+            // highlight via CSS class
+            sourceCanvas.addMarker(sourceIds, 'highlight-green');
+            targetCanvas.addMarker(targetIds, 'highlight-green');
+        } else if (correspondence.corrType == "onemany") {
+            sourceCanvas.addMarker(sourceIds, 'highlight-green');
+            for(var i = 0; i < targetIds.length ; i++) {
+                targetCanvas.addMarker(targetIds[i], 'highlight-green');
+            }
+        } else if (correspondence.corrType == "manyone") {
+            for(var j = 0; j < targetIds; j++) {
+                targetCanvas.addMarker(targetIds[j], 'highlight-green');
+            }
+            sourceCanvas.addMarker(sourceIds, 'highlight-green');
+        } else if (correspondence.corrType == "zeroone") {
+            targetCanvas.addMarker(targetIds, 'highlight-green');
+        }
+        // highlight via canvas prep
 
         //select all correspondence elements on canvas
         this.selectElementsInCorr(correspondence);
@@ -309,14 +345,30 @@ ViewManager.prototype.highlightCorrespondenceByTarget = function (targetElementI
          var overlaysSource = this.sourceView.get('overlays');
          var overlaysSource = this.targetView.get('overlays');
          */
-        //TODO implement other relations, not only 1-1
-        var sourceCanvas = this.sourceView.get('canvas');
-        var targetCanvas = this.targetView.get('canvas');
         var sourceIds = correspondence.source;
         var targetIds = correspondence.target;
-        // highlight via CSS class
-        sourceCanvas.addMarker(sourceIds, 'highlight-green');
-        targetCanvas.addMarker(targetIds, 'highlight-green');
+
+        var sourceCanvas = this.sourceView.get('canvas');
+        var targetCanvas = this.targetView.get('canvas');
+
+        if(correspondence.corrType == "oneone") {
+            // highlight via CSS class
+            sourceCanvas.addMarker(sourceIds, 'highlight-green');
+            targetCanvas.addMarker(targetIds, 'highlight-green');
+        } else if (correspondence.corrType == "onemany") {
+            sourceCanvas.addMarker(sourceIds, 'highlight-green');
+            for(var i = 0; i < targetIds.length ; i++) {
+                targetCanvas.addMarker(targetIds[i], 'highlight-green');
+            }
+        } else if (correspondence.corrType == "manyone") {
+            for(var j = 0; j < targetIds; j++) {
+                targetCanvas.addMarker(targetIds[j], 'highlight-green');
+            }
+        } else if (correspondence.corrType == "zeroone") {
+            targetCanvas.addMarker(targetIds, 'highlight-green');
+        }
+        // highlight via canvas prep
+
         //select all correspondence elements on canvas
         this.selectElementsInCorr(correspondence);
     } else {
@@ -351,12 +403,14 @@ ViewManager.prototype.removeHighlight = function removeHighlight(elementId, canv
     canvas.removeMarker(elementId, 'highlight-green');
 };
 
-ViewManager.prototype.selectElementsInCorr = function (correspondence) {
+ViewManager.prototype.selectElementsInCorr = function (correspondence, add) {
     var sourceSelectionService = this.sourceView.get('selection');
     var targetSelectionService = this.targetView.get('selection');
+    //flag to whether keep selection or not
+    var keepSelection = $('#keepSelection').prop('checked');
     //selection service takes either string or array of strings of IDs as param for selection
-    sourceSelectionService.select(correspondence.source);
-    targetSelectionService.select(correspondence.target);
+    sourceSelectionService.select(correspondence.source, keepSelection);
+    targetSelectionService.select(correspondence.target, keepSelection);
 };
 
 ViewManager.prototype.getSelectedSource = function () {
@@ -367,4 +421,13 @@ ViewManager.prototype.getSelectedSource = function () {
 ViewManager.prototype.getSelectedTarget = function () {
     var selectedElements = this.targetView.get('selection').get();
     return selectedElements;
+};
+
+ViewManager.prototype.createCorrespondenceFromSelection = function () {
+    var selectedSources = this.getSelectedSource();
+    var selectedTarget = this.getSelectedTarget();
+    var newCorrespondenceFromSelections = tool.correspondenceManager.createCorrespondence(selectedSources, selectedTarget);
+    if(newCorrespondenceFromSelections != null && newCorrespondenceFromSelections != undefined) {
+        tool.correspondenceManager.addCorr(newCorrespondenceFromSelections);
+    }
 };
