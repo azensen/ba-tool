@@ -431,3 +431,25 @@ ViewManager.prototype.createCorrespondenceFromSelection = function () {
         tool.correspondenceManager.addCorr(newCorrespondenceFromSelections);
     }
 };
+
+ViewManager.prototype.verticalConsistency = function () {
+    var allShapes = tool.viewManager.sourceView.get('elementRegistry').getAll();
+    var matches = 0;
+    var relevantMatches = 0;
+    var unmatched = [];
+    var bpmnPrefix = "bpmn:";
+
+    for(var i = 0; i < allShapes.length; i++) {
+        if(allShapes[i].type == bpmnPrefix + "Task") {
+            var shapeId = allShapes[i].id;
+            relevantMatches = relevantMatches + 1;
+            if(tool.correspondenceManager.getCorrBySource(shapeId) != null) {
+                matches = matches + 1;
+            } else if (tool.correspondenceManager.getCorrBySource(shapeId) == null) {
+                unmatched.push(shapeId);
+            }
+        }
+    }
+    var ratio = Math.round(parseFloat(matches) / parseFloat(relevantMatches) * 100, 2);
+    console.log("Vertical consistency matches for relevant element types based on source: " + ratio + "%");
+};

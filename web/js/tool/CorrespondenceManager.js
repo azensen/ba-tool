@@ -56,6 +56,11 @@ CorrespondenceManager.prototype.setCorrespondences = function (data) {
     this.correspondenceList = newCorrList;
 };
 
+CorrespondenceManager.prototype.getCorrespondencesAsJSON = function () {
+    var JSONcorrs = JSON.stringify(this.correspondenceList, null, "\t");
+    return JSONcorrs;
+};
+
 CorrespondenceManager.prototype.addCorr = function (newCorr) {
     var existingCorrMatchesBySource = [];
     var existingCorrMatchesByTarget = [];
@@ -109,9 +114,13 @@ CorrespondenceManager.prototype.addCorr = function (newCorr) {
     //remove or transform matching correspondences
     for(var k = 0; k < existingCorrMatchesBySource.length; k++) {
         //TODO transformations first if matching corr != oneone or onemany
-        console.log("Removing source element from correspondence:");
-        console.log(existingCorrMatchesBySource[k]);
-        this.removeSourceElementFromCorrespondence(existingCorrMatchesBySource[k], newCorr.source);
+        if(existingCorrMatchesBySource[k] == null) {
+            continue;
+        } else {
+            console.log("Removing source element from correspondence:");
+            console.log(existingCorrMatchesBySource[k]);
+            this.removeSourceElementFromCorrespondence(existingCorrMatchesBySource[k], newCorr.source);
+        }
     }
     for(var l = 0; l < existingCorrMatchesByTarget.length; l++) {
         if(existingCorrMatchesByTarget[l] == null) {
@@ -396,10 +405,18 @@ CorrespondenceManager.prototype.createCorrespondence = function (selectionSource
 
     //collect IDs of selected elements
     for (var i = 0; i < selectionSource.length; i++) {
-        newSources.push(selectionSource[i].id);
+        if(typeof selectionSource[i] === "string") {
+            newSources.push(selectionSource[i]);
+        } else {
+            newSources.push(selectionSource[i].id);
+        }
     }
     for (var j = 0; j < selectionTarget.length; j++) {
-        newTargets.push(selectionTarget[j].id);
+        if(typeof selectionTarget[j] === 'string') {
+            newTargets.push(selectionTarget[j]);
+        } else {
+            newTargets.push(selectionTarget[j].id);
+        }
     }
     console.log("Source and target selections for new correspondence:");
     console.log(newSources);
