@@ -6,4 +6,7 @@ var tool = new Tool(
     new CorrespondenceManager(),
     new ViewManager("#sourceView", "#targetView"));
 
+$('#submenu').hide();
+$('#correspondenceMenu').hide();
+
 //$("#submenu").load("../html/AddModel.html");

@@ -61,7 +61,63 @@ CorrespondenceManager.prototype.getCorrespondencesAsJSON = function () {
     return JSONcorrs;
 };
 
+CorrespondenceManager.prototype.addCorrespondence = function (newCorrespondence) {
+    var newCorrType = newCorrespondence.corrType;
+    var sourceId = null;
+    var targetId = null;
+    var foundCorr = null;
+
+    if(newCorrType == "oneone") {
+        sourceId = newCorrespondence.source;
+        targetId = newCorrespondence.target;
+        //fetch corr by id, then delete id from found corr
+        foundCorr = this.getCorrBySource(sourceId);
+        if (foundCorr != null) {
+            this.removeSourceElementFromCorrespondence(foundCorr, sourceId);
+        }
+        foundCorr = this.getCorrByTarget(targetId);
+        if (foundCorr != null) {
+            this.removeTargetElementFromCorrespondence(foundCorr, targetId);
+        }
+
+    } else if (newCorrType == "onezero") {
+        sourceId = newCorrespondence.source;
+        foundCorr = this.getCorrBySource(sourceId);
+        if (foundCorr != null) {
+            this.removeSourceElementFromCorrespondence(sourceId);
+        }
+    } else if (newCorrType == "manyone") {
+        sourceId = newCorrespondence.source; //should be array with id strings
+        targetId = newCorrespondence.target; //should be single id string
+        for(var i = 0; i < sourceId.length; i++) {
+            foundCorr = this.getCorrBySource(sourceId[i]);
+            if (foundCorr != null) {
+                this.removeSourceElementFromCorrespondence(foundCorr, sourceId[i]);
+            }
+        }
+        foundCorr = this.getCorrByTarget(targetId);
+        if (foundCorr != null) {
+            this.removeTargetElementFromCorrespondence(foundCorr, targetId);
+        }
+    } else if (newCorrType == "onemany") {
+        sourceId = newCorrespondence.source; //should be single id string
+        targetId = newCorrespondence.target; //should be array with id strings
+        foundCorr = this.getCorrBySource(sourceId);
+        if (foundCorr != null) {
+            this.removeSourceElementFromCorrespondence(foundCorr, sourceId);
+        }
+        for(var j = 0; j < targetId.length; j++) {
+            foundCorr = this.getCorrByTarget(targetId[j]);
+            if (foundCorr != null) {
+                this.removeTargetElementFromCorrespondence(foundCorr, targetId[j]);
+            }
+        }
+    }
+    this.correspondenceList.push(newCorrespondence);
+};
+
 CorrespondenceManager.prototype.addCorr = function (newCorr) {
+    // will contain existing corrs by matching source / target
     var existingCorrMatchesBySource = [];
     var existingCorrMatchesByTarget = [];
 
@@ -119,7 +175,14 @@ CorrespondenceManager.prototype.addCorr = function (newCorr) {
         } else {
             console.log("Removing source element from correspondence:");
             console.log(existingCorrMatchesBySource[k]);
-            this.removeSourceElementFromCorrespondence(existingCorrMatchesBySource[k], newCorr.source);
+            if(newCorr.corrType == 'oneone' || newCorr.corrType == 'onezero') {
+                this.removeSourceElementFromCorrespondence(existingCorrMatchesBySource[k], newCorr.source);
+            } else if ( newCorr.corrType == 'manyone') {
+                for(var m = 0; m < newCorr.source; m++) {
+                    this.removeSourceElementFromCorrespondence(existingCorrMatchesBySource[k], newCorr.source[m]);
+                }
+            }
+
         }
     }
     for(var l = 0; l < existingCorrMatchesByTarget.length; l++) {
@@ -130,7 +193,14 @@ CorrespondenceManager.prototype.addCorr = function (newCorr) {
             console.log("Removing target element from correspondence:");
             console.log(existingCorrMatchesByTarget[l]);
             console.log(Object.keys(existingCorrMatchesByTarget[l]));
-            this.removeTargetElementFromCorrespondence(existingCorrMatchesByTarget[l], newCorr.target);
+            if(newCorr.corrType == 'oneone' || newCorr.corrType == 'zeroone') {
+                this.removeTargetElementFromCorrespondence(existingCorrMatchesByTarget[l], newCorr.target);
+            } else if (newCorr.corrType == 'manyone') {
+                for(var n = 0; n < newCorr.target; n++) {
+                    this.removeTargetElementFromCorrespondence(existingCorrMatchesByTarget[l], newCorr.target[n]);
+                }
+            }
+
         }
     }
     this.correspondenceList.push(newCorr);
@@ -221,19 +291,19 @@ CorrespondenceManager.prototype.removeCorrespondence = function (corr) {
     }
 };
 
-CorrespondenceManager.prototype.removeElementFromCorr = function (sourceId, targetId) {
+//discarded due to possible duplicate unique ID in respective models
+/*CorrespondenceManager.prototype.removeElementFromCorr = function (sourceId, targetId) {
     var corrToEdit = this.getCorr(elementID);
     var corrType = corrToEdit.corrType;
 
     if(corrType == "oneone" || corrType == "onezero" || corrType == "zeroone") {
         this.removeCorrespondence(corrToEdit);
-        //TODO Transformation of existing corrs with then removed element
     } else if (corrType == "manyone") {
 
     } else if (corrType == "onemany") {
         
     }
-};
+};*/
 
 CorrespondenceManager.prototype.getCorr = function (elementID) {
     var corrList = this.correspondenceList;
@@ -285,27 +355,29 @@ CorrespondenceManager.prototype.getCorrBySource = function (elementID) {
     var corr = null;
     //iterate through list to find a matching correspondence for the elementID
     for (var i = 0; i < corrList.length; i++) {
-        corr = corrList[i];
-        var corrType = corr.corrType;
-        //var n = str1.localeCompare(str2);
-        if (corrType == "oneone") {
-            if (corr.source == elementID) {
-                return corr;
-            }
-        } else if (corrType == "onezero") {
-            if (corr.source == elementID) {
-                return corr;
-            }
-        } else if (corrType == "zeroone") {
-            return null;
-        } else if (corrType == "onemany") {
-            if (corr.source == elementID) {
-                return corr;
-            }
-        } else if (corrType == "manyone") {
-            for (var k = 0; k < corr.source.length; k++) {
-                if (corr.source[k] == elementID) {
+        if(corrList[i] != null) {
+            corr = corrList[i];
+            var corrType = corr.corrType;
+            //var n = str1.localeCompare(str2);
+            if (corrType == "oneone") {
+                if (corr.source == elementID) {
                     return corr;
+                }
+            } else if (corrType == "onezero") {
+                if (corr.source == elementID) {
+                    return corr;
+                }
+            } else if (corrType == "zeroone") {
+                return null;
+            } else if (corrType == "onemany") {
+                if (corr.source == elementID) {
+                    return corr;
+                }
+            } else if (corrType == "manyone") {
+                for (var k = 0; k < corr.source.length; k++) {
+                    if (corr.source[k] == elementID) {
+                        return corr;
+                    }
                 }
             }
         }
@@ -319,28 +391,30 @@ CorrespondenceManager.prototype.getCorrByTarget = function (elementID) {
     var corr = null;
     //iterate through list to find matching correspondence for elementID
     for (var i = 0; i < corrList.length; i++) {
-        corr = corrList[i];
-        var corrType = corr.corrType;
-        //var n = str1.localeCompare(str2);
-        if (corrType == "oneone") {
-            if (corr.target == elementID) {
-                return corr;
-            }
-        } else if (corrType == "onezero") {
-
-        } else if (corrType == "zeroone") {
-            if (corr.target == elementID) {
-                return corr;
-            }
-        } else if (corrType == "onemany") {
-            for (var j = 0; j < corr.target.length; j++) {
-                if (corr.target[j] == elementID) {
+        if(corrList[i] != null) {
+            corr = corrList[i];
+            var corrType = corr.corrType;
+            //var n = str1.localeCompare(str2);
+            if (corrType == "oneone") {
+                if (corr.target == elementID) {
                     return corr;
                 }
-            }
-        } else if (corrType == "manyone") {
-            if (corr.target == elementID) {
-                return corr;
+            } else if (corrType == "onezero") {
+
+            } else if (corrType == "zeroone") {
+                if (corr.target == elementID) {
+                    return corr;
+                }
+            } else if (corrType == "onemany") {
+                for (var j = 0; j < corr.target.length; j++) {
+                    if (corr.target[j] == elementID) {
+                        return corr;
+                    }
+                }
+            } else if (corrType == "manyone") {
+                if (corr.target == elementID) {
+                    return corr;
+                }
             }
         }
     }

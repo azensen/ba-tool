@@ -284,13 +284,88 @@ ViewManager.prototype.deselectAll = function() {
     //deselect via passing null
     sourceSelectionService.select(null);
     targetSelectionService.select(null);
-}
+};
+
+ViewManager.prototype.elementExists = function(view, elementId) {
+    var elementRegistry = view.get('elementRegistry');
+    var existingElement = elementRegistry.get(elementId);
+    if(existingElement != undefined)
+        return true;
+    else
+        return false;
+};
+
+ViewManager.prototype.makeCorrespondencesConsistentWithViews = function (sourceView, targetView, correspondenceList) {
+    var sourceElementRegistry = sourceView.get('elementRegistry');
+    var targetElementRegistry = targetView.get('elementRegistry');
+
+    for(var i = 0; i < correspondenceList.length; i++) {
+        //in the process of removing an element a corr might get spliced to null, therefore a check
+        if(correspondenceList[i] != null) {
+
+            var corr = correspondenceList[i];
+            var corrSource = corr.source;
+            var corrTarget = corr.target;
+
+            var existingSource = undefined;
+            var existingTarget = undefined;
+
+            //cycle through sources and remove elements which do not exist in the source view (model) from the correspondence
+            //if many- type
+            if(corrSource instanceof Array) {
+                for(var j = 0; j < corrSource.length; j++) {
+                    var elementId = corrSource[j];
+                    existingSource = sourceElementRegistry.get(elementId);
+                    if(existingSource == undefined) {
+                        tool.correspondenceManager.removeSourceElementFromCorrespondence(corr, elementId);
+                        console.log("Could not find element in source with id " + elementId + ", removed element from correspondence.")
+                    }
+                }
+            //if one- type
+            } else if (typeof corrSource === "string") {
+                var elementId = corrSource;
+                existingSource = sourceElementRegistry.get(elementId);
+                if(existingSource == undefined) {
+                    tool.correspondenceManager.removeSourceElementFromCorrespondence(corr, elementId);
+                    console.log("Could not find element in source with id " + elementId + ", removed element from correspondence.");
+                }
+            }
+
+            //cycle through targets and remove elements which do not exist in the target view (model) from the correspondence
+            //if many- type
+            if(corrTarget instanceof Array) {
+                for(var k = 0; k < corrTarget.length; k++) {
+                    var elementId = corrTarget[k];
+                    existingTarget = targetElementRegistry.get(elementId);
+                    if(existingTarget == undefined) {
+                        tool.correspondenceManager.removeTargetElementFromCorrespondence(corr, elementId);
+                        console.log("Could not find element in target with id " + elementId + ", removed element from correspondence.")
+                    }
+                }
+                //if one- type
+            } else if (typeof corrTarget === "string") {
+                var elementId = corrTarget;
+                existingTarget = targetElementRegistry.get(elementId);
+                if(existingTarget == undefined) {
+                    tool.correspondenceManager.removeTargetElementFromCorrespondence(corr, elementId);
+                    console.log("Could not find element in target with id " + elementId + ", removed element from correspondence.");
+                }
+            }
+        }
+    }
+};
 
 //highlight and select all elements in a correspondence
 ViewManager.prototype.highlightCorrespondenceBySource = function (sourceElementId) {
+    //find existing correspondence via sourceElementId
     var correspondence = tool.correspondenceManager.getCorrBySource(sourceElementId);
+    //get source view element registry and get element via sourceElementId
+    //existingElement will be undefined if no such element exists
+    var elementRegistry = this.sourceView.get('elementRegistry');
+    var existingElement = elementRegistry.get(sourceElementId);
     //TODO handle all corrTypes
-    if(correspondence != null) {
+
+    if(correspondence != null && existingElement != undefined) {
         console.log("Corr found by Source for elementId " + sourceElementId + ":");
         console.log(correspondence);
         /*var elementRegistrySource = this.sourceView.get('elementRegistry');
@@ -327,15 +402,22 @@ ViewManager.prototype.highlightCorrespondenceBySource = function (sourceElementI
 
         //select all correspondence elements on canvas
         this.selectElementsInCorr(correspondence);
-    } else {
+    } else if (correspondence == null) {
         console.log("No correspondence found for element id " + sourceElementId);
+    } else if (correspondence != null && existingElement == undefined) {
+        console.log("Correspondence found for element id " + sourceElementId + " but element does not exist in source model.");
     }
 };
 
 ViewManager.prototype.highlightCorrespondenceByTarget = function (targetElementId) {
     var correspondence = tool.correspondenceManager.getCorrByTarget(targetElementId);
 
-    if(correspondence != null) {
+    //get source view element registry and get element via targetElementId
+    //existingElement will be undefined if no such element exists
+    var elementRegistry = this.targetView.get('elementRegistry');
+    var existingElement = elementRegistry.get(targetElementId);
+
+    if(correspondence != null && existingElement != undefined) {
         console.log("Corr found by Target for elementId " + targetElementId + ":");
         console.log(correspondence);
 
@@ -371,8 +453,10 @@ ViewManager.prototype.highlightCorrespondenceByTarget = function (targetElementI
 
         //select all correspondence elements on canvas
         this.selectElementsInCorr(correspondence);
-    } else {
+    } else if (correspondence == null) {
         console.log("No correspondence found for element id " + targetElementId);
+    } else if (correspondence != null && existingElement == undefined) {
+        console.log("Correspondence found for element id " + targetElementId + " but element does not exist in target model.");
     }
 };
 
@@ -415,20 +499,39 @@ ViewManager.prototype.selectElementsInCorr = function (correspondence, add) {
 
 ViewManager.prototype.getSelectedSource = function () {
     var selectedElements = this.sourceView.get('selection').get();
-    return selectedElements;
+    var transformedElements = this.transformSelectionsIntoId(selectedElements);
+    return transformedElements;
 };
 
 ViewManager.prototype.getSelectedTarget = function () {
     var selectedElements = this.targetView.get('selection').get();
-    return selectedElements;
+    var transformedElements = this.transformSelectionsIntoId(selectedElements);
+    return transformedElements;
+};
+
+//transform input from getSelected...(), could be ["string", Shape, ..], turn Shape objects into id strings
+ViewManager.prototype.transformSelectionsIntoId = function (selection) {
+    var selectionIds = [];
+    for(var i = 0; i < selection.length; i++) {
+        if (typeof selection[i] === "string") {
+            selectionIds.push(selection[i]);
+        } else {
+            selectionIds.push(selection[i].id);
+        }
+    }
+    return selectionIds;
 };
 
 ViewManager.prototype.createCorrespondenceFromSelection = function () {
-    var selectedSources = this.getSelectedSource();
+    var selectedSource = this.getSelectedSource();
     var selectedTarget = this.getSelectedTarget();
-    var newCorrespondenceFromSelections = tool.correspondenceManager.createCorrespondence(selectedSources, selectedTarget);
+    //TODO check for allowed types
+
+    //create the correspondence
+    var newCorrespondenceFromSelections = tool.correspondenceManager.createCorrespondence(selectedSource, selectedTarget);
+    //add the newly created correspondence
     if(newCorrespondenceFromSelections != null && newCorrespondenceFromSelections != undefined) {
-        tool.correspondenceManager.addCorr(newCorrespondenceFromSelections);
+        tool.correspondenceManager.addCorrespondence(newCorrespondenceFromSelections);
     }
 };
 
@@ -438,7 +541,7 @@ ViewManager.prototype.verticalConsistency = function () {
     var relevantMatches = 0;
     var unmatched = [];
     var bpmnPrefix = "bpmn:";
-
+    //TODO cover all task types / options as param an then iterate through relevant types
     for(var i = 0; i < allShapes.length; i++) {
         if(allShapes[i].type == bpmnPrefix + "Task") {
             var shapeId = allShapes[i].id;

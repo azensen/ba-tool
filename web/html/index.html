@@ -27,6 +27,7 @@
                 <a id="downloadLink" href="file.doc"><button id="btnDownloadModel" onclick="" disabled>Download Model</button></a>
                 <button id="loadModel" onClick="tool.projectBrowser.loadModels()" disabled>Load Model(s)</button>
 
+
             </p>
 
         </div>
@@ -53,6 +54,7 @@
             <button id="deselectAll" onClick="tool.viewManager.deselectAll()" >Deselect all</button>
             <button id="createCorrespondenceFromSelection" onClick="tool.viewManager.createCorrespondenceFromSelection()" >Turn selection into correspondence</button>
             <button id="verticalConsistencyCheck" onClick="tool.viewManager.verticalConsistency()" >Vertical Consistency Check</button>
+            <button id="tester" onClick="tester()">Tester</button>
         </div>
     </div>
 
@@ -65,22 +67,10 @@
 <script>
     //Quick tester
     function tester() {
-        display();
-
-        tool.viewManager.loadModels();
-
-        function display() {
-            var association = tool.correspondenceManager.association;
-            var correspondences = tool.correspondenceManager.correspondenceList;
-            console.log("");console.log("");
-            console.log("Association and Correspondences Objects: ");
-            console.log(Object.keys(association));
-            console.log(Object.keys(correspondences));
-        }
-
-/*        Promise.all([request1, request2]).then(function(results) {
-
-        });*/
+        var sourceView = tool.viewManager.sourceView;
+        var targetView = tool.viewManager.targetView;
+        var corrList = tool.correspondenceManager.correspondenceList;
+        tool.viewManager.makeCorrespondencesConsistentWithViews(sourceView, targetView, corrList);
     }
 </script>
 

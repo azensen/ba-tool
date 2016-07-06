@@ -2,7 +2,7 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:signavio="http://www.signavio.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exporter="Signavio Process Editor, http://www.signavio.com" exporterVersion="10.1.0" expressionLanguage="http://www.w3.org/TR/XPath" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" typeLanguage="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/2.0/20100501/BPMN20.xsd">
    <process id="Process_1" isClosed="false" isExecutable="false" processType="None">
       <extensionElements>
-         <signavio:signavioDiagramMetaData metaKey="revisionid" metaValue="d6761f5073fe4be599c30790553facae"/>
+         <signavio:signavioDiagramMetaData metaKey="revisionid" metaValue="2c0a4094914e4be9bfb00d7eb813acca"/>
       </extensionElements>
       <startEvent id="StartEvent_1" isInterrupting="true" name="">
          <extensionElements>
@@ -15,14 +15,21 @@
             <signavio:signavioMetaData metaKey="bgcolor" metaValue="#ffffcc"/>
          </extensionElements>
          <incoming>SequenceFlow_0k408kh</incoming>
-         <outgoing>sid-6A75B99A-7E38-4C68-B0FB-5282522C8F5E</outgoing>
+         <outgoing>SequenceFlow_05vuy21</outgoing>
          <script/>
       </scriptTask>
+      <sendTask completionQuantity="1" id="Task_04j45ya" implementation="##WebService" isForCompensation="false" name="Task C" startQuantity="1">
+         <extensionElements>
+            <signavio:signavioMetaData metaKey="bgcolor" metaValue="#ffffcc"/>
+         </extensionElements>
+         <incoming>SequenceFlow_05vuy21</incoming>
+         <outgoing>SequenceFlow_1h7v70q</outgoing>
+      </sendTask>
       <endEvent id="EndEvent_0l371s4" name="">
          <extensionElements>
             <signavio:signavioMetaData metaKey="bgcolor" metaValue="#ffffff"/>
          </extensionElements>
-         <incoming>sid-6A75B99A-7E38-4C68-B0FB-5282522C8F5E</incoming>
+         <incoming>SequenceFlow_1h7v70q</incoming>
       </endEvent>
       <serviceTask completionQuantity="1" id="Task_1sb812p" implementation="##WebService" isForCompensation="false" name="Task A" startQuantity="1">
          <extensionElements>
@@ -33,17 +40,24 @@
       </serviceTask>
       <sequenceFlow id="SequenceFlow_1mkw12l" isImmediate="true" name="" sourceRef="StartEvent_1" targetRef="Task_1sb812p"/>
       <sequenceFlow id="SequenceFlow_0k408kh" isImmediate="true" name="" sourceRef="Task_1sb812p" targetRef="Task_14h9l62"/>
-      <sequenceFlow id="sid-6A75B99A-7E38-4C68-B0FB-5282522C8F5E" isImmediate="true" name="" sourceRef="Task_14h9l62" targetRef="EndEvent_0l371s4"/>
+      <sequenceFlow id="SequenceFlow_05vuy21" isImmediate="true" name="" sourceRef="Task_14h9l62" targetRef="Task_04j45ya"/>
+      <sequenceFlow id="SequenceFlow_1h7v70q" isImmediate="true" name="" sourceRef="Task_04j45ya" targetRef="EndEvent_0l371s4"/>
    </process>
-   <bpmndi:BPMNDiagram id="sid-d4365848-bae6-4c27-b0c1-70d730e33060">
-      <bpmndi:BPMNPlane bpmnElement="Process_1" id="sid-36ec848d-313e-4d59-a8b0-5daa96ff6694">
+   <bpmndi:BPMNDiagram id="sid-10f905db-1587-416a-b803-b2630b794a11">
+      <bpmndi:BPMNPlane bpmnElement="Process_1" id="sid-be4532a5-7d15-4f9a-a379-5d9f67e1ea5b">
          <bpmndi:BPMNShape bpmnElement="StartEvent_1" id="StartEvent_1_gui">
             <omgdc:Bounds height="30.0" width="30.0" x="176.0" y="105.0"/>
          </bpmndi:BPMNShape>
          <bpmndi:BPMNShape bpmnElement="Task_14h9l62" id="Task_14h9l62_gui">
             <omgdc:Bounds height="80.0" width="100.0" x="497.0" y="80.0"/>
-            <bpmndi:BPMNLabel labelStyle="sid-750301da-31ff-44e5-b8a9-eca0be824179">
+            <bpmndi:BPMNLabel labelStyle="sid-f0517fb4-c60d-4ede-a83e-435f3818c04d">
                <omgdc:Bounds height="12.0" width="37.02857208251953" x="528.4857139587402" y="112.0"/>
+            </bpmndi:BPMNLabel>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Task_04j45ya" id="Task_04j45ya_gui">
+            <omgdc:Bounds height="80.0" width="100.0" x="683.0" y="80.0"/>
+            <bpmndi:BPMNLabel labelStyle="sid-f0517fb4-c60d-4ede-a83e-435f3818c04d">
+               <omgdc:Bounds height="12.0" width="37.02857208251953" x="714.4857139587402" y="112.0"/>
             </bpmndi:BPMNLabel>
          </bpmndi:BPMNShape>
          <bpmndi:BPMNShape bpmnElement="EndEvent_0l371s4" id="EndEvent_0l371s4_gui">
@@ -51,7 +65,7 @@
          </bpmndi:BPMNShape>
          <bpmndi:BPMNShape bpmnElement="Task_1sb812p" id="Task_1sb812p_gui">
             <omgdc:Bounds height="80.0" width="100.0" x="305.0" y="80.0"/>
-            <bpmndi:BPMNLabel labelStyle="sid-750301da-31ff-44e5-b8a9-eca0be824179">
+            <bpmndi:BPMNLabel labelStyle="sid-f0517fb4-c60d-4ede-a83e-435f3818c04d">
                <omgdc:Bounds height="12.0" width="37.02857208251953" x="336.48571395874023" y="112.0"/>
             </bpmndi:BPMNLabel>
          </bpmndi:BPMNShape>
@@ -63,14 +77,16 @@
             <omgdi:waypoint x="405.0" y="120.0"/>
             <omgdi:waypoint x="497.0" y="120.0"/>
          </bpmndi:BPMNEdge>
-         <bpmndi:BPMNEdge bpmnElement="sid-6A75B99A-7E38-4C68-B0FB-5282522C8F5E" id="sid-6A75B99A-7E38-4C68-B0FB-5282522C8F5E_gui">
+         <bpmndi:BPMNEdge bpmnElement="SequenceFlow_05vuy21" id="SequenceFlow_05vuy21_gui">
             <omgdi:waypoint x="597.0" y="120.0"/>
-            <omgdi:waypoint x="729.5" y="120.0"/>
-            <omgdi:waypoint x="729.5" y="119.0"/>
-            <omgdi:waypoint x="862.0" y="119.0"/>
+            <omgdi:waypoint x="683.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SequenceFlow_1h7v70q" id="SequenceFlow_1h7v70q_gui">
+            <omgdi:waypoint x="783.0" y="120.0"/>
+            <omgdi:waypoint x="862.0" y="119.15053763440861"/>
          </bpmndi:BPMNEdge>
       </bpmndi:BPMNPlane>
-      <bpmndi:BPMNLabelStyle id="sid-750301da-31ff-44e5-b8a9-eca0be824179">
+      <bpmndi:BPMNLabelStyle id="sid-f0517fb4-c60d-4ede-a83e-435f3818c04d">
          <omgdc:Font isBold="false" isItalic="false" isStrikeThrough="false" isUnderline="false" name="Arial" size="12.0"/>
       </bpmndi:BPMNLabelStyle>
    </bpmndi:BPMNDiagram>

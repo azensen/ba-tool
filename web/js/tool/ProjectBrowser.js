@@ -48,18 +48,21 @@ ProjectBrowser.prototype.clearSubmenu = function () {
 //add newProject submenu to div id=submenu
 ProjectBrowser.prototype.newProjectMenu = function() {
     this.clearSubmenu();
+    $('#submenu').show();
     $(this.submenuDiv).load("../html/newProjectAjax.html");
 }
 
 //add newProcess submenu to div id=submenu
 ProjectBrowser.prototype.addProcessMenu = function () {
     this.clearSubmenu();
+    $('#submenu').show();
     $(this.submenuDiv).load("../html/addProcessAjax.html");
 }
 
 //add addModel submenu to div id=submenu
 ProjectBrowser.prototype.addModelMenu = function () {
     this.clearSubmenu();
+    $('#submenu').show();
     var nodeType = this.getCurrentNode().data.nodetype;
     if(nodeType == 'process') {
         $(this.submenuDiv).load("../html/addModelFromProcess.html");
@@ -70,12 +73,15 @@ ProjectBrowser.prototype.addModelMenu = function () {
 //add newClone submenu to div id=submenu
 ProjectBrowser.prototype.cloneModelMenu = function () {
     this.clearSubmenu();
+    $('#submenu').show();
     $(this.submenuDiv).load("../html/cloneModel.html");
 }
 
 //enable and disable menu buttons according to node selection in tree
 ProjectBrowser.prototype.checkButton = function(selectedID) {
     //$('#btnNewProject').attr("disabled","disabled");
+    $('#submenu').hide();
+    $('#correspondenceMenu').hide();
     $('#btnAddProcess').attr("disabled","disabled");
     $('#btnAddModel').attr("disabled","disabled");
     $('#btnCloneModel').attr("disabled","disabled");
@@ -102,7 +108,8 @@ ProjectBrowser.prototype.checkButton = function(selectedID) {
             break;
         case "bpmn":
             //btnDownloadFile();
-            $('#downloadLink').attr("href", this.getCurrentNode().data.path + this.getCurrentNode().text);
+            $('#downloadLink').attr("href", this.getCurrentNode().data.path);
+            this.btnDownloadFile();
             $('#btnDownloadModel').removeAttr("disabled");
             $('#btnCloneModel').removeAttr("disabled");
             var targetModelPath = tool.projectBrowser.getCurrentNode().data.path;
@@ -119,7 +126,7 @@ ProjectBrowser.prototype.checkButton = function(selectedID) {
 ProjectBrowser.prototype.btnDownloadFile = function() {
     var windowRef = "window.location.href='";
 
-    var pathRef = this.getCurrentNode().data.path + this.getCurrentNode().text;
+    var pathRef = this.getCurrentNode().data.path;
     //$('#btnDownloadForm').attr("action", pathRef);
 
     var onClickRef = windowRef + pathRef + "'";
@@ -128,4 +135,5 @@ ProjectBrowser.prototype.btnDownloadFile = function() {
 
 ProjectBrowser.prototype.loadModels = function() {
     tool.viewManager.loadModels();
+    $('#correspondenceMenu').show();
 };

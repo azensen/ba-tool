@@ -7,7 +7,7 @@
     padding: 0;
     border:1px solid silver;
     width: 29%;
-    height: 800px;
+    height: 99%;
     float:left;
 }
 
@@ -28,6 +28,7 @@
 
 #views {
     width: 69%;
+    height : 99%;
     padding: 0;
     float: right;
 }
