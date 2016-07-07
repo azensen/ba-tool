@@ -391,12 +391,14 @@ ViewManager.prototype.highlightCorrespondenceBySource = function (sourceElementI
                 targetCanvas.addMarker(targetIds[i], 'highlight-green');
             }
         } else if (correspondence.corrType == "manyone") {
-            for(var j = 0; j < targetIds; j++) {
-                targetCanvas.addMarker(targetIds[j], 'highlight-green');
+            for(var j = 0; j < sourceIds.length; j++) {
+               sourceCanvas.addMarker(sourceIds[j], 'highlight-green');
             }
-            sourceCanvas.addMarker(sourceIds, 'highlight-green');
-        } else if (correspondence.corrType == "zeroone") {
             targetCanvas.addMarker(targetIds, 'highlight-green');
+        /*} else if (correspondence.corrType == "zeroone") {
+            targetCanvas.addMarker(targetIds, 'highlight-green');*/
+        } else if (correspondence.corrType == "onezero") {
+            sourceCanvas.addMarker(sourceIds, 'highlight-blue');
         }
         // highlight via canvas prep
 
@@ -443,11 +445,12 @@ ViewManager.prototype.highlightCorrespondenceByTarget = function (targetElementI
                 targetCanvas.addMarker(targetIds[i], 'highlight-green');
             }
         } else if (correspondence.corrType == "manyone") {
-            for(var j = 0; j < targetIds; j++) {
-                targetCanvas.addMarker(targetIds[j], 'highlight-green');
+            for(var j = 0; j < sourceIds.length; j++) {
+                sourceCanvas.addMarker(sourceIds[j], 'highlight-green');
             }
-        } else if (correspondence.corrType == "zeroone") {
             targetCanvas.addMarker(targetIds, 'highlight-green');
+        } else if (correspondence.corrType == "zeroone") {
+            targetCanvas.addMarker(targetIds, 'highlight-blue');
         }
         // highlight via canvas prep
 

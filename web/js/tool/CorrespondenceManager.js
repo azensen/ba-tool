@@ -86,6 +86,12 @@ CorrespondenceManager.prototype.addCorrespondence = function (newCorrespondence)
         if (foundCorr != null) {
             this.removeSourceElementFromCorrespondence(sourceId);
         }
+    } else if (newCorrType == "zeroone") {
+        targetId = newCorrespondence.target;
+        foundCorr = this.getCorrByTarget(targetId);
+        if (foundCorr != null) {
+            this.removeTargetElementFromCorrespondence(targetId);
+        }
     } else if (newCorrType == "manyone") {
         sourceId = newCorrespondence.source; //should be array with id strings
         targetId = newCorrespondence.target; //should be single id string
@@ -368,7 +374,7 @@ CorrespondenceManager.prototype.getCorrBySource = function (elementID) {
                     return corr;
                 }
             } else if (corrType == "zeroone") {
-                return null;
+                //return null;
             } else if (corrType == "onemany") {
                 if (corr.source == elementID) {
                     return corr;
@@ -477,7 +483,7 @@ CorrespondenceManager.prototype.createCorrespondence = function (selectionSource
     var newSources = [];
     var newTargets = [];
 
-    //collect IDs of selected elements
+    //collect IDs of selected elements, [i].id for Shape elements etc
     for (var i = 0; i < selectionSource.length; i++) {
         if(typeof selectionSource[i] === "string") {
             newSources.push(selectionSource[i]);
@@ -508,11 +514,11 @@ CorrespondenceManager.prototype.createCorrespondence = function (selectionSource
     } else if (newSources.length > 1 && newTargets.length == 1) {
         var newCorr = new Correspondence("manyone", newSources, newTargets[0]);
         return newCorr;
-    } else if (newSources.length = 0 && newTargets.length == 1) {
+    } else if (newSources.length == 0 && newTargets.length == 1) {
         var newCorr = new Correspondence("zeroone", null, newTargets[0]);
         return newCorr;
     } else if (newSources.length == 1 && newTargets.length == 0) {
-        var newCorr = new Correspondence("onezero", newSources, null);
+        var newCorr = new Correspondence("onezero", newSources[0], null);
         return newCorr;
     } else {
         return null;

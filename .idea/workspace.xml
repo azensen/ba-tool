@@ -3,12 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b3956d20-17ef-46be-aeff-abc03fd07258" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projects/AJAXProject/IT-Execution/SimpleTasksProcess/it-execution_simpleTasks.bpmn" afterPath="$PROJECT_DIR$/projects/AJAXProject/IT-Execution/SimpleTasksProcess/it-execution_simpleTasks.bpmn" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/css/index.css" afterPath="$PROJECT_DIR$/web/css/index.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/html/index.html" afterPath="$PROJECT_DIR$/web/html/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/index.js" afterPath="$PROJECT_DIR$/web/js/index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/tool/CorrespondenceManager.js" afterPath="$PROJECT_DIR$/web/js/tool/CorrespondenceManager.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/tool/ProjectBrowser.js" afterPath="$PROJECT_DIR$/web/js/tool/ProjectBrowser.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/tool/ViewManager.js" afterPath="$PROJECT_DIR$/web/js/tool/ViewManager.js" />
     </list>
     <ignored path="ba-tool.iws" />
@@ -34,18 +29,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/html/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-225">
-              <caret line="53" column="36" selection-start-line="53" selection-start-column="36" selection-end-line="53" selection-end-column="36" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="bpmn-modeler.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/js/bpmn-js/bpmn-modeler.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="177">
-              <caret line="50333" column="21" selection-start-line="50333" selection-start-column="21" selection-end-line="50333" selection-end-column="21" />
+            <state relative-caret-position="17">
+              <caret line="55" column="0" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -74,21 +59,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ViewManager.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ViewManager.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web/js/tool/ViewManager.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2601">
-              <caret line="376" column="0" selection-start-line="376" selection-start-column="0" selection-end-line="376" selection-end-column="0" />
+            <state relative-caret-position="176">
+              <caret line="358" column="22" selection-start-line="358" selection-start-column="22" selection-end-line="358" selection-end-column="22" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CorrespondenceManager.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="CorrespondenceManager.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/js/tool/CorrespondenceManager.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-7463">
-              <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
+            <state relative-caret-position="176">
+              <caret line="392" column="0" selection-start-line="392" selection-start-column="0" selection-end-line="392" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -162,8 +147,8 @@
         <option value="$PROJECT_DIR$/web/js/tool/ProjectBrowser.js" />
         <option value="$PROJECT_DIR$/web/js/index.js" />
         <option value="$PROJECT_DIR$/web/css/index.css" />
-        <option value="$PROJECT_DIR$/web/js/tool/CorrespondenceManager.js" />
         <option value="$PROJECT_DIR$/web/js/tool/ViewManager.js" />
+        <option value="$PROJECT_DIR$/web/js/tool/CorrespondenceManager.js" />
       </list>
     </option>
   </component>
@@ -318,11 +303,12 @@
       <workItem from="1467715596021" duration="9574000" />
       <workItem from="1467801612386" duration="12182000" />
       <workItem from="1467817760745" duration="3088000" />
+      <workItem from="1467877002505" duration="5450000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="154595000" />
+    <option name="totallyTimeSpent" value="160045000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -339,19 +325,19 @@
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21175584" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32864675" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32879046" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32814237" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.38153505" sideWeight="0.5018431" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17430227" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17430227" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38153505" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38153505" sideWeight="0.49815693" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32814237" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
@@ -370,27 +356,37 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
+        <line-breakpoint type="javascript">
+          <url>file://$PROJECT_DIR$/web/js/tool/ViewManager.js</url>
+          <line>528</line>
+          <properties />
+          <option name="timeStamp" value="68" />
+        </line-breakpoint>
+        <line-breakpoint type="javascript">
+          <url>file://$PROJECT_DIR$/web/js/tool/CorrespondenceManager.js</url>
+          <line>482</line>
+          <properties />
+          <option name="timeStamp" value="69" />
+        </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/web/js/tool/ViewManager.js</url>
-          <line>144</line>
+          <line>360</line>
           <properties />
-          <option name="timeStamp" value="65" />
+          <option name="timeStamp" value="70" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="66" />
+      <option name="time" value="71" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="JavascriptDebugType">
+        <watch expression="corrList" />
         <watch expression="corr" />
-        <watch expression="corrSource" />
-        <watch expression="corrTarget" />
-        <watch expression="existingSource" />
-        <watch expression="existingTarget" />
-        <watch expression="elementId" />
-        <watch expression="correspondenceList" />
+        <watch expression="corrType" />
+        <watch expression="corr.source" />
+        <watch expression="elementID" />
       </configuration>
     </watches-manager>
   </component>
@@ -586,7 +582,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
           <caret line="87" column="35" selection-start-line="87" selection-start-column="22" selection-end-line="87" selection-end-column="35" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -698,14 +693,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/bpmn-js/bpmn-modeler.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="50333" column="21" selection-start-line="50333" selection-start-column="21" selection-end-line="50333" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="http://gc.kis.scr.kaspersky-labs.com/1B74BD89-2A22-4B93-B451-1C9E1052A0EC/main.js">
       <provider selected="true" editor-type-id="httpFileEditor">
         <state />
@@ -713,24 +700,40 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web/html/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-225">
-          <caret line="53" column="36" selection-start-line="53" selection-start-column="36" selection-end-line="53" selection-end-column="36" />
+        <state relative-caret-position="17">
+          <caret line="55" column="0" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/bpmn-js/bpmn-modeler.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="18960" column="4" selection-start-line="18960" selection-start-column="4" selection-end-line="18960" selection-end-column="4" />
+          <folding>
+            <marker date="1465365599000" expanded="true" signature="18747:18806" ph="..." />
+            <marker date="1465365599000" expanded="true" signature="319517:319548" ph="..." />
+            <marker date="1465365599000" expanded="true" signature="659640:659680" ph="..." />
+            <marker date="1465365599000" expanded="true" signature="667491:667509" ph="..." />
+            <marker date="1465365599000" expanded="true" signature="668954:668972" ph="..." />
+            <marker date="1465365599000" expanded="true" signature="756315:756355" ph="..." />
+            <marker date="1465365599000" expanded="true" signature="762385:762403" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/tool/CorrespondenceManager.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="392" column="0" selection-start-line="392" selection-start-column="0" selection-end-line="392" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/js/tool/ViewManager.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2601">
-          <caret line="376" column="0" selection-start-line="376" selection-start-column="0" selection-end-line="376" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/tool/CorrespondenceManager.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7463">
-          <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
+        <state relative-caret-position="176">
+          <caret line="358" column="22" selection-start-line="358" selection-start-column="22" selection-end-line="358" selection-end-column="22" />
           <folding />
         </state>
       </provider>
