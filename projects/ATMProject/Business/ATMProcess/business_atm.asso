@@ -1,0 +1,6 @@
+{
+    "sourceModel": "business_atm.bpmn",
+    "targetModel": "it-execution_atm.bpmn",
+    "sourceFile": "..\/..\/projects\/ATMProject\/Business\/ATMProcess\/business_atm.bpmn",
+    "targetFile": "..\/..\/projects\/ATMProject\/IT-Execution\/ATMProcess\/it-execution_atm.bpmn"
+}

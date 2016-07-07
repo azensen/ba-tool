@@ -216,7 +216,7 @@ CorrespondenceManager.prototype.removeSourceElementFromCorrespondence = function
     var currentCorrWithSource = existingCorrMatchBySource;
     var idToRemove = idToRemove;
 
-    if(currentCorrWithSource.corrType = "oneone") {
+    if(currentCorrWithSource.corrType == "oneone") {
         //TODO what to do with resulting 0-1?
         //currentCorrWithSource.source = null;
         //delete currentCorrWithSource.source;
@@ -224,14 +224,14 @@ CorrespondenceManager.prototype.removeSourceElementFromCorrespondence = function
         //currentCorrWithSource.corrType = "zeroone";
         this.removeCorrespondence(currentCorrWithSource);
 
-    } else if (currentCorrWithSource.corrType = "onemany") {
+    } else if (currentCorrWithSource.corrType == "onemany") {
 
         //TODO what to do with resulting 0-m?
         //currentCorrWithSource.corrType = "zeromany";
         //delete currentCorrWithSource.source;
         this.removeCorrespondence(currentCorrWithSource);
 
-    } else if (currentCorrWithSource.corrType = "manyone") {
+    } else if (currentCorrWithSource.corrType == "manyone") {
         // splice source from sources
         for(var i = 0; i < currentCorrWithSource.source.length; i++) {
             if(currentCorrWithSource.source[i] == idToRemove) {
@@ -239,12 +239,12 @@ CorrespondenceManager.prototype.removeSourceElementFromCorrespondence = function
             }
         }
         //if remaining sources = 1 turn corr into 1-1 type
-        if(currentCorrWithSource.source.length = 1) {
+        if(currentCorrWithSource.source.length == 1) {
             currentCorrWithSource.corrType = "oneone";
             currentCorrWithSource.source = currentCorrWithSource.source[0];
         }
 
-    } else if (currentCorrWithSource.corrType = "onezero") {
+    } else if (currentCorrWithSource.corrType == "onezero") {
         this.removeCorrespondence(currentCorrWithSource);
     }
 };
@@ -253,7 +253,7 @@ CorrespondenceManager.prototype.removeTargetElementFromCorrespondence = function
     var currentCorrWithTarget = existingCorrMatchByTarget;
     var idToRemove = idToRemove;
 
-    if(currentCorrWithTarget.corrType = "oneone") {
+    if(currentCorrWithTarget.corrType == "oneone") {
         //TODO what to do with resulting 0-1?
         //currentCorrWithSource.source = null;
         //delete currentCorrWithTarget.target;
@@ -261,7 +261,7 @@ CorrespondenceManager.prototype.removeTargetElementFromCorrespondence = function
         //currentCorrWithTarget.corrType = "onezero";
         this.removeCorrespondence(currentCorrWithTarget);
 
-    } else if (currentCorrWithTarget.corrType = "onemany") {
+    } else if (currentCorrWithTarget.corrType == "onemany") {
 
         //TODO what to do with resulting 0-m?
 
@@ -272,17 +272,17 @@ CorrespondenceManager.prototype.removeTargetElementFromCorrespondence = function
             }
         }
         //if remaining targets = 1 then turn into 1-1 type
-        if(currentCorrWithTarget.target.length = 1) {
+        if(currentCorrWithTarget.target.length == 1) {
             currentCorrWithTarget.corrType = "oneone";
             currentCorrWithTarget.target = currentCorrWithTarget.target[0];
         }
 
-    } else if (currentCorrWithTarget.corrType = "manyone") {
+    } else if (currentCorrWithTarget.corrType == "manyone") {
         //TODO think about this
         //target lost, so delete?
         this.removeCorrespondence(currentCorrWithTarget);
 
-    } else if (currentCorrWithTarget.corrType = "zeroone") {
+    } else if (currentCorrWithTarget.corrType == "zeroone") {
         this.removeCorrespondence(currentCorrWithTarget);
     }
 };

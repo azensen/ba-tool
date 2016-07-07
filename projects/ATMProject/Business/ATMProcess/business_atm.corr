@@ -1,0 +1,92 @@
+[
+    {
+        "corrType": "oneone",
+        "source": "Task_042s7rd",
+        "target": "Task_042s7rd"
+    },
+    {
+        "corrType": "oneone",
+        "source": "Task_1ubjkwn",
+        "target": "Task_1ubjkwn"
+    },
+    {
+        "corrType": "oneone",
+        "source": "Task_0a2a788",
+        "target": "Task_0a2a788"
+    },
+    {
+        "corrType": "oneone",
+        "source": "Task_0msx7c6",
+        "target": "Task_0msx7c6"
+    },
+    {
+        "corrType": "oneone",
+        "source": "Task_1sp5wqp",
+        "target": "Task_1sp5wqp"
+    },
+    {
+        "corrType": "oneone",
+        "source": "Task_0dx9io7",
+        "target": "Task_0dx9io7"
+    },
+    {
+        "corrType": "oneone",
+        "source": "Task_073b509",
+        "target": "Task_073b509"
+    },
+    {
+        "corrType": "oneone",
+        "source": "Task_17gj3yx",
+        "target": "Task_17gj3yx"
+    },
+    {
+        "corrType": "oneone",
+        "source": "Task_0q3vyys",
+        "target": "Task_0q3vyys"
+    },
+    {
+        "corrType": "oneone",
+        "source": "Task_17wjh6v",
+        "target": "Task_17wjh6v"
+    },
+    {
+        "corrType": "oneone",
+        "source": "StartEvent_1",
+        "target": "StartEvent_1"
+    },
+    {
+        "corrType": "oneone",
+        "source": "EndEvent_10fjb9z",
+        "target": "EndEvent_10fjb9z"
+    },
+    {
+        "corrType": "oneone",
+        "source": "EndEvent_16imbl3",
+        "target": "EndEvent_16imbl3"
+    },
+    {
+        "corrType": "oneone",
+        "source": "ExclusiveGateway_00w8ft6",
+        "target": "ExclusiveGateway_00w8ft6"
+    },
+    {
+        "corrType": "oneone",
+        "source": "ExclusiveGateway_0gm19wj",
+        "target": "ExclusiveGateway_0gm19wj"
+    },
+    {
+        "corrType": "oneone",
+        "source": "ExclusiveGateway_1a9lk5m",
+        "target": "ExclusiveGateway_1a9lk5m"
+    },
+    {
+        "corrType": "oneone",
+        "source": "ExclusiveGateway_1p29ah6",
+        "target": "ExclusiveGateway_1p29ah6"
+    },
+    {
+        "corrType": "oneone",
+        "source": "ExclusiveGateway_0n4rkui",
+        "target": "ExclusiveGateway_0n4rkui"
+    }
+]

@@ -1,7 +1,13 @@
 /**
  * Created by André Zensen on 21.06.2016.
  */
-var ViewManager = function(htmlDivSource, htmlDivTarget) {
+
+/**
+ * @param {String} htmlDivSource Id of the div element the source model is to be displayed in
+ * @param {String} htmlDivTarget Id of the div element the target model is to be displayed in
+ * @constructor
+ */
+function ViewManager(htmlDivSource, htmlDivTarget) {
     this.htmlDivSource = htmlDivSource;
     this.htmlDivTarget = htmlDivTarget;
 
@@ -15,6 +21,7 @@ load source and target via filepath of selected model
 then load association and correspondence files
 with association data load source and target models into respective modellers
  */
+
 ViewManager.prototype.loadModels = function() {
     if(tool.correspondenceManager.association != undefined && tool.correspondenceManager.association != null) {
         var association = tool.correspondenceManager.association;
@@ -42,7 +49,6 @@ ViewManager.prototype.loadModels = function() {
     } else {
         alert("Cannot load models. No association file loaded!");
     }
-
 };
 
 ViewManager.prototype.loadSource = function(filePath) {
