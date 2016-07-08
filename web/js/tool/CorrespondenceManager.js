@@ -84,13 +84,13 @@ CorrespondenceManager.prototype.addCorrespondence = function (newCorrespondence)
         sourceId = newCorrespondence.source;
         foundCorr = this.getCorrBySource(sourceId);
         if (foundCorr != null) {
-            this.removeSourceElementFromCorrespondence(sourceId);
+            this.removeSourceElementFromCorrespondence(foundCorr, sourceId);
         }
     } else if (newCorrType == "zeroone") {
         targetId = newCorrespondence.target;
         foundCorr = this.getCorrByTarget(targetId);
         if (foundCorr != null) {
-            this.removeTargetElementFromCorrespondence(targetId);
+            this.removeTargetElementFromCorrespondence(foundCorr, targetId);
         }
     } else if (newCorrType == "manyone") {
         sourceId = newCorrespondence.source; //should be array with id strings

@@ -494,6 +494,40 @@ ViewManager.prototype.removeAllHighlights = function() {
 
 ViewManager.prototype.removeHighlight = function removeHighlight(elementId, canvas) {
     canvas.removeMarker(elementId, 'highlight-green');
+    canvas.removeMarker(elementId, 'highlight-blue');
+    canvas.removeMarker(elementId, 'highlight-red');
+};
+
+ViewManager.prototype.highlightUnmatchedSourceElements = function() {
+    var color = 'highlight-red';
+    var canvas = this.sourceView.get('canvas');
+    var sourceElementsToHighlight = [];
+    var sourceElements = this.sourceView.get('elementRegistry').getAll();
+    var excludedTypes = ["bpmn:Process", "label", "bpmn:SequenceFlow"];
+    //TODO exclude types such as process, sequenceflow via shape.type
+    //Shapes.id
+    for(var i = 0; i < sourceElements.length; i++) {
+        var foundCorr = tool.correspondenceManager.getCorrBySource(sourceElements[i].id);
+        if(foundCorr == null) {
+            var exclude = false;
+            for(var k = 0; k < excludedTypes.length; k++) {
+                if(sourceElements[i].type == excludedTypes[k]) {
+                    exclude = true;
+                }
+            }
+            if(!exclude) {
+                sourceElementsToHighlight.push(sourceElements[i].id);
+            }
+        }
+    }
+    for(var j = 0; j < sourceElementsToHighlight.length; j++) {
+        this.highlightElement(sourceElementsToHighlight[j], canvas, color);
+    }
+
+};
+
+ViewManager.prototype.highlightElement = function(elementId, canvas, color) {
+    canvas.addMarker(elementId, color);
 };
 
 ViewManager.prototype.selectElementsInCorr = function (correspondence, add) {

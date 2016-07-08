@@ -1,41 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="1.0.0">
   <bpmn:process id="Process_1" isExecutable="false">
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:outgoing>SequenceFlow_0vds19n</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:task id="Task_042s7rd" name="Customer Inserts Card into ATM">
-      <bpmn:incoming>SequenceFlow_0vds19n</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_195vhlr</bpmn:outgoing>
-    </bpmn:task>
-    <bpmn:sequenceFlow id="SequenceFlow_0vds19n" sourceRef="StartEvent_1" targetRef="Task_042s7rd" />
+    <bpmn:sequenceFlow id="SequenceFlow_0vds19n" sourceRef="StartEvent_1" targetRef="UserTask_1c9iudv" />
     <bpmn:task id="Task_1ubjkwn" name="Identify Customer Card">
       <bpmn:incoming>SequenceFlow_195vhlr</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0e5f5rr</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:sequenceFlow id="SequenceFlow_195vhlr" sourceRef="Task_042s7rd" targetRef="Task_1ubjkwn" />
+    <bpmn:sequenceFlow id="SequenceFlow_195vhlr" sourceRef="UserTask_1c9iudv" targetRef="Task_1ubjkwn" />
     <bpmn:exclusiveGateway id="ExclusiveGateway_00w8ft6" name="Card is Valid?">
       <bpmn:incoming>SequenceFlow_0e5f5rr</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_093upp7</bpmn:outgoing>
       <bpmn:outgoing>SequenceFlow_0xcvjxc</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="SequenceFlow_0e5f5rr" sourceRef="Task_1ubjkwn" targetRef="ExclusiveGateway_00w8ft6" />
-    <bpmn:task id="Task_0a2a788" name="Customer Selects Transaction">
-      <bpmn:incoming>SequenceFlow_093upp7</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_1ov23dp</bpmn:outgoing>
-    </bpmn:task>
-    <bpmn:sequenceFlow id="SequenceFlow_093upp7" name="Yes" sourceRef="ExclusiveGateway_00w8ft6" targetRef="Task_0a2a788" />
-    <bpmn:task id="Task_0msx7c6" name="Customer Provides PIN">
-      <bpmn:incoming>SequenceFlow_0hbwpr7</bpmn:incoming>
-      <bpmn:incoming>SequenceFlow_1ftg7c7</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_150w9ku</bpmn:outgoing>
-    </bpmn:task>
-    <bpmn:sequenceFlow id="SequenceFlow_1ov23dp" sourceRef="Task_0a2a788" targetRef="Task_073b509" />
+    <bpmn:sequenceFlow id="SequenceFlow_093upp7" name="Yes" sourceRef="ExclusiveGateway_00w8ft6" targetRef="UserTask_14bywp8" />
+    <bpmn:sequenceFlow id="SequenceFlow_1ov23dp" sourceRef="UserTask_14bywp8" targetRef="UserTask_10grbvl" />
     <bpmn:task id="Task_1sp5wqp" name="Validate PIN">
       <bpmn:incoming>SequenceFlow_150w9ku</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0krgbp2</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:sequenceFlow id="SequenceFlow_150w9ku" sourceRef="Task_0msx7c6" targetRef="Task_1sp5wqp" />
+    <bpmn:sequenceFlow id="SequenceFlow_150w9ku" sourceRef="UserTask_0xwg98x" targetRef="Task_1sp5wqp" />
     <bpmn:exclusiveGateway id="ExclusiveGateway_0gm19wj" name="PIN is Valid?">
       <bpmn:incoming>SequenceFlow_0krgbp2</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0bbkn64</bpmn:outgoing>
@@ -48,17 +35,13 @@
       <bpmn:outgoing>SequenceFlow_1hdwh2f</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="SequenceFlow_0bbkn64" name="No" sourceRef="ExclusiveGateway_0gm19wj" targetRef="ExclusiveGateway_1a9lk5m" />
-    <bpmn:sequenceFlow id="SequenceFlow_0hbwpr7" name="Yes" sourceRef="ExclusiveGateway_1a9lk5m" targetRef="Task_0msx7c6" />
+    <bpmn:sequenceFlow id="SequenceFlow_0hbwpr7" name="Yes" sourceRef="ExclusiveGateway_1a9lk5m" targetRef="UserTask_0xwg98x" />
     <bpmn:task id="Task_0dx9io7" name="Cancel Transaction">
       <bpmn:incoming>SequenceFlow_0xcvjxc</bpmn:incoming>
       <bpmn:incoming>SequenceFlow_1hdwh2f</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1n3x234</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:task id="Task_073b509" name="Customer Provides Transaction Details">
-      <bpmn:incoming>SequenceFlow_1ov23dp</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_1ftg7c7</bpmn:outgoing>
-    </bpmn:task>
-    <bpmn:sequenceFlow id="SequenceFlow_1ftg7c7" sourceRef="Task_073b509" targetRef="Task_0msx7c6" />
+    <bpmn:sequenceFlow id="SequenceFlow_1ftg7c7" sourceRef="UserTask_10grbvl" targetRef="UserTask_0xwg98x" />
     <bpmn:endEvent id="EndEvent_10fjb9z">
       <bpmn:incoming>SequenceFlow_1n3x234</bpmn:incoming>
     </bpmn:endEvent>
@@ -100,14 +83,28 @@
       <bpmn:incoming>SequenceFlow_0sr61n5</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="SequenceFlow_0sr61n5" sourceRef="ExclusiveGateway_0n4rkui" targetRef="EndEvent_16imbl3" />
+    <bpmn:userTask id="UserTask_1c9iudv" name="Customer Inserts Card into ATM">
+      <bpmn:incoming>SequenceFlow_0vds19n</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_195vhlr</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="UserTask_14bywp8" name="Customer Selects Transaction">
+      <bpmn:incoming>SequenceFlow_093upp7</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1ov23dp</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="UserTask_10grbvl" name="Customer Provides Transaction Details">
+      <bpmn:incoming>SequenceFlow_1ov23dp</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1ftg7c7</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="UserTask_0xwg98x" name="Customer Provides PIN">
+      <bpmn:incoming>SequenceFlow_0hbwpr7</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_1ftg7c7</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_150w9ku</bpmn:outgoing>
+    </bpmn:userTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="173" y="102" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_042s7rd_di" bpmnElement="Task_042s7rd">
-        <dc:Bounds x="281" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_0vds19n_di" bpmnElement="SequenceFlow_0vds19n">
         <di:waypoint xsi:type="dc:Point" x="209" y="120" />
@@ -139,9 +136,6 @@
           <dc:Bounds x="511" y="95" width="90" height="20" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Task_0a2a788_di" bpmnElement="Task_0a2a788">
-        <dc:Bounds x="684" y="12" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_093upp7_di" bpmnElement="SequenceFlow_093upp7">
         <di:waypoint xsi:type="dc:Point" x="613" y="95" />
         <di:waypoint xsi:type="dc:Point" x="613" y="52" />
@@ -150,9 +144,6 @@
           <dc:Bounds x="583" y="63.5" width="90" height="20" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Task_0msx7c6_di" bpmnElement="Task_0msx7c6">
-        <dc:Bounds x="971" y="12" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_1ov23dp_di" bpmnElement="SequenceFlow_1ov23dp">
         <di:waypoint xsi:type="dc:Point" x="784" y="52" />
         <di:waypoint xsi:type="dc:Point" x="820" y="52" />
@@ -208,9 +199,6 @@
       <bpmndi:BPMNShape id="Task_0dx9io7_di" bpmnElement="Task_0dx9io7">
         <dc:Bounds x="971" y="217" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_073b509_di" bpmnElement="Task_073b509">
-        <dc:Bounds x="820" y="12" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_1ftg7c7_di" bpmnElement="SequenceFlow_1ftg7c7">
         <di:waypoint xsi:type="dc:Point" x="920" y="52" />
         <di:waypoint xsi:type="dc:Point" x="971" y="52" />
@@ -241,10 +229,12 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_1hdwh2f_di" bpmnElement="SequenceFlow_1hdwh2f">
         <di:waypoint xsi:type="dc:Point" x="1094" y="168" />
-        <di:waypoint xsi:type="dc:Point" x="1094" y="242" />
-        <di:waypoint xsi:type="dc:Point" x="1071" y="242" />
+        <di:waypoint xsi:type="dc:Point" x="1094" y="186" />
+        <di:waypoint xsi:type="dc:Point" x="945" y="186" />
+        <di:waypoint xsi:type="dc:Point" x="945" y="242" />
+        <di:waypoint xsi:type="dc:Point" x="971" y="242" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1064" y="195" width="90" height="20" />
+          <dc:Bounds x="941" y="170" width="90" height="20" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="ExclusiveGateway_1p29ah6_di" bpmnElement="ExclusiveGateway_1p29ah6" isMarkerVisible="true">
@@ -334,6 +324,18 @@
           <dc:Bounds x="1712" y="27" width="90" height="20" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_1c9iudv_di" bpmnElement="UserTask_1c9iudv">
+        <dc:Bounds x="281" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_14bywp8_di" bpmnElement="UserTask_14bywp8">
+        <dc:Bounds x="684" y="12" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_10grbvl_di" bpmnElement="UserTask_10grbvl">
+        <dc:Bounds x="820" y="12" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_0xwg98x_di" bpmnElement="UserTask_0xwg98x">
+        <dc:Bounds x="971" y="12" width="100" height="80" />
+      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
