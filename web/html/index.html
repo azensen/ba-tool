@@ -55,7 +55,7 @@
             <button id="createCorrespondenceFromSelection" onClick="tool.viewManager.createCorrespondenceFromSelection()" >Turn selection into correspondence</button>
             <button id="verticalConsistencyCheck" onClick="tool.viewManager.verticalConsistency()" >Vertical Consistency Check</button>
             <button id="tester" onClick="tester()">Make consistent</button>
-            <button id="highlightUnmatched" onClick="highlighter()">Highlight unmatched</button>
+            <button id="highlightUnmatched" onClick="highlighter()">Highlight correspondences</button>
         </div>
     </div>
 
@@ -75,6 +75,7 @@
     }
 
     function highlighter() {
+        tool.viewManager.highlightMatchedSourceElements();
         tool.viewManager.highlightUnmatchedSourceElements();
     }
 </script>

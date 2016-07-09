@@ -305,11 +305,15 @@ ViewManager.prototype.makeCorrespondencesConsistentWithViews = function (sourceV
     var sourceElementRegistry = sourceView.get('elementRegistry');
     var targetElementRegistry = targetView.get('elementRegistry');
 
+    var sourcesToDelete = [];
+    var targetsToDelete = [];
+
     for(var i = 0; i < correspondenceList.length; i++) {
         //in the process of removing an element a corr might get spliced to null, therefore a check
         if(correspondenceList[i] != null) {
 
             var corr = correspondenceList[i];
+            var corrType = corr.corrType;
             var corrSource = corr.source;
             var corrTarget = corr.target;
 
@@ -323,8 +327,9 @@ ViewManager.prototype.makeCorrespondencesConsistentWithViews = function (sourceV
                     var elementId = corrSource[j];
                     existingSource = sourceElementRegistry.get(elementId);
                     if(existingSource == undefined) {
-                        tool.correspondenceManager.removeSourceElementFromCorrespondence(corr, elementId);
-                        console.log("Could not find element in source with id " + elementId + ", removed element from correspondence.")
+                        //tool.correspondenceManager.removeSourceElementFromCorrespondence(corr, elementId);
+                        sourcesToDelete.push(elementId);
+                        //console.log("Could not find element in source with id " + elementId + ", removed element from correspondence.")
                     }
                 }
             //if one- type
@@ -332,8 +337,9 @@ ViewManager.prototype.makeCorrespondencesConsistentWithViews = function (sourceV
                 var elementId = corrSource;
                 existingSource = sourceElementRegistry.get(elementId);
                 if(existingSource == undefined) {
-                    tool.correspondenceManager.removeSourceElementFromCorrespondence(corr, elementId);
-                    console.log("Could not find element in source with id " + elementId + ", removed element from correspondence.");
+                    sourcesToDelete.push(elementId);
+                    //tool.correspondenceManager.removeSourceElementFromCorrespondence(corr, elementId);
+                    //console.log("Could not find element in source with id " + elementId + ", removed element from correspondence.");
                 }
             }
 
@@ -344,8 +350,9 @@ ViewManager.prototype.makeCorrespondencesConsistentWithViews = function (sourceV
                     var elementId = corrTarget[k];
                     existingTarget = targetElementRegistry.get(elementId);
                     if(existingTarget == undefined) {
-                        tool.correspondenceManager.removeTargetElementFromCorrespondence(corr, elementId);
-                        console.log("Could not find element in target with id " + elementId + ", removed element from correspondence.")
+                        targetsToDelete.push(elementId);
+                        //tool.correspondenceManager.removeTargetElementFromCorrespondence(corr, elementId);
+                        //console.log("Could not find element in target with id " + elementId + ", removed element from correspondence.")
                     }
                 }
                 //if one- type
@@ -353,10 +360,30 @@ ViewManager.prototype.makeCorrespondencesConsistentWithViews = function (sourceV
                 var elementId = corrTarget;
                 existingTarget = targetElementRegistry.get(elementId);
                 if(existingTarget == undefined) {
-                    tool.correspondenceManager.removeTargetElementFromCorrespondence(corr, elementId);
-                    console.log("Could not find element in target with id " + elementId + ", removed element from correspondence.");
+                    targetsToDelete.push(elementId);
+                    //tool.correspondenceManager.removeTargetElementFromCorrespondence(corr, elementId);
+                    //console.log("Could not find element in target with id " + elementId + ", removed element from correspondence.");
                 }
             }
+
+
+        }
+    }
+
+    for(var s = 0; s < sourcesToDelete.length; s++) {
+        var elementId = sourcesToDelete[s];
+        var foundCorr = tool.correspondenceManager.getCorrBySource(elementId);
+        if(foundCorr != null) {
+            console.log("Could not find element in source with id " + elementId + ", removed element from correspondence.")
+            tool.correspondenceManager.removeSourceElementFromCorrespondence(foundCorr, elementId);
+        }
+    }
+    for(var t = 0; t < targetsToDelete.length; t++) {
+        var elementId = targetsToDelete[t];
+        var foundCorr = tool.correspondenceManager.getCorrByTarget(elementId);
+        if(foundCorr != null) {
+            console.log("Could not find target element with id " + elementId + ", removed element from correspondence.");
+            tool.correspondenceManager.removeTargetElementFromCorrespondence(foundCorr, elementId);
         }
     }
 };
@@ -496,6 +523,44 @@ ViewManager.prototype.removeHighlight = function removeHighlight(elementId, canv
     canvas.removeMarker(elementId, 'highlight-green');
     canvas.removeMarker(elementId, 'highlight-blue');
     canvas.removeMarker(elementId, 'highlight-red');
+};
+
+ViewManager.prototype.highlightMatchedSourceElements = function() {
+
+    var sourceElementsToHighlightGreen = [];
+    var sourceElementsToHighlightBlue = [];
+    var sourceElements = this.sourceView.get('elementRegistry').getAll();
+    var excludedTypes = ["bpmn:Process", "label", "bpmn:SequenceFlow"];
+    //TODO exclude types such as process, sequenceflow via shape.type
+    //Shapes.id
+    for(var i = 0; i < sourceElements.length; i++) {
+        var foundCorr = tool.correspondenceManager.getCorrBySource(sourceElements[i].id);
+        if(foundCorr != null) {
+            var exclude = false;
+            for(var k = 0; k < excludedTypes.length; k++) {
+                if(sourceElements[i].type == excludedTypes[k]) {
+                    exclude = true;
+                    break;
+                }
+            }
+            if(!exclude && foundCorr.corrType != "onezero") {
+                sourceElementsToHighlightGreen.push(sourceElements[i].id);
+            } else if (!exclude && foundCorr.corrType == "onezero") {
+                sourceElementsToHighlightBlue.push(sourceElements[i].id);
+            }
+        }
+    }
+
+    var green = 'highlight-green';
+    var blue = "highlight-blue";
+    var canvas = this.sourceView.get('canvas');
+
+    for(var j = 0; j < sourceElementsToHighlightGreen.length; j++) {
+        this.highlightElement(sourceElementsToHighlightGreen[j], canvas, green);
+    }
+    for(var k = 0; k < sourceElementsToHighlightBlue.length; k++) {
+        this.highlightElement(sourceElementsToHighlightBlue[k], canvas, blue)
+    }
 };
 
 ViewManager.prototype.highlightUnmatchedSourceElements = function() {
