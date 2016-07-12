@@ -54,8 +54,10 @@
             <button id="deselectAll" onClick="tool.viewManager.deselectAll()" >Deselect all</button>
             <button id="createCorrespondenceFromSelection" onClick="tool.viewManager.createCorrespondenceFromSelection()" >Turn selection into correspondence</button>
             <button id="verticalConsistencyCheck" onClick="tool.viewManager.verticalConsistency()" >Vertical Consistency Check</button>
-            <button id="tester" onClick="tester()">Make consistent</button>
-            <button id="highlightUnmatched" onClick="highlighter()">Highlight correspondences</button>
+            <button id="tester" onClick="tester()">Make correspondences consistent</button>
+            <button id="highlightUnmatched" onClick="highlighter()">Highlight correspondences in source view</button>
+            <button id="displayTableOfMatches" onClick="displayTableOfMatches()">Display table of matches</button>
+            <button id="saveCorrespondences" onClick="saveCorrespondences()">Save correspondences</button>
         </div>
     </div>
 
@@ -75,8 +77,18 @@
     }
 
     function highlighter() {
+        tool.viewManager.deselectAll();
+        tool.viewManager.removeAllHighlights();
         tool.viewManager.highlightMatchedSourceElements();
         tool.viewManager.highlightUnmatchedSourceElements();
+    }
+    //TODO
+    function displayTableOfMatches() {
+
+    }
+    //TODO
+    function saveCorrespondences() {
+
     }
 </script>
 

@@ -81,13 +81,14 @@ ViewManager.prototype.loadSource = function(filePath) {
                  'element.mousedown',
                  'element.mouseup'*/
             ];
-
+            //hook ins in source eventBus
             events.forEach(function (event) {
 
                 eventBusSource.on(event, function (e) {
                     // e.element = the model element
                     // e.gfx = the graphical element
                     //document.getElementById("element-info-top").innerHTML = "Top-Element: " + e.element.id + " " + e.element.label;
+                    /*
                     console.log("e: " + Object.keys(e));
                     console.log("e.element: " + Object.keys(e.element));
                     console.log("SourceModeller: " + Object.keys(sourceView));
@@ -99,7 +100,7 @@ ViewManager.prototype.loadSource = function(filePath) {
 
                     console.log("businessObject: " + Object.keys(businessObject));
                     console.log("businessObject Type: " + businessObject.$type);
-
+*/
                     var selectedElements = sourceView.get('selection').get();
                     console.log("Selected Source Elements: ");
                     console.log(selectedElements);
@@ -152,6 +153,30 @@ ViewManager.prototype.loadSource = function(filePath) {
                     }
                 });
             });
+            //on shape deletion remove the deleted source id from any corr source
+            eventBusSource.on('shape.remove', function (e) {
+
+                var elementId = e.element.id;
+                var shapeType = e.element.type;
+                var correspondenceManager = tool.correspondenceManager;
+
+                //only do check for shapes, not labels nor connections
+                if(shapeType != 'label' || shapeType != 'connection') {
+                    console.log("ViewManager: Deleted element " + elementId + " with type " + shapeType);
+                    var foundCorr = correspondenceManager.getCorrBySource(elementId);
+                    if(foundCorr != null && foundCorr != undefined) {
+                        console.log("ViewManager: Removing source id " + elementId + " from correspondence.");
+                        correspondenceManager.removeSourceElementFromCorrespondence(foundCorr, elementId);
+                        var corrList = tool.correspondenceManager.correspondenceList;
+                        var sourceView = tool.viewManager.sourceView;
+                        var targetView = tool.viewManager.targetView;
+                        tool.viewManager.makeCorrespondencesConsistentWithViews(sourceView, targetView, corrList);
+                    }
+                }
+
+                //console.log("Shape Remove e:");
+                //console.log(e);
+            });
         });
     };
 };
@@ -186,14 +211,14 @@ ViewManager.prototype.loadTarget = function(filePath) {
                  'element.mousedown',
                  'element.mouseup'*/
             ];
-
+            //hook ins in target eventBus
             events.forEach(function (event) {
 
                 eventBusTarget.on(event, function (e) {
                     // e.element = the model element
                     // e.gfx = the graphical element
                     //document.getElementById("element-info-top").innerHTML = "Top-Element: " + e.element.id + " " + e.element.label;
-                    console.log("e: " + Object.keys(e));
+                    /*console.log("e: " + Object.keys(e));
                     console.log("e.element: " + Object.keys(e.element));
                     console.log("TargetModeller: " + Object.keys(targetView));
                     //Get element via elementRegistry
@@ -204,7 +229,7 @@ ViewManager.prototype.loadTarget = function(filePath) {
 
                     console.log("businessObject: " + Object.keys(businessObject));
                     console.log("businessObject Type: " + businessObject.$type);
-
+*/
                     var selectedElements = targetView.get('selection').get();
                     console.log("Selected Target Elements: ");
                     console.log(selectedElements);
@@ -505,11 +530,12 @@ ViewManager.prototype.removeAllHighlights = function() {
 
     var allSourceElements = elementRegistrySource.getAll();
     var allTargetElements = elementRegistryTarget.getAll();
+    /*
     console.log(allSourceElements);
     console.log(Object.keys(allSourceElements));
     console.log(allTargetElements);
     console.log(Object.keys(allTargetElements));
-
+    */
     for (var i = 0; i < allSourceElements.length; i++) {
         this.removeHighlight(allSourceElements[i], sourceCanvas);
     };
@@ -599,10 +625,12 @@ ViewManager.prototype.selectElementsInCorr = function (correspondence, add) {
     var sourceSelectionService = this.sourceView.get('selection');
     var targetSelectionService = this.targetView.get('selection');
     //flag to whether keep selection or not
-    var keepSelection = $('#keepSelection').prop('checked');
+    //var keepSelection = $('#keepSelection').prop('checked');
     //selection service takes either string or array of strings of IDs as param for selection
-    sourceSelectionService.select(correspondence.source, keepSelection);
-    targetSelectionService.select(correspondence.target, keepSelection);
+    //sourceSelectionService.select(correspondence.source, keepSelection);
+    //targetSelectionService.select(correspondence.target, keepSelection);
+    sourceSelectionService.select(correspondence.source);
+    targetSelectionService.select(correspondence.target);
 };
 
 ViewManager.prototype.getSelectedSource = function () {
