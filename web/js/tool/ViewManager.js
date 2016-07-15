@@ -25,6 +25,19 @@ with association data load source and target models into respective modellers
 ViewManager.prototype.loadModels = function() {
     if(tool.correspondenceManager.association != undefined && tool.correspondenceManager.association != null) {
         var association = tool.correspondenceManager.association;
+
+        if(this.sourceView != null) {
+            this.sourceView.destroy();
+            delete this.sourceView;
+            $(this.htmlDivSource).text("Source View");
+        }
+
+        if(this.targetView != null) {
+            this.targetView.destroy();
+            delete this.sourceView;
+            $(this.htmlDivTarget).text("Target View");
+        }
+
         var sourceModelName = association.sourceModel;
         $(this.htmlDivSource).text(sourceModelName);
         var targetModelName = association.targetModel;
@@ -148,8 +161,19 @@ ViewManager.prototype.loadSource = function(filePath) {
                         tool.viewManager.removeAllHighlights();
                         tool.viewManager.deselectAll();
 
-                        if(selectedElements.length > 0)
-                            tool.viewManager.highlightCorrespondenceBySource(e.element.id);
+                        if(selectedElements.length > 0) {
+                            var excludedTypes = ["bpmn:Process", "label", "bpmn:SequenceFlow"];
+                            var exclude = false;
+                            for(var k = 0; k < excludedTypes.length; k++) {
+                                if(e.element.type == excludedTypes[k]) {
+                                    exclude = true;
+                                    break;
+                                }
+                            }
+                            if(!exclude) {
+                                tool.viewManager.highlightCorrespondenceBySource(e.element.id);
+                            }
+                        }
                     }
                 });
             });
@@ -276,8 +300,19 @@ ViewManager.prototype.loadTarget = function(filePath) {
                         tool.viewManager.removeAllHighlights();
                         tool.viewManager.deselectAll();
 
-                        if(selectedElements.length > 0)
-                            tool.viewManager.highlightCorrespondenceByTarget(e.element.id);
+                        if(selectedElements.length > 0) {
+                            var excludedTypes = ["bpmn:Process", "label", "bpmn:SequenceFlow"];
+                            var exclude = false;
+                            for(var k = 0; k < excludedTypes.length; k++) {
+                                if(e.element.type == excludedTypes[k]) {
+                                    exclude = true;
+                                    break;
+                                }
+                            }
+                            if(!exclude) {
+                                tool.viewManager.highlightCorrespondenceBySource(e.element.id);
+                            }
+                        }
                     }
                 });
             });
@@ -285,28 +320,62 @@ ViewManager.prototype.loadTarget = function(filePath) {
     };
 };
 
-ViewManager.prototype.saveSource = function(filePath) {
+ViewManager.prototype.saveModels = function (association) {
+    if(association) {
+        if(this.sourceView && this.targetView) {
+            var sourceFilePath = association.sourceFile;
+            var sourceName = association.sourceModel;
+            var targetFilePath = association.targetFile;
+            var targetName = association.targetModel;
 
-    // save diagram on button click
-    var saveButton = document.querySelector('#save-button');
+            this.saveSource(sourceFilePath, sourceName);
+            this.saveTarget(targetFilePath, targetName);
+        } else {
+            console.log("Could not access source and target views. Models not loaded?");
+        }
+    } else {
+        console.log("Could not access association data. Association file not loaded?");
+    }
+    
+};
 
-    saveButton.addEventListener('click', function() {
-
+ViewManager.prototype.saveSource = function(filePath, name) {
         // get the diagram contents
-        bpmnModelerTop.saveXML({ format: true }, function(err, xml) {
+        this.sourceView.saveXML({ format: true }, function(err, xml) {
 
             if (err) {
-                console.error('diagram save failed', err);
+                console.error('ViewManager: Source diagram XML fetch of ' + name + ' failed: ', err);
             } else {
-                console.info('diagram saved');
-                console.info(xml);
+                //console.info('ViewManager: Source diagram saved.');
+               //return xml;
+                tool.viewManager.saveXML(xml, filePath, name);
             }
-
-            alert('diagram saved (see console (F12))');
-        });
     });
 };
-ViewManager.prototype.saveTarget = function(filePath) {};
+
+ViewManager.prototype.saveTarget = function(filePath, name) {
+    
+        this.targetView.saveXML({ format: true }, function(err, xml) {
+
+            if (err) {
+                console.error('ViewManager: Target diagram XML fetch of ' + name + ' failed: ', err);
+            } else {
+                //console.info('ViewManager: Target diagram saved.');
+                //return xml;
+                tool.viewManager.saveXML(xml, filePath, name);
+            }
+        });
+};
+
+ViewManager.prototype.saveXML = function (xml, filePath, name) {
+    $.ajax({
+        type     : "POST",
+        url      : "../php/saveXML.php",
+        data     : { xml : xml, filePath : filePath},
+        success  : function(msg){ console.log('Successfully saved XML of ' + name + ' to' + filePath + '.'); } ,
+        error    : function(msg) { console.error('Failed saving XML of ' + name + ' to' + filePath + '. Error: ' + msg); }
+    });
+};
 
 ViewManager.prototype.deselectAll = function() {
     var sourceSelectionService = this.sourceView.get('selection');
@@ -444,15 +513,15 @@ ViewManager.prototype.highlightCorrespondenceBySource = function (sourceElementI
             sourceCanvas.addMarker(sourceIds, 'highlight-green');
             targetCanvas.addMarker(targetIds, 'highlight-green');
         } else if (correspondence.corrType == "onemany") {
-            sourceCanvas.addMarker(sourceIds, 'highlight-green');
+            sourceCanvas.addMarker(sourceIds, 'highlight-yellow');
             for(var i = 0; i < targetIds.length ; i++) {
-                targetCanvas.addMarker(targetIds[i], 'highlight-green');
+                targetCanvas.addMarker(targetIds[i], 'highlight-yellow');
             }
         } else if (correspondence.corrType == "manyone") {
             for(var j = 0; j < sourceIds.length; j++) {
-               sourceCanvas.addMarker(sourceIds[j], 'highlight-green');
+               sourceCanvas.addMarker(sourceIds[j], 'highlight-yellow');
             }
-            targetCanvas.addMarker(targetIds, 'highlight-green');
+            targetCanvas.addMarker(targetIds, 'highlight-yellow');
         /*} else if (correspondence.corrType == "zeroone") {
             targetCanvas.addMarker(targetIds, 'highlight-green');*/
         } else if (correspondence.corrType == "onezero") {
@@ -464,6 +533,7 @@ ViewManager.prototype.highlightCorrespondenceBySource = function (sourceElementI
         this.selectElementsInCorr(correspondence);
     } else if (correspondence == null) {
         console.log("No correspondence found for element id " + sourceElementId);
+        sourceCanvas.addMarker(sourceIds, 'highlight-red');
     } else if (correspondence != null && existingElement == undefined) {
         console.log("Correspondence found for element id " + sourceElementId + " but element does not exist in source model.");
     }
@@ -498,15 +568,15 @@ ViewManager.prototype.highlightCorrespondenceByTarget = function (targetElementI
             sourceCanvas.addMarker(sourceIds, 'highlight-green');
             targetCanvas.addMarker(targetIds, 'highlight-green');
         } else if (correspondence.corrType == "onemany") {
-            sourceCanvas.addMarker(sourceIds, 'highlight-green');
+            sourceCanvas.addMarker(sourceIds, 'highlight-yellow');
             for(var i = 0; i < targetIds.length ; i++) {
-                targetCanvas.addMarker(targetIds[i], 'highlight-green');
+                targetCanvas.addMarker(targetIds[i], 'highlight-yellow');
             }
         } else if (correspondence.corrType == "manyone") {
             for(var j = 0; j < sourceIds.length; j++) {
-                sourceCanvas.addMarker(sourceIds[j], 'highlight-green');
+                sourceCanvas.addMarker(sourceIds[j], 'highlight-yellow');
             }
-            targetCanvas.addMarker(targetIds, 'highlight-green');
+            targetCanvas.addMarker(targetIds, 'highlight-yellow');
         } else if (correspondence.corrType == "zeroone") {
             targetCanvas.addMarker(targetIds, 'highlight-blue');
         }
@@ -516,6 +586,7 @@ ViewManager.prototype.highlightCorrespondenceByTarget = function (targetElementI
         this.selectElementsInCorr(correspondence);
     } else if (correspondence == null) {
         console.log("No correspondence found for element id " + targetElementId);
+        targetCanvas.addMarker(targetIds, 'highlight-red');
     } else if (correspondence != null && existingElement == undefined) {
         console.log("Correspondence found for element id " + targetElementId + " but element does not exist in target model.");
     }
@@ -549,12 +620,15 @@ ViewManager.prototype.removeHighlight = function removeHighlight(elementId, canv
     canvas.removeMarker(elementId, 'highlight-green');
     canvas.removeMarker(elementId, 'highlight-blue');
     canvas.removeMarker(elementId, 'highlight-red');
+    canvas.removeMarker(elementId, 'highlight-yellow');
 };
 
 ViewManager.prototype.highlightMatchedSourceElements = function() {
 
     var sourceElementsToHighlightGreen = [];
     var sourceElementsToHighlightBlue = [];
+    var sourceElementsToHighlightYellow = [];
+
     var sourceElements = this.sourceView.get('elementRegistry').getAll();
     var excludedTypes = ["bpmn:Process", "label", "bpmn:SequenceFlow"];
     //TODO exclude types such as process, sequenceflow via shape.type
@@ -569,23 +643,29 @@ ViewManager.prototype.highlightMatchedSourceElements = function() {
                     break;
                 }
             }
-            if(!exclude && foundCorr.corrType != "onezero") {
+            if(!exclude && foundCorr.corrType == "oneone") {
                 sourceElementsToHighlightGreen.push(sourceElements[i].id);
             } else if (!exclude && foundCorr.corrType == "onezero") {
                 sourceElementsToHighlightBlue.push(sourceElements[i].id);
+            } else if (!exclude && foundCorr.corrType == "manyone") {
+                sourceElementsToHighlightYellow.push(sourceElements[i].id);
             }
         }
     }
 
     var green = 'highlight-green';
     var blue = "highlight-blue";
+    var yellow = "highlight-yellow";
     var canvas = this.sourceView.get('canvas');
 
     for(var j = 0; j < sourceElementsToHighlightGreen.length; j++) {
         this.highlightElement(sourceElementsToHighlightGreen[j], canvas, green);
     }
     for(var k = 0; k < sourceElementsToHighlightBlue.length; k++) {
-        this.highlightElement(sourceElementsToHighlightBlue[k], canvas, blue)
+        this.highlightElement(sourceElementsToHighlightBlue[k], canvas, blue);
+    }
+    for(var l = 0; l < sourceElementsToHighlightYellow.length; l++) {
+        this.highlightElement(sourceElementsToHighlightYellow[l], canvas, yellow);
     }
 };
 
@@ -662,13 +742,58 @@ ViewManager.prototype.createCorrespondenceFromSelection = function () {
     var selectedSource = this.getSelectedSource();
     var selectedTarget = this.getSelectedTarget();
     //TODO check for allowed types
+    var allowed = true;
+    var excludedTypes = ["bpmn:Process", "label", "bpmn:SequenceFlow"];
+    for(var i = 0; i < selectedSource.length; i++) {
+        var elementType = this.sourceView.get('elementRegistry').get(selectedSource[i]).type;
 
-    //create the correspondence
-    var newCorrespondenceFromSelections = tool.correspondenceManager.createCorrespondence(selectedSource, selectedTarget);
-    //add the newly created correspondence
-    if(newCorrespondenceFromSelections != null && newCorrespondenceFromSelections != undefined) {
-        tool.correspondenceManager.addCorrespondence(newCorrespondenceFromSelections);
+        for(var ex = 0; ex < excludedTypes.length; ex++) {
+            if(elementType == excludedTypes[ex]) {
+                allowed = false;
+                console.log("ViewManager: Source selection for new correspondence contains an element type which is not allowed: " + elementType);
+            }
+        }
     }
+
+    for(var j = 0; j < selectedTarget.length; j++) {
+        var elementType = this.targetView.get('elementRegistry').get(selectedTarget[j]).type;
+
+        for(var ex2 = 0; ex2 < excludedTypes.length; ex2++) {
+            if(elementType == excludedTypes[ex2]) {
+                allowed = false;
+                console.log("ViewManager: Target selection for new correspondence contains an element type which is not allowed: " + elementType);
+            }
+        }
+    }
+
+    if(allowed) {
+        //create the correspondence
+        var newCorrespondenceFromSelections = tool.correspondenceManager.createCorrespondence(selectedSource, selectedTarget);
+        //add the newly created correspondence
+        if(newCorrespondenceFromSelections != null && newCorrespondenceFromSelections != undefined) {
+            tool.correspondenceManager.addCorrespondence(newCorrespondenceFromSelections);
+        }
+    }
+};
+
+ViewManager.prototype.deleteSelectedElementFromCorrespondence = function () {
+    var selectedSource = this.getSelectedSource();
+    var selectedTarget = this.getSelectedTarget();
+
+        for (var k = 0; k < selectedSource.length; k++) {
+            var elementId = selectedSource[k];
+            var foundCorr = tool.correspondenceManager.getCorrBySource(elementId);
+            if (foundCorr != null) {
+                tool.correspondenceManager.removeSourceElementFromCorrespondence(foundCorr, elementId);
+            }
+        }
+        for(var l = 0; l < selectedTarget.length; l++) {
+            var elementId = selectedTarget[l];
+            var foundCorr = tool.correspondenceManager.getCorrByTarget(elementId);
+            if (foundCorr != null) {
+                tool.correspondenceManager.removeTargetElementFromCorrespondence(foundCorr, elementId);
+            }
+        }
 };
 
 ViewManager.prototype.verticalConsistency = function () {

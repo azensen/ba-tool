@@ -26,6 +26,10 @@
                 <button id="btnCloneModel" onclick="tool.projectBrowser.cloneModelMenu()" disabled>Clone Model</button>
                 <a id="downloadLink" href="file.doc"><button id="btnDownloadModel" onclick="" disabled>Download Model</button></a>
                 <button id="loadModel" onClick="tool.projectBrowser.loadModels()" disabled>Load Model(s)</button>
+                <button id="saveModel" onClick="tool.projectBrowser.saveModels()" disabled>Save Model(s)</button>
+                <!--
+                <button id="showCorrMenu" onClick="$('#correspondenceMenu').show();" disabled>Show Correspondence Menu</button>
+                -->
 
 
             </p>
@@ -48,16 +52,19 @@
             </p>
             -->
             <input id="editMode" type="checkbox">Edit Mode<br>
+            <!--
             <input id="keepSelection" type="checkbox" value="keepSelection" name="keepSelection">Keep selection<br>
             <input id="keepHighlights" type="checkbox" value="keepHighlights" name="keepHighlights">Keep highlights<br>
+            -->
             <button id="removeHighlights" onClick="tool.viewManager.removeAllHighlights()" >Remove highlights</button>
             <button id="deselectAll" onClick="tool.viewManager.deselectAll()" >Deselect all</button>
             <button id="createCorrespondenceFromSelection" onClick="tool.viewManager.createCorrespondenceFromSelection()" >Turn selection into correspondence</button>
+            <button id="deleteSelectedElementFromCorrespondence" onClick="tool.viewManager.deleteSelectedElementFromCorrespondence()" >Delete selected element(s) from correspondence(s)</button>
             <button id="verticalConsistencyCheck" onClick="tool.viewManager.verticalConsistency()" >Vertical Consistency Check</button>
-            <button id="tester" onClick="tester()">Make correspondences consistent</button>
-            <button id="highlightUnmatched" onClick="highlighter()">Highlight correspondences in source view</button>
+            <button id="makeCorrespondencesConsistent" onClick="tool.makeCorrespondencesConsistent()">Make correspondences consistent</button>
+            <button id="highlightUnmatched" onClick="tool.highlighter()">Highlight correspondences in source view</button>
             <button id="displayTableOfMatches" onClick="displayTableOfMatches()">Display table of matches</button>
-            <button id="saveCorrespondences" onClick="saveCorrespondences()">Save correspondences</button>
+            <button id="saveCorrespondences" onClick="tool.saveCorrespondences()">Save correspondences</button>
         </div>
     </div>
 
@@ -69,27 +76,15 @@
 </div>
 <script>
     //Quick tester
-    function tester() {
-        var sourceView = tool.viewManager.sourceView;
-        var targetView = tool.viewManager.targetView;
-        var corrList = tool.correspondenceManager.correspondenceList;
-        tool.viewManager.makeCorrespondencesConsistentWithViews(sourceView, targetView, corrList);
-    }
 
-    function highlighter() {
-        tool.viewManager.deselectAll();
-        tool.viewManager.removeAllHighlights();
-        tool.viewManager.highlightMatchedSourceElements();
-        tool.viewManager.highlightUnmatchedSourceElements();
-    }
+
+
     //TODO
     function displayTableOfMatches() {
 
     }
-    //TODO
-    function saveCorrespondences() {
 
-    }
+
 </script>
 
 <!-- dependencies jQuery, jsTree, bpmn-modeler -->

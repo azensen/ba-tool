@@ -123,6 +123,7 @@ ProjectBrowser.prototype.checkButton = function(selectedID) {
     $('#btnCloneModel').attr("disabled","disabled");
     $('#btnDownloadModel').attr("disabled","disabled");
     $('#loadModel').attr("disabled", "disabled");
+    $('#saveModel').attr("disabled", "disabled");
 
     //var selectedNode = $(this.treeDiv).jstree(true).get_node(selectedID);
     var selectedNode = this.getCurrentNode();
@@ -152,6 +153,8 @@ ProjectBrowser.prototype.checkButton = function(selectedID) {
             tool.correspondenceManager.loadAssociation(targetModelPath);
             tool.correspondenceManager.loadCorrespondences(targetModelPath);
             $('#loadModel').removeAttr("disabled");
+            $('#saveModel').removeAttr("disabled");
+            $('#correspondenceMenu').show();
             break;
     }
 
@@ -173,10 +176,16 @@ ProjectBrowser.prototype.btnDownloadFile = function() {
     $('#btnDownloadModel').attr('onclick', onClickRef)
 };
 /**
- * Loads the models. Association file should be present for this.
+ * Loads the models. Association file and correspondence files should be present for this.
  */
 ProjectBrowser.prototype.loadModels = function() {
     //TODO injection of viewManager
     tool.viewManager.loadModels();
     $('#correspondenceMenu').show();
+};
+
+ProjectBrowser.prototype.saveModels = function () {
+    var association = tool.correspondenceManager.association;
+    tool.viewManager.saveModels(association);
+    tool.saveCorrespondences();
 };

@@ -4,8 +4,8 @@
 "use strict";
 
 function CorrespondenceManager () {
-    this.correspondenceList = [];
-    this.association = {};
+    this.correspondenceList = null;
+    this.association = null;
 };
 
 CorrespondenceManager.prototype.loadAssociation = function (filePath) {
@@ -59,6 +59,19 @@ CorrespondenceManager.prototype.setCorrespondences = function (data) {
 CorrespondenceManager.prototype.getCorrespondencesAsJSON = function () {
     var JSONcorrs = JSON.stringify(this.correspondenceList, null, "\t");
     return JSONcorrs;
+};
+
+//TODO Save .CORR
+CorrespondenceManager.prototype.saveCorrespondenceFile = function (correspondenceJSON, corrFilePath) {
+    console.log("Saving .corr as JSON to " + corrFilePath + " with content:");
+    console.log(correspondenceJSON);
+    $.ajax({
+        type     : "POST",
+        url      : "../php/saveCorrespondences.php",
+        data     : { corrList : correspondenceJSON, filePath : corrFilePath},
+        success  : function(msg){ console.log('Successfully saved .CORR.'); } ,
+        error    : function(msg) { console.error('Failed saving .CORR: ' + msg); }
+    });
 };
 
 CorrespondenceManager.prototype.addCorrespondence = function (newCorrespondence) {
