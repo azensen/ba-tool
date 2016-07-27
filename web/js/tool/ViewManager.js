@@ -310,7 +310,7 @@ ViewManager.prototype.loadTarget = function(filePath) {
                                 }
                             }
                             if(!exclude) {
-                                tool.viewManager.highlightCorrespondenceBySource(e.element.id);
+                                tool.viewManager.highlightCorrespondenceByTarget(e.element.id);
                             }
                         }
                     }
@@ -492,6 +492,9 @@ ViewManager.prototype.highlightCorrespondenceBySource = function (sourceElementI
     var existingElement = elementRegistry.get(sourceElementId);
     //TODO handle all corrTypes
 
+    var sourceCanvas = this.sourceView.get('canvas');
+    var targetCanvas = this.targetView.get('canvas');
+
     if(correspondence != null && existingElement != undefined) {
         console.log("Corr found by Source for elementId " + sourceElementId + ":");
         console.log(correspondence);
@@ -505,8 +508,7 @@ ViewManager.prototype.highlightCorrespondenceBySource = function (sourceElementI
         var sourceIds = correspondence.source;
         var targetIds = correspondence.target;
 
-        var sourceCanvas = this.sourceView.get('canvas');
-        var targetCanvas = this.targetView.get('canvas');
+
 
         if(correspondence.corrType == "oneone") {
             // highlight via CSS class
@@ -533,7 +535,7 @@ ViewManager.prototype.highlightCorrespondenceBySource = function (sourceElementI
         this.selectElementsInCorr(correspondence);
     } else if (correspondence == null) {
         console.log("No correspondence found for element id " + sourceElementId);
-        sourceCanvas.addMarker(sourceIds, 'highlight-red');
+        sourceCanvas.addMarker(sourceElementId, 'highlight-red');
     } else if (correspondence != null && existingElement == undefined) {
         console.log("Correspondence found for element id " + sourceElementId + " but element does not exist in source model.");
     }
@@ -546,6 +548,9 @@ ViewManager.prototype.highlightCorrespondenceByTarget = function (targetElementI
     //existingElement will be undefined if no such element exists
     var elementRegistry = this.targetView.get('elementRegistry');
     var existingElement = elementRegistry.get(targetElementId);
+
+    var sourceCanvas = this.sourceView.get('canvas');
+    var targetCanvas = this.targetView.get('canvas');
 
     if(correspondence != null && existingElement != undefined) {
         console.log("Corr found by Target for elementId " + targetElementId + ":");
@@ -560,8 +565,6 @@ ViewManager.prototype.highlightCorrespondenceByTarget = function (targetElementI
         var sourceIds = correspondence.source;
         var targetIds = correspondence.target;
 
-        var sourceCanvas = this.sourceView.get('canvas');
-        var targetCanvas = this.targetView.get('canvas');
 
         if(correspondence.corrType == "oneone") {
             // highlight via CSS class
@@ -586,7 +589,7 @@ ViewManager.prototype.highlightCorrespondenceByTarget = function (targetElementI
         this.selectElementsInCorr(correspondence);
     } else if (correspondence == null) {
         console.log("No correspondence found for element id " + targetElementId);
-        targetCanvas.addMarker(targetIds, 'highlight-red');
+        targetCanvas.addMarker(targetElementId, 'highlight-red');
     } else if (correspondence != null && existingElement == undefined) {
         console.log("Correspondence found for element id " + targetElementId + " but element does not exist in target model.");
     }

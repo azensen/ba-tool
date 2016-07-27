@@ -21,7 +21,7 @@
       <extensionElements>
         <signavio:signavioMetaData metaKey="bgcolor" metaValue="#ffffff" />
       </extensionElements>
-      <incoming>SequenceFlow_1blthum</incoming>
+      <incoming>SequenceFlow_1r300kd</incoming>
     </endEvent>
     <serviceTask id="Task_1sb812p" name="Task A" implementation="##WebService">
       <extensionElements>
@@ -42,7 +42,12 @@
       <incoming>SequenceFlow_0x1kb4j</incoming>
       <outgoing>SequenceFlow_1blthum</outgoing>
     </task>
-    <sequenceFlow id="SequenceFlow_1blthum" sourceRef="Task_1jipscw" targetRef="EndEvent_0l371s4" />
+    <sequenceFlow id="SequenceFlow_1blthum" sourceRef="Task_1jipscw" targetRef="Task_1hfrfqu" />
+    <task id="Task_1hfrfqu" name="Task X">
+      <incoming>SequenceFlow_1blthum</incoming>
+      <outgoing>SequenceFlow_1r300kd</outgoing>
+    </task>
+    <sequenceFlow id="SequenceFlow_1r300kd" sourceRef="Task_1hfrfqu" targetRef="EndEvent_0l371s4" />
   </process>
   <bpmndi:BPMNDiagram id="sid-d4365848-bae6-4c27-b0c1-70d730e33060">
     <bpmndi:BPMNPlane id="sid-36ec848d-313e-4d59-a8b0-5daa96ff6694" bpmnElement="Process_1">
@@ -56,9 +61,9 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="EndEvent_0l371s4_gui" bpmnElement="EndEvent_0l371s4">
-        <omgdc:Bounds x="970" y="106" width="28" height="28" />
+        <omgdc:Bounds x="1073" y="106" width="28" height="28" />
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds x="939" y="134" width="90" height="20" />
+          <omgdc:Bounds x="1042" y="134" width="90" height="20" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_1sb812p_gui" bpmnElement="Task_1sb812p">
@@ -94,9 +99,19 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_1blthum_di" bpmnElement="SequenceFlow_1blthum">
         <omgdi:waypoint xsi:type="omgdc:Point" x="910" y="120" />
-        <omgdi:waypoint xsi:type="omgdc:Point" x="970" y="120" />
+        <omgdi:waypoint xsi:type="omgdc:Point" x="940" y="120" />
         <bpmndi:BPMNLabel>
           <omgdc:Bounds x="895" y="95" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Task_1hfrfqu_di" bpmnElement="Task_1hfrfqu">
+        <omgdc:Bounds x="940" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1r300kd_di" bpmnElement="SequenceFlow_1r300kd">
+        <omgdi:waypoint xsi:type="omgdc:Point" x="1040" y="120" />
+        <omgdi:waypoint xsi:type="omgdc:Point" x="1073" y="120" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1011.5" y="95" width="90" height="20" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
