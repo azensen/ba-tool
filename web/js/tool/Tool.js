@@ -8,9 +8,6 @@ function Tool (projectBrowser, correspondenceManager, viewManager) {
     console.log("Created Tool");
 };
 
-Tool.prototype.addModel = function (text) {
-    console.log(text);
-}
 
 Tool.prototype.makeCorrespondencesConsistent = function () {
     var sourceView = tool.viewManager.sourceView;

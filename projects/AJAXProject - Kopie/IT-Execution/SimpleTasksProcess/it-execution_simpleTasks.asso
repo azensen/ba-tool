@@ -1,6 +1,0 @@
-{
-    "sourceModel": "it-execution_simpleTasks.bpmn",
-    "targetModel": "it-architecture_simpleTasks.bpmn",
-    "sourceFile": "..\/..\/projects\/AJAXProject\/IT-Execution\/SimpleTasksProcess\/it-execution_simpleTasks.bpmn",
-    "targetFile": "..\/..\/projects\/AJAXProject\/IT-Architecture\/SimpleTasksProcess\/it-architecture_simpleTasks.bpmn"
-}

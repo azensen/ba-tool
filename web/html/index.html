@@ -65,6 +65,8 @@
             <button id="highlightUnmatched" onClick="tool.highlighter()">Highlight correspondences in source view</button>
             <button id="displayTableOfMatches" onClick="displayTableOfMatches()">Display table of matches</button>
             <button id="saveCorrespondences" onClick="tool.saveCorrespondences()">Save correspondences</button>
+			<br><br>
+			<div id="correspondenceTable" style="overflow:scroll; height:400px;"></div>
         </div>
     </div>
 
@@ -81,7 +83,8 @@
 
     //TODO
     function displayTableOfMatches() {
-
+		$('#correspondenceTable').empty();
+		$('#correspondenceTable').load("../html/dummyTable.html");
     }
 
 

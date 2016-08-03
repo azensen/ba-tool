@@ -548,3 +548,7 @@ m-1 to 1-1
 CorrespondenceManager.prototype.transformCorr = function (newCorr, oldCorr) {
 
 };
+
+CorrespondenceManager.prototype.corrToHtmlTable = function (correspondence) {
+    
+};
