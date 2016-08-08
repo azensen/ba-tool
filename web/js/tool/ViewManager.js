@@ -87,7 +87,7 @@ ViewManager.prototype.loadSource = function(filePath) {
 
             // you may hook into any of the following events
             var events = [
-                /*		  'element.hover',
+                /*'element.hover',
                  'element.out',*/
                 'element.click',
                 /*		  'element.dblclick',
@@ -98,64 +98,14 @@ ViewManager.prototype.loadSource = function(filePath) {
             events.forEach(function (event) {
 
                 eventBusSource.on(event, function (e) {
-                    // e.element = the model element
-                    // e.gfx = the graphical element
-                    //document.getElementById("element-info-top").innerHTML = "Top-Element: " + e.element.id + " " + e.element.label;
-                    /*
-                    console.log("e: " + Object.keys(e));
-                    console.log("e.element: " + Object.keys(e.element));
-                    console.log("SourceModeller: " + Object.keys(sourceView));
-                    //Get element via elementRegistry
-                    var elementRegistry = sourceView.get('elementRegistry');
-                    var shape = elementRegistry.get(e.element.id);
-                    var businessObject = shape.businessObject;
-                    console.log("shape: " + Object.keys(shape));
 
-                    console.log("businessObject: " + Object.keys(businessObject));
-                    console.log("businessObject Type: " + businessObject.$type);
-*/
                     var selectedElements = sourceView.get('selection').get();
                     console.log("Selected Source Elements: ");
                     console.log(selectedElements);
-                    /*
-                    var extElements = businessObject.extensionElements;
-                    console.log("extElements Type: " + extElements.$type);
-                    console.log("extElements: " + Object.keys(extElements));
-                    var extElemValues = extElements.values;
-                    console.log("extElem values var: " + extElemValues);
-                    console.log("extElems Values: " + Object.keys(extElemValues));
-
-
-                     var extElem0 = extElemValues[0];
-                     console.log("extElem 0: " + extElem0);
-                     console.log("extElem 0 keys: " + Object.keys(extElem0));
-                     console.log("extElem 0 keys $type: " + extElem0.$type);
-                     console.log("extElem 0 keys $children: " + Object.keys(extElem0.$children));
-                     console.log("extElem 0 keys $children[0] $type: " + extElem0.$children[0].$type);
-                     console.log("extElem 0 keys $children[0] name: " + extElem0.$children[0].name);
-                     console.log("extElem 0 keys $children[0] value: " + extElem0.$children[0].value);
-
-                     console.log("extElem 0 keys $children[1] $type: " + extElem0.$children[1].$type);
-                     console.log("extElem 0 keys $children[1] name: " + extElem0.$children[1].name);
-                     console.log("extElem 0 keys $children[1] value: " + extElem0.$children[1].value);*/
-                    /*
-                     var consistencyElem = extElemValues[1];
-                     var consisElemType = extElemValues[1].$type;
-                     console.log(consisElemType);
-                     var consistencyProp = consistencyElem.$children[0];
-
-                     console.log("Prop $type: " + consistencyProp.$type);
-                     console.log("Prop Name: " + consistencyProp.name);
-                     console.log("Prop Value: " + consistencyProp.value);
-                     //consistencyProp.value = 'XXXXX';
-                     */
-                    //extElem0.$children[1].value = 'YXXXXsuperIT';
-
-                    //log(event, 'on', e.element.id);
 
                     var editMode = $('#editMode').prop('checked');
-                    var keepHighlights = $('#keepHighlights').prop('checked');
-                    var keepSelection = $('#keepSelection').prop('checked');
+                    //var keepHighlights = $('#keepHighlights').prop('checked');
+                    //var keepSelection = $('#keepSelection').prop('checked');
 
                     if(!editMode) {
                         tool.viewManager.removeAllHighlights();
@@ -171,7 +121,13 @@ ViewManager.prototype.loadSource = function(filePath) {
                                 }
                             }
                             if(!exclude) {
-                                tool.viewManager.highlightCorrespondenceBySource(e.element.id);
+                                var correspondence = tool.viewManager.highlightCorrespondenceBySource(e.element.id);
+                                if(correspondence != null) {
+                                    tool.viewManager.focusCorrespondenceElements(correspondence);
+                                } else {
+                                    tool.viewManager.focusOnElement(sourceView, e.element, 'single');
+                                }
+
                             }
                         }
                     }
@@ -310,7 +266,12 @@ ViewManager.prototype.loadTarget = function(filePath) {
                                 }
                             }
                             if(!exclude) {
-                                tool.viewManager.highlightCorrespondenceByTarget(e.element.id);
+                                var correspondence = tool.viewManager.highlightCorrespondenceByTarget(e.element.id);
+                                if(correspondence != null) {
+                                    tool.viewManager.focusCorrespondenceElements(correspondence);
+                                } else {
+                                    tool.viewManager.focusOnElement(targetView, e.element, 'single');
+                                }
                             }
                         }
                     }
@@ -533,11 +494,14 @@ ViewManager.prototype.highlightCorrespondenceBySource = function (sourceElementI
 
         //select all correspondence elements on canvas
         this.selectElementsInCorr(correspondence);
+        return correspondence;
     } else if (correspondence == null) {
         console.log("No correspondence found for element id " + sourceElementId);
         sourceCanvas.addMarker(sourceElementId, 'highlight-red');
+        return null;
     } else if (correspondence != null && existingElement == undefined) {
         console.log("Correspondence found for element id " + sourceElementId + " but element does not exist in source model.");
+        return null;
     }
 };
 
@@ -587,11 +551,14 @@ ViewManager.prototype.highlightCorrespondenceByTarget = function (targetElementI
 
         //select all correspondence elements on canvas
         this.selectElementsInCorr(correspondence);
+        return correspondence;
     } else if (correspondence == null) {
         console.log("No correspondence found for element id " + targetElementId);
         targetCanvas.addMarker(targetElementId, 'highlight-red');
+        return null;
     } else if (correspondence != null && existingElement == undefined) {
         console.log("Correspondence found for element id " + targetElementId + " but element does not exist in target model.");
+        return null;
     }
 };
 
@@ -819,4 +786,148 @@ ViewManager.prototype.verticalConsistency = function () {
     }
     var ratio = Math.round(parseFloat(matches) / parseFloat(relevantMatches) * 100, 2);
     console.log("Vertical consistency matches for relevant element types based on source: " + ratio + "%");
+};
+
+ViewManager.prototype.focusCorrespondenceElements = function (correspondence) {
+
+    if(correspondence) {
+        var sourceView = this.sourceView;
+        var targetView = this.targetView;
+        var sourceElementRegistry = sourceView.get('elementRegistry');
+        var targetElementRegistry = targetView.get('elementRegistry');
+
+        var corrType = correspondence.corrType;
+
+        switch(corrType) {
+            case "onezero":
+                var element = sourceElementRegistry.get(correspondence.source);
+                this.focusOnElement(sourceView, element, 'single');
+                break;
+            case "zeroone":
+                var element = targetElementRegistry.get(correspondence.target);
+                this.focusOnElement(targetView, element, 'single');
+                break;
+            case "oneone":
+                var sElement = sourceElementRegistry.get(correspondence.source);
+                var tElement = targetElementRegistry.get(correspondence.target);
+                this.focusOnElement(sourceView, sElement, 'single');
+                this.focusOnElement(targetView, tElement, 'single');
+                break;
+            case "onemany":
+                var sElement = sourceElementRegistry.get(correspondence.source);
+                this.focusOnElement(sourceView, sElement, 'single');
+                var targetElements = [];
+                for(var j = 0; j < correspondence.target.length; j++) {
+                    var element = targetElementRegistry.get(correspondence.target[j]);
+                    targetElements.push(element);
+                }
+                this.focusOnElement(targetView, targetElements, 'fit');
+                break;
+            case "manyone":
+                var sourceElements = [];
+                for(var i = 0; i < correspondence.source.length; i++) {
+                    var element = sourceElementRegistry.get(correspondence.source[i]);
+                    sourceElements.push(element);
+                }
+                console.log(sourceElements);
+                this.focusOnElement(sourceView, sourceElements, 'fit');
+                var tElement = targetElementRegistry.get(correspondence.target);
+                console.log(tElement);
+                this.focusOnElement(targetView, tElement, 'single');
+                break;
+            default:
+                console.log("Correspondence type not recognized: " + corrType);
+                break;
+        }
+    }
+
+};
+
+/**
+ *
+ * @param view Source or Target View
+ * @param element Only accepts non-connection shape elements such as tasks
+ * @param scalingMode 'fit', 'single', 'keep'
+ */
+ViewManager.prototype.focusOnElement = function (view, element, scalingMode) {
+    var view = view;
+    if(view) {
+        if(view == 'source') {
+            view = this.sourceView;
+        } else if (view == 'target') {
+            view = this.targetView;
+        }
+        var canvas = view.get('canvas');
+        centerViewbox(canvas, element, scalingMode);
+    } else {
+        console.out("ViewManager: No view specified or found for focus on element!");
+    }
+
+
+
+    function getBoundingBox(elements) {
+
+        if (!(elements instanceof Array)) {
+            elements = [elements];
+        }
+
+        var minX,
+            minY,
+            maxX,
+            maxY;
+
+        for(var i = 0; i < elements.length; i++) {
+            var bbox = elements[i];
+            var x = bbox.x,
+                y = bbox.y,
+                height = bbox.height || 0,
+                width  = bbox.width  || 0;
+
+            if (x < minX || minX === undefined) {
+                minX = x;
+            }
+            if (y < minY || minY === undefined) {
+                minY = y;
+            }
+
+            if ((x + width) > maxX || maxX === undefined) {
+                maxX = x + width;
+            }
+            if ((y + height) > maxY || maxY === undefined) {
+                maxY = y + height;
+            }
+        }
+
+        return {
+            x: minX,
+            y: minY,
+            height: maxY - minY,
+            width: maxX - minX
+        };
+    }
+
+    function centerViewbox (canvas, element, scalingMode) {
+        var viewbox = canvas.viewbox();
+
+        var box = getBoundingBox(element);
+
+        var newViewbox = {
+            x: (box.x + box.width/2) - viewbox.outer.width/2,
+            y: (box.y + box.height/2) - viewbox.outer.height/2,
+            width: viewbox.outer.width,
+            height: viewbox.outer.height
+        };
+
+        canvas.viewbox(newViewbox);
+
+        var center = {  x: box.x,
+                        y: box.y};
+        if(scalingMode == 'fit')
+            canvas.zoom('fit-viewport', center);
+        else if (scalingMode == 'single')
+            canvas.zoom(1.0, center);
+        else
+            canvas.zoom(viewbox.scale);
+    };
+
 };
