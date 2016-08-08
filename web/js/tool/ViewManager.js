@@ -124,6 +124,7 @@ ViewManager.prototype.loadSource = function(filePath) {
                                 var correspondence = tool.viewManager.highlightCorrespondenceBySource(e.element.id);
                                 if(correspondence != null) {
                                     tool.viewManager.focusCorrespondenceElements(correspondence);
+                                    tool.viewManager.displayCorrespondenceTable('correspondenceTable', correspondence);
                                 } else {
                                     tool.viewManager.focusOnElement(sourceView, e.element, 'single');
                                 }
@@ -269,6 +270,7 @@ ViewManager.prototype.loadTarget = function(filePath) {
                                 var correspondence = tool.viewManager.highlightCorrespondenceByTarget(e.element.id);
                                 if(correspondence != null) {
                                     tool.viewManager.focusCorrespondenceElements(correspondence);
+                                    tool.viewManager.displayCorrespondenceTable('correspondenceTable', correspondence);
                                 } else {
                                     tool.viewManager.focusOnElement(targetView, e.element, 'single');
                                 }
@@ -930,4 +932,142 @@ ViewManager.prototype.focusOnElement = function (view, element, scalingMode) {
             canvas.zoom(viewbox.scale);
     };
 
+};
+
+ViewManager.prototype.displayCorrespondenceTable = function (divId, correspondence) {
+    var divId = 'correspondenceTable';
+    $('#' + divId).empty();
+
+    var tableDiv = document.getElementById(divId);
+    var table = document.createElement("table");
+
+    var sHeader = createSourceHeader();
+    var tHeader = createTargetHeader();
+
+
+    tableDiv.appendChild(table);
+
+    var corr = correspondence;
+    var corrType = corr.corrType;
+    var corrSource = corr.source;
+    var corrTarget = corr.target;
+
+    var sourceView = this.sourceView;
+    var targetView = this.targetView;
+    var sourceElementRegistry = sourceView.get('elementRegistry');
+    var targetElementRegistry = targetView.get('elementRegistry');
+
+    var sHeaderRow = createSourceHeader();
+    var tHeaderRow = createTargetHeader();
+
+    switch(corrType) {
+        case "onezero":
+            var tableRow = createTableRow(corrSource, sourceElementRegistry, 'source');
+            table.appendChild(sHeader);
+            table.appendChild(tableRow);
+            break;
+        case "zeroone":
+            var tableRow = createTableRow(corrTarget, targetElementRegistry, 'target');
+            table.appendChild(tHeader);
+            table.appendChild(tableRow);
+            break;
+        case "oneone":
+            var sTableRow = createTableRow(corrSource, sourceElementRegistry, 'source');
+            var tTableRow = createTableRow(corrTarget, targetElementRegistry, 'target');
+
+            table.appendChild(sHeaderRow);
+            table.appendChild(sTableRow);
+            table.appendChild(tHeaderRow);
+            table.appendChild(tTableRow);
+            break;
+        case "onemany":
+            var sTableRow = createTableRow(corrSource, sourceElementRegistry, 'source');
+            var tTableRow = createTableRow(corrTarget, targetElementRegistry, 'target');
+
+            table.appendChild(sHeaderRow);
+            table.appendChild(sTableRow);
+            table.appendChild(tHeaderRow);
+            table.appendChild(tTableRow);
+            break;
+        case "manyone":
+            var sTableRow = createTableRow(corrSource, sourceElementRegistry, 'source');
+            var tTableRow = createTableRow(corrTarget, targetElementRegistry, 'target');
+
+            table.appendChild(sHeaderRow);
+            table.appendChild(sTableRow);
+            table.appendChild(tHeaderRow);
+            table.appendChild(tTableRow);
+            break;
+        default:
+            console.log("Correspondence type not recognized: " + corrType);
+            break;
+    }
+
+    $('#' + divId).show();
+
+    function createTableRow (elementIds, registry, view) {
+        var tr = document.createElement("tr");
+
+        if (!(elementIds instanceof Array)) {
+            elementIds = [elementIds];
+        }
+
+        for(var i = 0; i < elementIds.length; i++) {
+            var texts = [];
+            var element = registry.get(elementIds[i]);
+            var id = element.id;
+            texts.push(id);
+            var name = element.businessObject.name;
+            texts.push(name);
+            var bpmnType = element.type.replace("bpmn:", "");
+            texts.push(bpmnType);
+            var button = document.createElement("input");
+            button.type = "button";
+            var btnTextNode = document.createTextNode("Focus");
+            button.appendChild(btnTextNode);
+            button.addEventListener = ('click', function () { tool.viewManager.focusOnElementByTableEntry(view ,id) });
+
+            for(var t = 0; t < texts.length; t++) {
+                var td = document.createElement("td");
+                var textNode = document.createTextNode(texts[t]);
+                td.appendChild(textNode);
+                td.appendChild(button);
+                tr.appendChild(td);
+            }
+        }
+
+        return tr;
+    }
+
+    function createSourceHeader () {
+        var sHeaders = ["Source Id(s)", "Name", "BPMN-Type"];
+
+        var tableHeaderRow = document.createElement("tr");
+        for(var i = 0; i < sHeaders.length; i++) {
+            var tableHead = document.createElement("th");
+            var headerTextNode = document.createTextNode(sHeaders[i]);
+            tableHead.appendChild(headerTextNode);
+            tableHeaderRow.appendChild(tableHead);
+        }
+        return tableHeaderRow;
+    }
+
+    function createTargetHeader () {
+        var tHeaders = ["Target Id(s)", "Name", "BPMN-Type"];
+
+        var tableHeaderRow = document.createElement("tr");
+        for(var i = 0; i < tHeaders.length; i++) {
+            var tableHead = document.createElement("th");
+            var headerTextNode = document.createTextNode(tHeaders[i]);
+            tableHead.appendChild(headerTextNode);
+            tableHeaderRow.appendChild(tableHead);
+        }
+        return tableHeaderRow;
+    }
+};
+
+ViewManager.prototype.focusOnElementByTableEntry = function (view, id) {
+    var element = view.get('elementRegistry').get(id);
+    var scalingMode = 'single';
+    this.focusOnElement(view, element, scalingMode);
 };

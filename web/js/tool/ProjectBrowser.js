@@ -117,7 +117,7 @@ ProjectBrowser.prototype.checkButton = function(selectedID) {
 
     //TODO injections of div ids
     $('#submenu').hide();
-    $('#correspondenceMenu').hide();
+    
     $('#btnAddProcess').attr("disabled","disabled");
     $('#btnAddModel').attr("disabled","disabled");
     $('#btnCloneModel').attr("disabled","disabled");

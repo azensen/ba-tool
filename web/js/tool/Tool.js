@@ -6,6 +6,8 @@ function Tool (projectBrowser, correspondenceManager, viewManager) {
     this.correspondenceManager = correspondenceManager;
     this.viewManager = viewManager;
     console.log("Created Tool");
+    $('#correspondenceMenu').hide();
+    $('#correspondenceTable').hide();
 };
 
 
