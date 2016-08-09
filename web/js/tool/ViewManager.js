@@ -278,7 +278,9 @@ ViewManager.prototype.loadTarget = function(filePath) {
                                 } else {
                                     tool.viewManager.focusOnElement(targetView, e.element, 'single');
                                     $('#correspondenceTable').empty();
-                                    var textNoCorr = document.createTextNode("No correspondence found for the element. Select at least one element in a view and click on 'Turn selection into correspondence' to create a new correspondence. Existing correspondences will be modified or deleted.");
+                                    var textNoCorr = document.createTextNode("No correspondence found for the element. " +
+                                        "Select at least one element in a view and click on 'Turn selection into correspondence' " +
+                                        "to create a new correspondence. Existing correspondences will be modified or deleted.");
                                     var tableDiv = document.getElementById("correspondenceTable");
                                     tableDiv.appendChild(textNoCorr);
                                 }
