@@ -128,7 +128,7 @@ ViewManager.prototype.loadSource = function(filePath) {
                                 } else {
                                     tool.viewManager.focusOnElement(sourceView, e.element, 'single');
                                     $('#correspondenceTable').empty();
-                                    var textNoCorr = document.createTextNode("No correspondence found for the element.");
+                                    var textNoCorr = document.createTextNode("No correspondence found for the element. Select at least one element in a view and click on 'Turn selection into correspondence' to create a new correspondence. Existing correspondences will be modified or deleted.");
                                     var tableDiv = document.getElementById("correspondenceTable");
                                     tableDiv.appendChild(textNoCorr);
                                 }
@@ -278,7 +278,7 @@ ViewManager.prototype.loadTarget = function(filePath) {
                                 } else {
                                     tool.viewManager.focusOnElement(targetView, e.element, 'single');
                                     $('#correspondenceTable').empty();
-                                    var textNoCorr = document.createTextNode("No correspondence found for the element.");
+                                    var textNoCorr = document.createTextNode("No correspondence found for the element. Select at least one element in a view and click on 'Turn selection into correspondence' to create a new correspondence. Existing correspondences will be modified or deleted.");
                                     var tableDiv = document.getElementById("correspondenceTable");
                                     tableDiv.appendChild(textNoCorr);
                                 }
@@ -965,10 +965,10 @@ ViewManager.prototype.displayCorrespondenceTable = function (divId, corresponden
 
     switch(corrType) {
         case "onezero":
-            corrTypeText = "1-1";
+            corrTypeText = "1-0";
             break;
         case "zeroone":
-            corrTypeText = "1-0";
+            corrTypeText = "0-1";
             break;
         case "oneone":
             corrTypeText ="1-1";
