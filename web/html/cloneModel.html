@@ -94,8 +94,8 @@ function cloneModel() {
 	})
 	  .done(function( msg ) {
 		console.log( "Response from cloneModel.php: " + msg );
-		refreshTree();
-		clearSubmenu();
+		tool.projectBrowser.refreshTree();
+		  tool.projectBrowser.clearSubmenu();
 	});
 }
 

@@ -784,20 +784,118 @@ ViewManager.prototype.verticalConsistency = function () {
     var relevantMatches = 0;
     var unmatched = [];
     var bpmnPrefix = "bpmn:";
-    //TODO cover all task types / options as param an then iterate through relevant types
+    //all elements except for labels, connections, sequenceFlows and the process element itself are deemed relevant here
     for(var i = 0; i < allShapes.length; i++) {
-        if(allShapes[i].type == bpmnPrefix + "Task") {
+        if(allShapes[i].type != 'label' && allShapes[i].type != 'connection' && allShapes[i].type != bpmnPrefix + "Process" && allShapes[i].type != bpmnPrefix + "SequenceFlow") {
             var shapeId = allShapes[i].id;
+            var shape = allShapes[i];
             relevantMatches = relevantMatches + 1;
             if(tool.correspondenceManager.getCorrBySource(shapeId) != null) {
                 matches = matches + 1;
             } else if (tool.correspondenceManager.getCorrBySource(shapeId) == null) {
-                unmatched.push(shapeId);
+                unmatched.push(shape);
             }
         }
     }
     var ratio = Math.round(parseFloat(matches) / parseFloat(relevantMatches) * 100, 2);
     console.log("Vertical consistency matches for relevant element types based on source: " + ratio + "%");
+
+    var divId = 'correspondenceTable';
+    $('#' + divId).empty();
+
+    var tableDiv = document.getElementById(divId);
+    var titleNode = document.createElement("h3").appendChild(document.createTextNode("Basic Vertical Consistency Check"));
+    tableDiv.appendChild(titleNode);
+    tableDiv.appendChild(document.createElement("br"));
+    tableDiv.appendChild(document.createElement("br"));
+    titleNode = document.createElement("h2").appendChild(document.createTextNode("Vertical consistency matches for relevant element types based on source: " + ratio + "%"));
+    tableDiv.appendChild(titleNode);
+    tableDiv.appendChild(document.createElement("br"));
+    tableDiv.appendChild(document.createElement("br"));
+
+
+    var table = document.createElement("table");
+
+    //table headers
+    var tr = document.createElement("tr");
+    var headerTexts = ["Overall Elements", "Relevant Elements", "Matched Elements", "Unmatched Elements"];
+    for(var i = 0; i < headerTexts.length; i++) {
+        var th = document.createElement("th");
+        th.appendChild(document.createTextNode(headerTexts[i]));
+        tr.appendChild(th);
+    }
+    table.appendChild(tr);
+    //table data
+    tr = document.createElement("tr");
+    var headerContent = [allShapes.length, relevantMatches, matches, unmatched.length];
+    for(var j = 0; j < headerContent.length; j++) {
+        var th = document.createElement("th");
+        th.appendChild(document.createTextNode(headerContent[j]));
+        tr.appendChild(th);
+    }
+    table.appendChild(tr);
+    tableDiv.appendChild(table);
+
+    //unmatched elements table
+    if(unmatched.length > 0) {
+        var titleNode = document.createTextNode("List of unmatched elements which are not in a correspondence:");
+        tableDiv.appendChild(document.createElement("h2").appendChild(titleNode));
+        tableDiv.appendChild(document.createElement("br"));
+        tableDiv.appendChild(document.createElement("br"));
+
+        table = document.createElement("table");
+        tr = document.createElement("tr");
+
+        tr = document.createElement("tr");
+        headerTexts = ["Element Id", "Element Name", "Element Type", "Focus"];
+        for(var i = 0; i < headerTexts.length; i++) {
+            var th = document.createElement("th");
+            th.appendChild(document.createTextNode(headerTexts[i]));
+            tr.appendChild(th);
+        }
+        table.appendChild(tr);
+
+        for(var k = 0; k < unmatched.length; k++) {
+            //if(unmatched[k].type != 'label' && allShapes[i].type != 'connection') {
+                tr = document.createElement("tr");
+                var idTextNode = document.createTextNode(unmatched[k].id);
+                var td = document.createElement("td");
+                td.appendChild(idTextNode);
+                tr.appendChild(td);
+
+                var nameTextNode = document.createTextNode(unmatched[k].businessObject.name);
+                td = document.createElement("td");
+                td.appendChild(nameTextNode);
+                tr.appendChild(td);
+
+                var typeTextNode = document.createTextNode(unmatched[k].type.replace("bpmn:", ""));
+                td = document.createElement("td");
+                td.appendChild(typeTextNode);
+                tr.appendChild(td);
+
+                //view = source in this setup
+                var view = "source";
+                var id = unmatched[k].id;
+                var button = document.createElement("button");
+                //button.type = "button";
+                //button.name = "Focus";
+                var btnTextNode = document.createTextNode("Focus View");
+                button.appendChild(btnTextNode);
+                //button.onclick = function() { tool.viewManager.focusOnElementByTableEntry(view, id) };
+                button.setAttribute('onClick', "tool.viewManager.focusOnElementByTableEntry('" + view + "','" + id + "')");
+                td = document.createElement("td");
+                td.appendChild(button);
+                tr.appendChild(td);
+
+                table.appendChild(tr);
+            //}
+
+        }
+        tableDiv.appendChild(table);
+    }
+
+    $('#' + divId).show();
+
 };
 
 ViewManager.prototype.focusCorrespondenceElements = function (correspondence) {

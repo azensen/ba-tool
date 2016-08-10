@@ -38,8 +38,8 @@ $.ajax({
 })
   .done(function( msg ) {
     alert( "Data Saved: " + msg );
-	refreshTree();
-	clearSubmenu();
+    tool.projectBrowser.refreshTree();
+    tool.projectBrowser.clearSubmenu();
   });
 }
 </script>
