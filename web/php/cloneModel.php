@@ -65,7 +65,7 @@ function readBPMN($modelPath_in) {
 //creates the correspondences and returns a JSON encoding to save as a file
 function createCorrespondences($bpmnXML) {
 	$elementNames = array("task", "userTask", "sendTask", "receiveTask", "manualTask", "businessRuleTask",
-		"serviceTask", "scriptTask", "subProcess", "startEvent", "endEvent", "exclusiveGateway");
+		"serviceTask", "scriptTask", "subProcess", "startEvent", "endEvent", "exclusiveGateway", "inclusiveGateway", );
 	$corrList = Array();
 	$prefix = "//bpmn:";
 	foreach($elementNames as $elementName)

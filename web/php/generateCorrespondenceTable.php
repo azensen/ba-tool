@@ -24,14 +24,22 @@ echo '<table>
             </tr>
     </table>';
 echo '</br></br>';
+echo '<table>
+            <tr>
+                <th>Abstraction Level</th>
+                <th>Model Name</th>
+            </tr>
+            <tr>
+                <td>' . $level1 . '</td>
+                <td>' . $model1 . '</td>
+            </tr>
+            <tr>
+                <td>' . $level2 . '</td>
+                <td>' . $model2 . '</td>
+            </tr>
+    </table>';
+echo '</br></br>';
 
 
-function generateHeader ($project, $process, $model1, $level1, $model2, $level2, $consistency, $unmatched) {
-
-}
-
-function generateBody ($correspondences) {
-
-}
 
 ?>

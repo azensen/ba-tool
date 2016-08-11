@@ -804,11 +804,13 @@ ViewManager.prototype.verticalConsistency = function () {
     $('#' + divId).empty();
 
     var tableDiv = document.getElementById(divId);
-    var titleNode = document.createElement("h3").appendChild(document.createTextNode("Basic Vertical Consistency Check"));
+    var titleNode = document.createElement("h2");
+    titleNode.appendChild(document.createTextNode("Basic Vertical Consistency Check"));
     tableDiv.appendChild(titleNode);
     tableDiv.appendChild(document.createElement("br"));
     tableDiv.appendChild(document.createElement("br"));
-    titleNode = document.createElement("h2").appendChild(document.createTextNode("Vertical consistency matches for relevant element types based on source: " + ratio + "%"));
+    titleNode = document.createElement("h3");
+    titleNode.appendChild(document.createTextNode("Vertical consistency matches for relevant element types based on source: " + ratio + "%"));
     tableDiv.appendChild(titleNode);
     tableDiv.appendChild(document.createElement("br"));
     tableDiv.appendChild(document.createElement("br"));
@@ -1040,6 +1042,181 @@ ViewManager.prototype.focusOnElement = function (view, element, scalingMode) {
             canvas.zoom(viewbox.scale);
     };
 
+};
+
+ViewManager.prototype.displayCorrespondenceTableAll = function (divId, correspondenceList) {
+    var divId = 'correspondenceTable';
+    $('#' + divId).empty();
+
+    var tableDiv = document.getElementById(divId);
+
+
+    var sourceView = this.sourceView;
+    var targetView = this.targetView;
+    var sourceElementRegistry = sourceView.get('elementRegistry');
+    var targetElementRegistry = targetView.get('elementRegistry');
+
+    for(var c = 0; c < correspondenceList.length; c++) {
+        var table = document.createElement("table");
+
+        var corr = correspondenceList[c];
+        var corrType = corr.corrType;
+        var corrSource = corr.source;
+        var corrTarget = corr.target;
+
+        var h3 = document.createElement("h3");
+        var corrTypeText = "";
+
+        switch(corrType) {
+            case "onezero":
+                corrTypeText = "1-0";
+                break;
+            case "zeroone":
+                corrTypeText = "0-1";
+                break;
+            case "oneone":
+                corrTypeText ="1-1";
+                break;
+            case "onemany":
+                corrTypeText = "1-n";
+                break;
+            case "manyone":
+                corrTypeText = "n-1";
+                break;
+            default:
+                corrTypeText = "Error: Correspondence type not recognized.";
+                break;
+        }
+
+        var typeHeader = document.createTextNode("Correspondence Type: " + corrTypeText);
+        h3.appendChild(typeHeader);
+        tableDiv.appendChild(h3);
+
+        var sHeaderRow = createSourceHeader();
+        var tHeaderRow = createTargetHeader();
+
+        switch(corrType) {
+            case "onezero":
+                var tableRow = createTableRow(corrSource, sourceElementRegistry, 'source');
+                table.appendChild(sHeaderRow);
+                table.appendChild(tableRow[0]);
+                break;
+            case "zeroone":
+                var tableRow = createTableRow(corrTarget, targetElementRegistry, 'target');
+                table.appendChild(tHeaderRow);
+                table.appendChild(tableRow[0]);
+                break;
+            case "oneone":
+                var sTableRow = createTableRow(corrSource, sourceElementRegistry, 'source');
+                var tTableRow = createTableRow(corrTarget, targetElementRegistry, 'target');
+
+                table.appendChild(sHeaderRow);
+                table.appendChild(sTableRow[0]);
+                table.appendChild(tHeaderRow);
+                table.appendChild(tTableRow[0]);
+                break;
+            case "onemany":
+                var sTableRow = createTableRow(corrSource, sourceElementRegistry, 'source');
+                var tTableRow = createTableRow(corrTarget, targetElementRegistry, 'target');
+
+                table.appendChild(sHeaderRow);
+                table.appendChild(sTableRow[0]);
+                table.appendChild(tHeaderRow);
+                for(var i = 0; i < tTableRow.length; i++) {
+                    table.appendChild(tTableRow[i]);
+                }
+                break;
+            case "manyone":
+                var sTableRow = createTableRow(corrSource, sourceElementRegistry, 'source');
+                var tTableRow = createTableRow(corrTarget, targetElementRegistry, 'target');
+
+                table.appendChild(sHeaderRow);
+                for(var i = 0; i < sTableRow.length; i++) {
+                    table.appendChild(sTableRow[i]);
+                }
+                table.appendChild(tHeaderRow);
+                table.appendChild(tTableRow[0]);
+                break;
+            default:
+                console.log("Correspondence type not recognized: " + corrType);
+                break;
+        }
+        tableDiv.appendChild(table);
+    }
+
+
+
+    $('#' + divId).show();
+
+    function createTableRow (elementIds, registry, view) {
+
+        if (!(elementIds instanceof Array)) {
+            elementIds = [elementIds];
+        }
+
+        var tableRows = [];
+
+        for(var i = 0; i < elementIds.length; i++) {
+            var tr = document.createElement("tr");
+            var texts = [];
+            var element = registry.get(elementIds[i]);
+            var id = element.id;
+            texts.push(id);
+            var name = element.businessObject.name;
+            texts.push(name);
+            var bpmnType = element.type.replace("bpmn:", "");
+            texts.push(bpmnType);
+            var button = document.createElement("button");
+            texts.push("");
+            //button.type = "button";
+            //button.name = "Focus";
+            var btnTextNode = document.createTextNode("Focus View");
+            button.appendChild(btnTextNode);
+            //button.onclick = function() { tool.viewManager.focusOnElementByTableEntry(view, id) };
+            button.setAttribute('onClick', "tool.viewManager.focusOnElementByTableEntry('" + view + "','" + id + "')");
+
+            for(var t = 0; t < texts.length; t++) {
+                var td = document.createElement("td");
+                var textNode = document.createTextNode(texts[t]);
+                td.appendChild(textNode);
+                if(t == texts.length - 1)
+                    td.appendChild(button);
+                tr.appendChild(td);
+            }
+            tableRows.push(tr);
+        }
+        return tableRows;
+    }
+
+    function createSourceHeader () {
+        var sHeaders = ["Source Id(s)", "Name", "BPMN-Type"];
+
+        var tableHeaderRow = document.createElement("tr");
+        for(var i = 0; i < sHeaders.length; i++) {
+            var tableHead = document.createElement("th");
+            var headerTextNode = document.createTextNode(sHeaders[i]);
+            tableHead.appendChild(headerTextNode);
+            tableHeaderRow.appendChild(tableHead);
+        }
+        var endTh = document.createElement("th");
+        tableHeaderRow.appendChild(endTh);
+        return tableHeaderRow;
+    }
+
+    function createTargetHeader () {
+        var tHeaders = ["Target Id(s)", "Name", "BPMN-Type"];
+
+        var tableHeaderRow = document.createElement("tr");
+        for(var i = 0; i < tHeaders.length; i++) {
+            var tableHead = document.createElement("th");
+            var headerTextNode = document.createTextNode(tHeaders[i]);
+            tableHead.appendChild(headerTextNode);
+            tableHeaderRow.appendChild(tableHead);
+        }
+        var endTh = document.createElement("th");
+        tableHeaderRow.appendChild(endTh);
+        return tableHeaderRow;
+    }
 };
 
 ViewManager.prototype.displayCorrespondenceTable = function (divId, correspondence) {
