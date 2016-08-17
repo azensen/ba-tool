@@ -1,0 +1,25 @@
+[
+	{
+		"corrType": "oneone",
+		"source": "Task_04j45ya",
+		"target": "Task_04j45ya"
+	},
+	{
+		"corrType": "oneone",
+		"source": "StartEvent_1",
+		"target": "StartEvent_1"
+	},
+	{
+		"corrType": "oneone",
+		"source": "EndEvent_0l371s4",
+		"target": "EndEvent_0l371s4"
+	},
+	{
+		"corrType": "onemany",
+		"source": "Task_1sb812p",
+		"target": [
+			"Task_1sb812p",
+			"Task_14h9l62"
+		]
+	}
+]

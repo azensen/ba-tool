@@ -629,7 +629,7 @@ ViewManager.prototype.highlightMatchedSourceElements = function() {
                 sourceElementsToHighlightGreen.push(sourceElements[i].id);
             } else if (!exclude && foundCorr.corrType == "onezero") {
                 sourceElementsToHighlightBlue.push(sourceElements[i].id);
-            } else if (!exclude && foundCorr.corrType == "manyone") {
+            } else if (!exclude && (foundCorr.corrType == "manyone" || foundCorr.corrType == "onemany")) {
                 sourceElementsToHighlightYellow.push(sourceElements[i].id);
             }
         }
