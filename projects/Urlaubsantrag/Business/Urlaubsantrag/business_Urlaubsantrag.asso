@@ -1,0 +1,6 @@
+{
+    "sourceModel": "business_Urlaubsantrag.bpmn",
+    "targetModel": "it-execution_Urlaubsantrag.bpmn",
+    "sourceFile": "..\/..\/projects\/Urlaubsantrag\/Business\/Urlaubsantrag\/business_Urlaubsantrag.bpmn",
+    "targetFile": "..\/..\/projects\/Urlaubsantrag\/IT-Execution\/Urlaubsantrag\/it-execution_Urlaubsantrag.bpmn"
+}

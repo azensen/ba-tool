@@ -33,8 +33,9 @@ Tool.prototype.makeCorrespondencesConsistent = function () {
 Tool.prototype.highlighter = function () {
     tool.viewManager.deselectAll();
     tool.viewManager.removeAllHighlights();
-    tool.viewManager.highlightMatchedSourceElements();
-    tool.viewManager.highlightUnmatchedSourceElements();
+    //tool.viewManager.highlightMatchedSourceElements();
+    //tool.viewManager.highlightUnmatchedSourceElements();
+    tool.viewManager.highlightElements();
 };
 
 Tool.prototype.saveCorrespondences = function () {

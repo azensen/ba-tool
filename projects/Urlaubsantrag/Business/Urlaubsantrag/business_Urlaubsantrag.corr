@@ -1,0 +1,27 @@
+[
+	{
+		"corrType": "oneone",
+		"source": "StartEvent_1",
+		"target": "StartEvent_1"
+	},
+	{
+		"corrType": "oneone",
+		"source": "EndEvent_1p7ipem",
+		"target": "EndEvent_1p7ipem"
+	},
+	{
+		"corrType": "oneone",
+		"source": "EndEvent_1oqybh6",
+		"target": "EndEvent_1oqybh6"
+	},
+	{
+		"corrType": "oneone",
+		"source": "ExclusiveGateway_17yy20x",
+		"target": "ExclusiveGateway_17yy20x"
+	},
+	{
+		"corrType": "oneone",
+		"source": "ExclusiveGateway_1btzouu",
+		"target": "ExclusiveGateway_1btzouu"
+	}
+]

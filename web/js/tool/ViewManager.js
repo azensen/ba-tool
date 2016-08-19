@@ -112,7 +112,7 @@ ViewManager.prototype.loadSource = function(filePath) {
                         tool.viewManager.deselectAll();
 
                         if(selectedElements.length > 0) {
-                            var excludedTypes = ["bpmn:Process", "label", "bpmn:SequenceFlow"];
+                            var excludedTypes = ["bpmn:Process", "label", "bpmn:SequenceFlow", "bpmn:Lane", "bpmn:Collaboration", "bpmn:Participant"];
                             var exclude = false;
                             for(var k = 0; k < excludedTypes.length; k++) {
                                 if(e.element.type == excludedTypes[k]) {
@@ -262,7 +262,7 @@ ViewManager.prototype.loadTarget = function(filePath) {
                         tool.viewManager.deselectAll();
 
                         if(selectedElements.length > 0) {
-                            var excludedTypes = ["bpmn:Process", "label", "bpmn:SequenceFlow"];
+                            var excludedTypes = ["bpmn:Process", "label", "bpmn:SequenceFlow", "bpmn:Lane", "bpmn:Collaboration", "bpmn:Participant"];
                             var exclude = false;
                             for(var k = 0; k < excludedTypes.length; k++) {
                                 if(e.element.type == excludedTypes[k]) {
@@ -605,6 +605,91 @@ ViewManager.prototype.removeHighlight = function removeHighlight(elementId, canv
     canvas.removeMarker(elementId, 'highlight-yellow');
 };
 
+ViewManager.prototype.highlightElements = function () {
+    //for optimization matching
+    var sourceCorrIds = [];
+    var targetCorrIds = [];
+    //for highlighting red via method highlightElement(elementId, canvas, color)
+    var notFoundSources = [];
+    var notFoundTargets = [];
+
+    var sourceElements = this.sourceView.get('elementRegistry').getAll();
+    var targetElements = this.targetView.get('elementRegistry').getAll();
+
+    //params for highlightElement()
+    var sourceCanvas = this.sourceView.get('canvas');
+    var targetCanvas = this.targetView.get('canvas');
+    var red = "highlight-red";
+
+    //gather all elements in source, find correspondences via source, highlight via source, else put into notFound bin
+    for(var i = 0; i < sourceElements.length; i++) {
+        var foundCorr = tool.correspondenceManager.getCorrBySource(sourceElements[i].id);
+        if(foundCorr != null) {
+            if(sourceElements[i].type != "bpmn:Process" && sourceElements[i].type != "label" && sourceElements[i].type != "bpmn:SequenceFlow"  && sourceElements[i].type != "bpmn:Lane" && sourceElements[i].type != "bpmn:Collaboration" && sourceElements[i].type != "bpmn:Participant") {
+                var corrType = foundCorr.corrType;
+                if(corrType == "oneone" && sourceCorrIds[foundCorr.source] == undefined) {
+                    sourceCorrIds[foundCorr.source] = foundCorr.source;
+                    targetCorrIds[foundCorr.target] = foundCorr.target;
+                    tool.viewManager.highlightCorrespondenceBySource(sourceElements[i].id);
+                } else if (corrType == "onezero" && sourceCorrIds[foundCorr.source] == undefined) {
+                    sourceCorrIds[foundCorr.source] = foundCorr.source;
+                    tool.viewManager.highlightCorrespondenceBySource(sourceElements[i].id);
+                } else if (corrType == "manyone" || corrType == "onemany") {
+
+                    var sElements = foundCorr.source;
+                    var tElements = foundCorr.target;
+
+                    //transform single strings into arrays
+                    if (!(sElements instanceof Array)) {
+                        sElements = [sElements];
+                    }
+                    if(!(tElements instanceof Array)) {
+                        tElements = [tElements];
+                    }
+                    for(var j = 0; j < sElements.length; j++) {
+                        if(sourceCorrIds[sElements[j]] == undefined) {
+                            sourceCorrIds[sElements[j]] = sElements[j];
+                            tool.viewManager.highlightCorrespondenceBySource(sourceElements[i].id);
+                            for(var k = 0; k < tElements.length; k++) {
+                                targetCorrIds[tElements[k]] = tElements[k];
+                            }
+                        }
+                    }
+                }
+            }
+        } else if ((foundCorr == null || foundCorr == undefined) && sourceElements[i].type != "bpmn:Process" && sourceElements[i].type != "label" && sourceElements[i].type != "bpmn:SequenceFlow"  && sourceElements[i].type != "bpmn:Lane" && sourceElements[i].type != "bpmn:Collaboration" && sourceElements[i].type != "bpmn:Participant") {
+            notFoundSources[sourceElements[i].id] = sourceElements[i].id;
+        }
+    }
+
+    //check matching target ids already put in targetCorrIds bin, if not in it, then prep for red highlight
+    for(var i = 0; i < targetElements.length; i ++) {
+        if(targetElements[i].type != "bpmn:Process" && targetElements[i].type != "label" && targetElements[i].type != "bpmn:SequenceFlow" && targetElements[i].type != "bpmn:Lane" && targetElements[i].type != "bpmn:Collaboration"  && targetElements[i].type != "bpmn:Participant") {
+            if(targetCorrIds[targetElements[i].id] == undefined) {
+                notFoundTargets[targetElements[i].id] = targetElements[i].id;
+            }
+        }
+    }
+
+    //highlight all unaccounted for elements in red
+    for(elementId in notFoundSources) {
+        this.highlightElement(elementId, sourceCanvas, red);
+    }
+    for(elementId in notFoundTargets) {
+        this.highlightElement(elementId, targetCanvas, red);
+    }
+/*
+    for(var i = 0; i < notFoundSources.length; i++) {
+        this.highlightElement(notFoundSources[i], sourceCanvas, red);
+    }
+
+    for(var i = 0; i < notFoundTargets.length; i++) {
+        this.highlightElement(notFoundTargets[i], targetCanvas, red);
+    }
+*/
+
+};
+
 ViewManager.prototype.highlightMatchedSourceElements = function() {
 
     var sourceElementsToHighlightGreen = [];
@@ -613,7 +698,6 @@ ViewManager.prototype.highlightMatchedSourceElements = function() {
 
     var sourceElements = this.sourceView.get('elementRegistry').getAll();
     var excludedTypes = ["bpmn:Process", "label", "bpmn:SequenceFlow"];
-    //TODO exclude types such as process, sequenceflow via shape.type
     //Shapes.id
     for(var i = 0; i < sourceElements.length; i++) {
         var foundCorr = tool.correspondenceManager.getCorrBySource(sourceElements[i].id);
@@ -725,7 +809,7 @@ ViewManager.prototype.createCorrespondenceFromSelection = function () {
     var selectedTarget = this.getSelectedTarget();
     //TODO check for allowed types
     var allowed = true;
-    var excludedTypes = ["bpmn:Process", "label", "bpmn:SequenceFlow"];
+    var excludedTypes = ["bpmn:Process", "label", "bpmn:SequenceFlow", "bpmn:Lane", "bpmn:Collaboration", "bpmn:Participant"];
     for(var i = 0; i < selectedSource.length; i++) {
         var elementType = this.sourceView.get('elementRegistry').get(selectedSource[i]).type;
 
@@ -840,7 +924,7 @@ ViewManager.prototype.verticalConsistency = function () {
 
     //unmatched elements table
     if(unmatched.length > 0) {
-        var titleNode = document.createTextNode("List of unmatched elements which are not in a correspondence:");
+        var titleNode = document.createTextNode("List of unmatched source elements which are not in a correspondence:");
         tableDiv.appendChild(document.createElement("h2").appendChild(titleNode));
         tableDiv.appendChild(document.createElement("br"));
         tableDiv.appendChild(document.createElement("br"));

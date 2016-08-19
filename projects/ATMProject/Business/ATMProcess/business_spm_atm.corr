@@ -1,0 +1,87 @@
+[
+    {
+        "corrType": "oneone",
+        "source": "identfiyCustomerCard",
+        "target": "identfiyCustomerCard"
+    },
+    {
+        "corrType": "oneone",
+        "source": "validatePIN",
+        "target": "validatePIN"
+    },
+    {
+        "corrType": "oneone",
+        "source": "cancelTransaction",
+        "target": "cancelTransaction"
+    },
+    {
+        "corrType": "oneone",
+        "source": "processWithdraw",
+        "target": "processWithdraw"
+    },
+    {
+        "corrType": "oneone",
+        "source": "consultBalance",
+        "target": "consultBalance"
+    },
+    {
+        "corrType": "oneone",
+        "source": "consultStatement",
+        "target": "consultStatement"
+    },
+    {
+        "corrType": "oneone",
+        "source": "insertCardATM",
+        "target": "insertCardATM"
+    },
+    {
+        "corrType": "oneone",
+        "source": "selectTransaction",
+        "target": "selectTransaction"
+    },
+    {
+        "corrType": "oneone",
+        "source": "provideTransactionDetails",
+        "target": "provideTransactionDetails"
+    },
+    {
+        "corrType": "oneone",
+        "source": "providePIN",
+        "target": "providePIN"
+    },
+    {
+        "corrType": "oneone",
+        "source": "start",
+        "target": "start"
+    },
+    {
+        "corrType": "oneone",
+        "source": "end",
+        "target": "end"
+    },
+    {
+        "corrType": "oneone",
+        "source": "xorCardValid",
+        "target": "xorCardValid"
+    },
+    {
+        "corrType": "oneone",
+        "source": "xorValidPIN",
+        "target": "xorValidPIN"
+    },
+    {
+        "corrType": "oneone",
+        "source": "xorPINAttempts",
+        "target": "xorPINAttempts"
+    },
+    {
+        "corrType": "oneone",
+        "source": "ExclusiveGateway_0ij2ia2",
+        "target": "ExclusiveGateway_0ij2ia2"
+    },
+    {
+        "corrType": "oneone",
+        "source": "ExclusiveGateway_0kxhkzz",
+        "target": "ExclusiveGateway_0kxhkzz"
+    }
+]
