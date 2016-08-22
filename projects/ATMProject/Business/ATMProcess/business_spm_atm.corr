@@ -1,87 +1,204 @@
 [
-    {
-        "corrType": "oneone",
-        "source": "identfiyCustomerCard",
-        "target": "identfiyCustomerCard"
-    },
-    {
-        "corrType": "oneone",
-        "source": "validatePIN",
-        "target": "validatePIN"
-    },
-    {
-        "corrType": "oneone",
-        "source": "cancelTransaction",
-        "target": "cancelTransaction"
-    },
-    {
-        "corrType": "oneone",
-        "source": "processWithdraw",
-        "target": "processWithdraw"
-    },
-    {
-        "corrType": "oneone",
-        "source": "consultBalance",
-        "target": "consultBalance"
-    },
-    {
-        "corrType": "oneone",
-        "source": "consultStatement",
-        "target": "consultStatement"
-    },
-    {
-        "corrType": "oneone",
-        "source": "insertCardATM",
-        "target": "insertCardATM"
-    },
-    {
-        "corrType": "oneone",
-        "source": "selectTransaction",
-        "target": "selectTransaction"
-    },
-    {
-        "corrType": "oneone",
-        "source": "provideTransactionDetails",
-        "target": "provideTransactionDetails"
-    },
-    {
-        "corrType": "oneone",
-        "source": "providePIN",
-        "target": "providePIN"
-    },
-    {
-        "corrType": "oneone",
-        "source": "start",
-        "target": "start"
-    },
-    {
-        "corrType": "oneone",
-        "source": "end",
-        "target": "end"
-    },
-    {
-        "corrType": "oneone",
-        "source": "xorCardValid",
-        "target": "xorCardValid"
-    },
-    {
-        "corrType": "oneone",
-        "source": "xorValidPIN",
-        "target": "xorValidPIN"
-    },
-    {
-        "corrType": "oneone",
-        "source": "xorPINAttempts",
-        "target": "xorPINAttempts"
-    },
-    {
-        "corrType": "oneone",
-        "source": "ExclusiveGateway_0ij2ia2",
-        "target": "ExclusiveGateway_0ij2ia2"
-    },
-    {
-        "corrType": "oneone",
-        "source": "ExclusiveGateway_0kxhkzz",
-        "target": "ExclusiveGateway_0kxhkzz"
-    }
+	{
+		"corrType": "oneone",
+		"source": "providePIN",
+		"target": "providePIN"
+	},
+	{
+		"corrType": "oneone",
+		"source": "xorCardValid",
+		"target": "xorCardValid"
+	},
+	{
+		"corrType": "oneone",
+		"source": "xorValidPIN",
+		"target": "xorValidPIN"
+	},
+	{
+		"corrType": "oneone",
+		"source": "xorPINAttempts",
+		"target": "xorPINAttempts"
+	},
+	{
+		"corrType": "oneone",
+		"source": "ExclusiveGateway_0ij2ia2",
+		"target": "ExclusiveGateway_0ij2ia2"
+	},
+	{
+		"corrType": "oneone",
+		"source": "ExclusiveGateway_0kxhkzz",
+		"target": "ExclusiveGateway_0kxhkzz"
+	},
+	{
+		"corrType": "onemany",
+		"source": "identfiyCustomerCard",
+		"target": [
+			"identfiyCustomerCard",
+			"sid-BEB2A01D-4EF4-4773-A142-92701BB451DD"
+		]
+	},
+	{
+		"corrType": "manyone",
+		"source": [
+			"start",
+			"insertCardATM"
+		],
+		"target": "start"
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-15A984E8-E036-46B9-AC9C-DA2CE320A7B4"
+	},
+	{
+		"corrType": "oneone",
+		"source": "end",
+		"target": "end"
+	},
+	{
+		"corrType": "manyone",
+		"source": [
+			"selectTransaction",
+			"provideTransactionDetails"
+		],
+		"target": "provideTransactionDetails"
+	},
+	{
+		"corrType": "oneone",
+		"source": "cancelTransaction",
+		"target": "sid-56C09263-F41D-4FD1-B4EF-B647D83A24CA"
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-C36E2B22-1A7C-4D4C-AF2E-BF2B25839DDB"
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-33C66758-9C7E-4FC5-8F1D-83E88E196259"
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-02A3EE91-0A4A-46CE-BFE4-4F8185FEB5F9"
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-B0DD7337-0DF0-4BCF-89AA-9DF598D075C6"
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-629D87A1-743E-42F0-A322-CDD3C9F42E7F"
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-999E088B-D803-4924-B017-E4252556BD17"
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-1372DD4D-4369-4990-9DE6-A0AF88E9E9B5"
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-E33D4D20-6FBF-40A4-A534-E7956AFAAA48"
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-6297B377-BC0A-40B2-BE07-2A9A8F8DF78F"
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-42FADF16-D952-4697-9E19-43B0C50AF95A"
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-E3058A7B-6E40-4BE9-A6A9-74DF919191D6"
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-EF98F113-5FFD-4F57-AB87-510E8850F6A1"
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-BABAED7A-380B-41AC-984A-159FC1F7CD1C"
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-7E2E772C-312F-4ECD-9021-8B4FA801DFDC"
+	},
+	{
+		"corrType": "onemany",
+		"source": "processWithdraw",
+		"target": [
+			"sid-A7BC3571-ADFD-4F28-92E0-23E84E5A6519",
+			"sid-AF1BB643-238A-434A-909F-ED792A4A9C11",
+			"processWithdraw",
+			"sid-F45C9C67-E43D-4C4D-B326-44B0E18A5D59",
+			"sid-A6367FC2-4B33-445E-BA8C-01C08057ABCD"
+		]
+	},
+	{
+		"corrType": "onemany",
+		"source": "consultBalance",
+		"target": [
+			"sid-73D1B0A2-BB8A-4679-9FE3-3565A9D56883",
+			"sid-02154814-A566-4B83-B4E9-9A72DB83D433",
+			"consultBalance"
+		]
+	},
+	{
+		"corrType": "onemany",
+		"source": "consultStatement",
+		"target": [
+			"sid-7831D19B-51F2-4579-B42E-1F7B3A82E5C5",
+			"sid-D079B49D-E007-4021-A78A-5EEB8750EF5B",
+			"consultStatement"
+		]
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-6E4EFB84-0A5E-4F99-8A11-932427A96C35"
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-A7041D7B-8211-4BFF-AA3D-3C2850ADC732"
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-76B6BC7F-EDD7-4828-A50B-9DA3E0A1F0DD"
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-D3F2F1F3-CC9D-4D43-BC7A-33181B7A4783"
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-8A18A8C5-EA3D-42BE-BCD8-AF67C5248F0B"
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-9EF8FF5C-0BB3-4386-A522-9AFBB2BFDE55"
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-E0BE8681-BE6B-4126-BBE7-04CE20467191"
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-F5405BC0-6184-41FA-90EB-30E500CB3513"
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-5DCDA213-A753-4591-8B50-C825337FEEB1"
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-192932C8-637A-4103-98A3-1D4965FDC162"
+	},
+	{
+		"corrType": "zeroone",
+		"target": "sid-83BD3E41-4E6C-469B-8C4D-0CD8D37107C1"
+	},
+	{
+		"corrType": "oneone",
+		"source": "validatePIN",
+		"target": "sid-8F4B4C93-988B-425E-B73A-644F4D3DF5AF"
+	}
 ]

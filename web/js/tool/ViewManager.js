@@ -612,6 +612,8 @@ ViewManager.prototype.highlightElements = function () {
     //for highlighting red via method highlightElement(elementId, canvas, color)
     var notFoundSources = [];
     var notFoundTargets = [];
+    //as return
+    var notFound = { sources : notFoundSources, targets : notFoundTargets};
 
     var sourceElements = this.sourceView.get('elementRegistry').getAll();
     var targetElements = this.targetView.get('elementRegistry').getAll();
@@ -665,7 +667,7 @@ ViewManager.prototype.highlightElements = function () {
     //check matching target ids already put in targetCorrIds bin, if not in it, then prep for red highlight
     for(var i = 0; i < targetElements.length; i ++) {
         if(targetElements[i].type != "bpmn:Process" && targetElements[i].type != "label" && targetElements[i].type != "bpmn:SequenceFlow" && targetElements[i].type != "bpmn:Lane" && targetElements[i].type != "bpmn:Collaboration"  && targetElements[i].type != "bpmn:Participant") {
-            if(targetCorrIds[targetElements[i].id] == undefined) {
+            if(targetCorrIds[targetElements[i].id] == undefined && tool.viewManager.highlightCorrespondenceByTarget(targetElements[i].id) == null) {
                 notFoundTargets[targetElements[i].id] = targetElements[i].id;
             }
         }
@@ -687,7 +689,7 @@ ViewManager.prototype.highlightElements = function () {
         this.highlightElement(notFoundTargets[i], targetCanvas, red);
     }
 */
-
+return notFound;
 };
 
 ViewManager.prototype.highlightMatchedSourceElements = function() {
@@ -922,7 +924,7 @@ ViewManager.prototype.verticalConsistency = function () {
     table.appendChild(tr);
     tableDiv.appendChild(table);
 
-    //unmatched elements table
+    //unmatched elements table or source
     if(unmatched.length > 0) {
         var titleNode = document.createTextNode("List of unmatched source elements which are not in a correspondence:");
         tableDiv.appendChild(document.createElement("h2").appendChild(titleNode));
@@ -975,6 +977,68 @@ ViewManager.prototype.verticalConsistency = function () {
 
                 table.appendChild(tr);
             //}
+
+        }
+        tableDiv.appendChild(table);
+
+    }
+    var notFound = this.highlightElements();
+    var notFoundTargets = notFound.targets;
+    //unmatched elements table or source
+    if(Object.keys(notFoundTargets).length > 0) {
+        var targetElementRegistry = tool.viewManager.targetView.get('elementRegistry');
+
+        tableDiv.appendChild(document.createElement("br"));
+        var titleNode = document.createTextNode("List of unmatched target elements which are not in a correspondence:");
+        tableDiv.appendChild(document.createElement("h2").appendChild(titleNode));
+        tableDiv.appendChild(document.createElement("br"));
+        tableDiv.appendChild(document.createElement("br"));
+
+        table = document.createElement("table");
+        tr = document.createElement("tr");
+
+        tr = document.createElement("tr");
+        headerTexts = ["Element Id", "Element Name", "Element Type", "Focus"];
+        for(var i = 0; i < headerTexts.length; i++) {
+            var th = document.createElement("th");
+            th.appendChild(document.createTextNode(headerTexts[i]));
+            tr.appendChild(th);
+        }
+        table.appendChild(tr);
+
+        for(elementId in notFoundTargets) {
+            var unmatched = targetElementRegistry.get(elementId);
+            tr = document.createElement("tr");
+            var idTextNode = document.createTextNode(unmatched.id);
+            var td = document.createElement("td");
+            td.appendChild(idTextNode);
+            tr.appendChild(td);
+
+            var nameTextNode = document.createTextNode(unmatched.businessObject.name);
+            td = document.createElement("td");
+            td.appendChild(nameTextNode);
+            tr.appendChild(td);
+
+            var typeTextNode = document.createTextNode(unmatched.type.replace("bpmn:", ""));
+            td = document.createElement("td");
+            td.appendChild(typeTextNode);
+            tr.appendChild(td);
+
+            //view = source in this setup
+            var view = "target";
+            var id = unmatched.id;
+            var button = document.createElement("button");
+            //button.type = "button";
+            //button.name = "Focus";
+            var btnTextNode = document.createTextNode("Focus View");
+            button.appendChild(btnTextNode);
+            //button.onclick = function() { tool.viewManager.focusOnElementByTableEntry(view, id) };
+            button.setAttribute('onClick', "tool.viewManager.focusOnElementByTableEntry('" + view + "','" + id + "')");
+            td = document.createElement("td");
+            td.appendChild(button);
+            tr.appendChild(td);
+
+            table.appendChild(tr);
 
         }
         tableDiv.appendChild(table);
