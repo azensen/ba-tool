@@ -64,6 +64,10 @@ ViewManager.prototype.loadModels = function() {
     }
 };
 
+/**
+ * loads the source via xml and into the specified canvas of the sourceView and hooks into eventBus of sourceView
+ * @param filePath
+ */
 ViewManager.prototype.loadSource = function(filePath) {
 
     $.get(filePath, importXML, 'text');
@@ -166,6 +170,10 @@ ViewManager.prototype.loadSource = function(filePath) {
     };
 };
 
+/**
+ * loads the target via xml and into the specified canvas of the sourceView and hooks into eventBus of targetView
+ * @param filePath
+ */
 ViewManager.prototype.loadTarget = function(filePath) {
 
     $.get(filePath, importXML, 'text');
@@ -293,6 +301,10 @@ ViewManager.prototype.loadTarget = function(filePath) {
     };
 };
 
+/**
+ * saves both model bpmn files, the correspondence and the association files
+ * @param association
+ */
 ViewManager.prototype.saveModels = function (association) {
     if(association) {
         if(this.sourceView && this.targetView) {
@@ -312,6 +324,11 @@ ViewManager.prototype.saveModels = function (association) {
     
 };
 
+/**
+ * used by the saveModels function to get the sourceView BPMN as XML
+ * @param filePath
+ * @param name
+ */
 ViewManager.prototype.saveSource = function(filePath, name) {
         // get the diagram contents
         this.sourceView.saveXML({ format: true }, function(err, xml) {
@@ -326,6 +343,11 @@ ViewManager.prototype.saveSource = function(filePath, name) {
     });
 };
 
+/**
+ * used by the saveModels function to get the targetView BPMN as XML
+ * @param filePath
+ * @param name
+ */
 ViewManager.prototype.saveTarget = function(filePath, name) {
     
         this.targetView.saveXML({ format: true }, function(err, xml) {
@@ -340,6 +362,12 @@ ViewManager.prototype.saveTarget = function(filePath, name) {
         });
 };
 
+/**
+ * used by saveSource and saveTarget to save the XML as .BPMN by using model metadata
+ * @param xml the BPMN in XML format
+ * @param filePath where to save the BPMN file
+ * @param name which name to use for the BPMN file
+ */
 ViewManager.prototype.saveXML = function (xml, filePath, name) {
     $.ajax({
         type     : "POST",
@@ -350,6 +378,9 @@ ViewManager.prototype.saveXML = function (xml, filePath, name) {
     });
 };
 
+/**
+ * deselects all selected elements in both views
+ */
 ViewManager.prototype.deselectAll = function() {
     var sourceSelectionService = this.sourceView.get('selection');
     var targetSelectionService = this.targetView.get('selection');
@@ -359,6 +390,12 @@ ViewManager.prototype.deselectAll = function() {
     targetSelectionService.select(null);
 };
 
+/**
+ * checks whether an element exists via its id, returns true or false
+ * @param view the view as reference
+ * @param elementId the element ID as a string
+ * @returns {boolean}
+ */
 ViewManager.prototype.elementExists = function(view, elementId) {
     var elementRegistry = view.get('elementRegistry');
     var existingElement = elementRegistry.get(elementId);
@@ -368,6 +405,13 @@ ViewManager.prototype.elementExists = function(view, elementId) {
         return false;
 };
 
+/**
+ * gets all elements from both views, then all correspondences, checks whether the corr has a reference id
+ * to an element which does not exist anymore and deletes/transforms the correspondence accordingly
+ * @param sourceView
+ * @param targetView
+ * @param correspondenceList as an object
+ */
 ViewManager.prototype.makeCorrespondencesConsistentWithViews = function (sourceView, targetView, correspondenceList) {
     var sourceElementRegistry = sourceView.get('elementRegistry');
     var targetElementRegistry = targetView.get('elementRegistry');
@@ -455,7 +499,12 @@ ViewManager.prototype.makeCorrespondencesConsistentWithViews = function (sourceV
     }
 };
 
-//highlight and select all elements in a correspondence
+/**
+ * highlight the elements by the id of the selected source element and the correspondence it's in
+ * @param sourceElementId
+ * @returns {null} null if no correspondence was found for the id
+ */
+
 ViewManager.prototype.highlightCorrespondenceBySource = function (sourceElementId) {
     //find existing correspondence via sourceElementId
     var correspondence = tool.correspondenceManager.getCorrBySource(sourceElementId);
@@ -517,6 +566,11 @@ ViewManager.prototype.highlightCorrespondenceBySource = function (sourceElementI
     }
 };
 
+/**
+ * highlight the elements by the id of the selected target element and the correspondence it's in
+ * @param targetElementId
+ * @returns {null} null if no correspondence for the id exists
+ */
 ViewManager.prototype.highlightCorrespondenceByTarget = function (targetElementId) {
     var correspondence = tool.correspondenceManager.getCorrByTarget(targetElementId);
 
@@ -574,6 +628,9 @@ ViewManager.prototype.highlightCorrespondenceByTarget = function (targetElementI
     }
 };
 
+/**
+ * removes all highlights in sourceView and targetView via canvas and elementRegistry and all its elements
+ */
 ViewManager.prototype.removeAllHighlights = function() {
     var sourceCanvas = this.sourceView.get('canvas');
     var targetCanvas = this.targetView.get('canvas');
@@ -598,6 +655,11 @@ ViewManager.prototype.removeAllHighlights = function() {
     };
 };
 
+/**
+ * removes a specific element via the element Id and a reference to the canvas
+ * @param elementId
+ * @param canvas
+ */
 ViewManager.prototype.removeHighlight = function removeHighlight(elementId, canvas) {
     canvas.removeMarker(elementId, 'highlight-green');
     canvas.removeMarker(elementId, 'highlight-blue');
@@ -605,6 +667,11 @@ ViewManager.prototype.removeHighlight = function removeHighlight(elementId, canv
     canvas.removeMarker(elementId, 'highlight-yellow');
 };
 
+/**
+ * highlights all elements according to correspondence (or red if none found)
+ * and returns the ids of source and target elements which were not found stored as map/index by id arrays
+ * @returns {{sources: Array, targets: Array}} the ids of source and target element which were not found as map/indexed by id arrays
+ */
 ViewManager.prototype.highlightElements = function () {
     //for optimization matching
     var sourceCorrIds = [];
@@ -691,7 +758,9 @@ ViewManager.prototype.highlightElements = function () {
 */
 return notFound;
 };
-
+/**
+ * highlights all elements in the source view via correspondence check
+ */
 ViewManager.prototype.highlightMatchedSourceElements = function() {
 
     var sourceElementsToHighlightGreen = [];
@@ -737,6 +806,9 @@ ViewManager.prototype.highlightMatchedSourceElements = function() {
     }
 };
 
+/**
+ * highlights all unmatched source elements via correspondence check
+ */
 ViewManager.prototype.highlightUnmatchedSourceElements = function() {
     var color = 'highlight-red';
     var canvas = this.sourceView.get('canvas');
@@ -765,10 +837,20 @@ ViewManager.prototype.highlightUnmatchedSourceElements = function() {
 
 };
 
+/**
+ * /highlight an element by id
+ * @param elementId the element's id
+ * @param canvas reference to the canvas
+ * @param color reference to the CSS color
+ */
 ViewManager.prototype.highlightElement = function(elementId, canvas, color) {
     canvas.addMarker(elementId, color);
 };
-
+/**
+ * select all elements in sourceView and targetView via correspondence
+ * @param correspondence
+ * @param add
+ */
 ViewManager.prototype.selectElementsInCorr = function (correspondence, add) {
     var sourceSelectionService = this.sourceView.get('selection');
     var targetSelectionService = this.targetView.get('selection');
@@ -781,19 +863,28 @@ ViewManager.prototype.selectElementsInCorr = function (correspondence, add) {
     targetSelectionService.select(correspondence.target);
 };
 
+/**
+ * transforms the shape objects of the current selection in the sourceView and returns them as string IDs
+ */
 ViewManager.prototype.getSelectedSource = function () {
     var selectedElements = this.sourceView.get('selection').get();
     var transformedElements = this.transformSelectionsIntoId(selectedElements);
     return transformedElements;
 };
-
+/**
+ * transforms the shape objects of the current selection in the sourceView and returns them as string IDs
+ */
 ViewManager.prototype.getSelectedTarget = function () {
     var selectedElements = this.targetView.get('selection').get();
     var transformedElements = this.transformSelectionsIntoId(selectedElements);
     return transformedElements;
 };
 
-//transform input from getSelected...(), could be ["string", Shape, ..], turn Shape objects into id strings
+/**
+ * transform input from getSelected...(), could be ["string", Shape, ..], turn Shape objects into id strings
+ * @param selection selection from the canvas object of bpmn-js
+ * @returns {Array} an array with string IDs
+ */
 ViewManager.prototype.transformSelectionsIntoId = function (selection) {
     var selectionIds = [];
     for(var i = 0; i < selection.length; i++) {
@@ -805,7 +896,10 @@ ViewManager.prototype.transformSelectionsIntoId = function (selection) {
     }
     return selectionIds;
 };
-
+/**
+ * creates a correspondence from the current selection
+ * excluded types as listed
+ */
 ViewManager.prototype.createCorrespondenceFromSelection = function () {
     var selectedSource = this.getSelectedSource();
     var selectedTarget = this.getSelectedTarget();
@@ -843,7 +937,9 @@ ViewManager.prototype.createCorrespondenceFromSelection = function () {
         }
     }
 };
-
+/**
+ * deletes the selected elements from correspondence found by the selected element's ids
+ */
 ViewManager.prototype.deleteSelectedElementFromCorrespondence = function () {
     var selectedSource = this.getSelectedSource();
     var selectedTarget = this.getSelectedTarget();
@@ -863,7 +959,12 @@ ViewManager.prototype.deleteSelectedElementFromCorrespondence = function () {
             }
         }
 };
-
+/**
+ * gets all business relevant and not exluded types for the vertical consistency check
+ * computes a simple ratio of those relevant found in the source with matches in the target via id
+ * outputs by appending HTML tables and information to the correspondenceTable divId
+ * also highlights the elements of both views
+ */
 ViewManager.prototype.verticalConsistency = function () {
     var allShapes = tool.viewManager.sourceView.get('elementRegistry').getAll();
     var matches = 0;
@@ -1047,7 +1148,10 @@ ViewManager.prototype.verticalConsistency = function () {
     $('#' + divId).show();
 
 };
-
+/**
+ * focusses on the elements in a correspondence according to its type
+ * @param correspondence
+ */
 ViewManager.prototype.focusCorrespondenceElements = function (correspondence) {
 
     if(correspondence) {
@@ -1191,7 +1295,11 @@ ViewManager.prototype.focusOnElement = function (view, element, scalingMode) {
     };
 
 };
-
+/**
+ * appends a table of all correspondences via correspondenceList
+ * @param divId
+ * @param correspondenceList
+ */
 ViewManager.prototype.displayCorrespondenceTableAll = function (divId, correspondenceList) {
     var divId = 'correspondenceTable';
     $('#' + divId).empty();
@@ -1366,7 +1474,11 @@ ViewManager.prototype.displayCorrespondenceTableAll = function (divId, correspon
         return tableHeaderRow;
     }
 };
-
+/**
+ * appends HTML tables with information of the current correspondence or unmatched element
+ * @param divId
+ * @param correspondence
+ */
 ViewManager.prototype.displayCorrespondenceTable = function (divId, correspondence) {
     var divId = 'correspondenceTable';
     $('#' + divId).empty();
@@ -1537,7 +1649,11 @@ ViewManager.prototype.displayCorrespondenceTable = function (divId, corresponden
         return tableHeaderRow;
     }
 };
-
+/**
+ * focusses on an element via the view's name and the element's id
+ * @param view the view's name as a string, either 'source' or 'target'
+ * @param id the element's id
+ */
 ViewManager.prototype.focusOnElementByTableEntry = function (view, id) {
     var view = view;
     if(view == 'source') {

@@ -1,7 +1,4 @@
 /**
- * Created by André Zensen on 21.06.2016.
- */
-/**
  * Creates a new instance of ProjectBrowser and binds a function to be called for every click on an item or node in the project browser
  *
  * @param treeDiv  Id of the div element the project browser is to be displayed in
@@ -184,6 +181,9 @@ ProjectBrowser.prototype.loadModels = function() {
     $('#correspondenceMenu').show();
 };
 
+/**
+ * save models via association file info from corrManager.association field
+ */
 ProjectBrowser.prototype.saveModels = function () {
     var association = tool.correspondenceManager.association;
     tool.viewManager.saveModels(association);

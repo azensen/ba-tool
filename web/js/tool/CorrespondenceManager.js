@@ -1,13 +1,13 @@
-/**
- * Created by André Zensen on 21.06.2016.
- */
 "use strict";
 
 function CorrespondenceManager () {
     this.correspondenceList = null;
     this.association = null;
 };
-
+/**
+ * loads the association file via relative file path of selected model in jsTree by replacing the last bit with .asso
+ * @param filePath
+ */
 CorrespondenceManager.prototype.loadAssociation = function (filePath) {
     var assoFile = filePath.substr(0, filePath.lastIndexOf(".")) + ".asso";
     console.log(assoFile);
@@ -29,7 +29,10 @@ CorrespondenceManager.prototype.loadAssociation = function (filePath) {
 CorrespondenceManager.prototype.setAssociation = function (association) {
     this.association = association;
 };
-
+/**
+ * loads the correspondences via model bpmn file path by replacing the last bit with .corr
+ * @param filePath
+ */
 CorrespondenceManager.prototype.loadCorrespondences = function (filePath) {
     var corrFile = filePath.substr(0, filePath.lastIndexOf(".")) + ".corr";
     console.log(corrFile);
@@ -55,13 +58,20 @@ CorrespondenceManager.prototype.setCorrespondences = function (data) {
     }
     this.correspondenceList = newCorrList;
 };
-
+/**
+ * used for saving the correspondence list in JSON format
+ * returns the correspondenceList as a JSON
+ */
 CorrespondenceManager.prototype.getCorrespondencesAsJSON = function () {
     var JSONcorrs = JSON.stringify(this.correspondenceList, null, "\t");
     return JSONcorrs;
 };
 
-//TODO Save .CORR
+/**
+ * saves the correspondences in a .corr file
+ * @param correspondenceJSON the correspondence list in JSON format
+ * @param corrFilePath the file path to save the corrs to
+ */
 CorrespondenceManager.prototype.saveCorrespondenceFile = function (correspondenceJSON, corrFilePath) {
     console.log("Saving .corr as JSON to " + corrFilePath + " with content:");
     console.log(correspondenceJSON);
@@ -73,7 +83,10 @@ CorrespondenceManager.prototype.saveCorrespondenceFile = function (correspondenc
         error    : function(msg) { console.error('Failed saving .CORR: ' + msg); }
     });
 };
-
+/**
+ * adds a new correspondence to the correspondence list and removes elements in it from existing correspondences
+ * @param newCorrespondence the new correspondence
+ */
 CorrespondenceManager.prototype.addCorrespondence = function (newCorrespondence) {
     var newCorrType = newCorrespondence.corrType;
     var sourceId = null;
@@ -134,7 +147,10 @@ CorrespondenceManager.prototype.addCorrespondence = function (newCorrespondence)
     }
     this.correspondenceList.push(newCorrespondence);
 };
-
+/**
+ * adds a new correspondence object to the list
+ * @param newCorr
+ */
 CorrespondenceManager.prototype.addCorr = function (newCorr) {
     // will contain existing corrs by matching source / target
     var existingCorrMatchesBySource = [];
@@ -224,7 +240,11 @@ CorrespondenceManager.prototype.addCorr = function (newCorr) {
     }
     this.correspondenceList.push(newCorr);
 };
-
+/**
+ * removes a source element from a correspondence
+ * @param existingCorrMatchBySource
+ * @param idToRemove
+ */
 CorrespondenceManager.prototype.removeSourceElementFromCorrespondence = function(existingCorrMatchBySource, idToRemove) {
     var currentCorrWithSource = existingCorrMatchBySource;
     var idToRemove = idToRemove;
@@ -261,7 +281,11 @@ CorrespondenceManager.prototype.removeSourceElementFromCorrespondence = function
         this.removeCorrespondence(currentCorrWithSource);
     }
 };
-
+/**
+ * removes a target element from a correspondence
+ * @param existingCorrMatchByTarget
+ * @param idToRemove
+ */
 CorrespondenceManager.prototype.removeTargetElementFromCorrespondence = function(existingCorrMatchByTarget, idToRemove) {
     var currentCorrWithTarget = existingCorrMatchByTarget;
     var idToRemove = idToRemove;
@@ -323,7 +347,11 @@ CorrespondenceManager.prototype.removeCorrespondence = function (corr) {
         
     }
 };*/
-
+/**
+ * returns a found correspondence by searching for it in the correspondence list via an element's id, returns the corr or null when nothing was found for id
+ * @param elementID
+ * @returns {*}
+ */
 CorrespondenceManager.prototype.getCorr = function (elementID) {
     var corrList = this.correspondenceList;
     var corr = null;
@@ -368,7 +396,11 @@ CorrespondenceManager.prototype.getCorr = function (elementID) {
     console.log("No CorrespondenceById found.");
     return corr;
 };
-
+/**
+ * gets a correspondence by the source element's id an returns the corr object, or returns null if no corr was found
+ * @param elementID
+ * @returns {*}
+ */
 CorrespondenceManager.prototype.getCorrBySource = function (elementID) {
     var corrList = this.correspondenceList;
     var corr = null;
@@ -404,7 +436,11 @@ CorrespondenceManager.prototype.getCorrBySource = function (elementID) {
 console.log("No CorrespondenceBySource found.");
 return null;
 };
-
+/**
+ * gets a correspondence by the target element's id an returns the corr object, or returns null if no corr was found
+ * @param elementID
+ * @returns {*}
+ */
 CorrespondenceManager.prototype.getCorrByTarget = function (elementID) {
     var corrList = this.correspondenceList;
     var corr = null;
@@ -473,6 +509,13 @@ CorrespondenceManager.prototype.getCorrByTarget = function (elementID) {
  Input: correspondence type, source(s) and target(s) as single object / elementID or array of objects / elementIDs
  Output: correspondence according to type
  */
+/**
+ * a correspondence object
+ * @param corrType type of the correspondence as string, such as 'oneone', 'zeroone', 'onezero', 'manyone', or 'onemany'
+ * @param source source ids either as single string or array of strings
+ * @param target target ids either as single string or array of strings
+ * @constructor
+ */
 function Correspondence(corrType, source, target) {
 
     this.corrType = corrType;
@@ -490,7 +533,12 @@ function Correspondence(corrType, source, target) {
             this.target = target;
     }
 };
-
+/**
+ * creates a correspondence via selection in the views
+ * @param selectionSource
+ * @param selectionTarget
+ * @returns {*}
+ */
 CorrespondenceManager.prototype.createCorrespondence = function (selectionSource, selectionTarget) {
     //for storing element IDs of selections
     var newSources = [];

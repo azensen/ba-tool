@@ -32,13 +32,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Tool.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Tool.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web/js/tool/Tool.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="3" selection-start-line="0" selection-start-column="3" selection-end-line="0" selection-end-column="3" />
+            <state relative-caret-position="652">
+              <caret line="45" column="103" selection-start-line="45" selection-start-column="103" selection-end-line="45" selection-end-column="103" />
               <folding>
-                <marker date="1471591396340" expanded="true" signature="117:286" ph="{...}" />
+                <marker date="1472408603907" expanded="true" signature="156:325" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -47,68 +47,18 @@
       <file leaf-file-name="ProjectBrowser.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/js/tool/ProjectBrowser.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="15" column="18" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
+            <state relative-caret-position="720">
+              <caret line="184" column="75" selection-start-line="184" selection-start-column="75" selection-end-line="184" selection-end-column="75" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="addProcessAjax.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/html/addProcessAjax.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="17" column="19" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="addProcess.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/php/addProcess.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="680">
-              <caret line="40" column="21" selection-start-line="40" selection-start-column="16" selection-end-line="40" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="newProject.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/php/newProject.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="748">
-              <caret line="44" column="26" selection-start-line="44" selection-start-column="26" selection-end-line="44" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="newProjectAjax.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/html/newProjectAjax.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="663">
-              <caret line="39" column="31" selection-start-line="39" selection-start-column="31" selection-end-line="39" selection-end-column="31" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ViewManager.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ViewManager.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/js/tool/ViewManager.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="529">
-              <caret line="1027" column="30" selection-start-line="1027" selection-start-column="30" selection-end-line="1027" selection-end-column="30" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="addModel.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/html/addModel.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="765">
-              <caret line="45" column="21" selection-start-line="45" selection-start-column="21" selection-end-line="45" selection-end-column="21" />
+            <state relative-caret-position="567">
+              <caret line="1654" column="29" selection-start-line="1654" selection-start-column="29" selection-end-line="1654" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -117,8 +67,8 @@
       <file leaf-file-name="CorrespondenceManager.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/js/tool/CorrespondenceManager.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="8432">
-              <caret line="496" column="24" selection-start-line="496" selection-start-column="24" selection-end-line="496" selection-end-column="24" />
+            <state relative-caret-position="-334">
+              <caret line="536" column="54" selection-start-line="536" selection-start-column="54" selection-end-line="536" selection-end-column="54" />
               <folding />
             </state>
           </provider>
@@ -166,18 +116,18 @@
         <option value="$PROJECT_DIR$/web/css/index.css" />
         <option value="$PROJECT_DIR$/web/php/saveXML.php" />
         <option value="$PROJECT_DIR$/web/php/saveCorrespondences.php" />
-        <option value="$PROJECT_DIR$/web/js/tool/CorrespondenceManager.js" />
-        <option value="$PROJECT_DIR$/web/js/tool/ProjectBrowser.js" />
         <option value="$PROJECT_DIR$/web/php/generateTable.php" />
         <option value="$PROJECT_DIR$/web/html/cloneModel.html" />
         <option value="$PROJECT_DIR$/web/php/generateCorrespondenceTable.php" />
-        <option value="$PROJECT_DIR$/web/js/tool/Tool.js" />
         <option value="$PROJECT_DIR$/web/html/index.html" />
         <option value="$PROJECT_DIR$/web/php/cloneModel.php" />
         <option value="$PROJECT_DIR$/web/html/newProjectAjax.html" />
         <option value="$PROJECT_DIR$/web/php/addProcess.php" />
         <option value="$PROJECT_DIR$/web/html/addProcessAjax.html" />
+        <option value="$PROJECT_DIR$/web/js/tool/Tool.js" />
+        <option value="$PROJECT_DIR$/web/js/tool/ProjectBrowser.js" />
         <option value="$PROJECT_DIR$/web/js/tool/ViewManager.js" />
+        <option value="$PROJECT_DIR$/web/js/tool/CorrespondenceManager.js" />
       </list>
     </option>
   </component>
@@ -359,12 +309,13 @@
       <workItem from="1471585214543" duration="11980000" />
       <workItem from="1471813564676" duration="1368000" />
       <workItem from="1471849806290" duration="1616000" />
-      <workItem from="1471860832565" duration="910000" />
+      <workItem from="1471860832565" duration="1501000" />
+      <workItem from="1472408098629" duration="2463000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="264362000" />
+    <option name="totallyTimeSpent" value="267416000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -377,7 +328,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1928" y="200" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1472119" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.13681869" sideWeight="0.49289098" order="6" side_tool="false" content_ui="tabs" />
@@ -689,9 +640,25 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/web/html/addProcessAjax.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="19" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/php/addProcess.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-45">
+          <caret line="8" column="29" selection-start-line="8" selection-start-column="29" selection-end-line="8" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/web/php/newProject.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="748">
+        <state relative-caret-position="176">
           <caret line="44" column="26" selection-start-line="44" selection-start-column="26" selection-end-line="44" selection-end-column="26" />
           <folding />
         </state>
@@ -705,53 +672,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/php/addProcess.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="40" column="21" selection-start-line="40" selection-start-column="16" selection-end-line="40" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/html/addProcessAjax.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="19" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/tool/Tool.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="3" selection-start-line="0" selection-start-column="3" selection-end-line="0" selection-end-column="3" />
-          <folding>
-            <marker date="1471591396340" expanded="true" signature="117:286" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/tool/ProjectBrowser.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="15" column="18" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/js/tool/CorrespondenceManager.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8432">
-          <caret line="496" column="24" selection-start-line="496" selection-start-column="24" selection-end-line="496" selection-end-column="24" />
+        <state relative-caret-position="-334">
+          <caret line="536" column="54" selection-start-line="536" selection-start-column="54" selection-end-line="536" selection-end-column="54" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/js/tool/ViewManager.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="529">
-          <caret line="1027" column="30" selection-start-line="1027" selection-start-column="30" selection-end-line="1027" selection-end-column="30" />
+        <state relative-caret-position="567">
+          <caret line="1654" column="29" selection-start-line="1654" selection-start-column="29" selection-end-line="1654" selection-end-column="29" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/tool/ProjectBrowser.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="720">
+          <caret line="184" column="75" selection-start-line="184" selection-start-column="75" selection-end-line="184" selection-end-column="75" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/tool/Tool.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="652">
+          <caret line="45" column="103" selection-start-line="45" selection-start-column="103" selection-end-line="45" selection-end-column="103" />
+          <folding>
+            <marker date="1472408603907" expanded="true" signature="156:325" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
