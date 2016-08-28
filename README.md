@@ -5,6 +5,6 @@ A tool for a simple vertical consistency check of two BPMN models as part of my 
 - Loading the current BPMN files might require refreshing the browser cache.
 - Loading associations and correspondences is only possible via the source model used as a clone.
 - Some functions of the project browser require you to go back to the page you were sent off from.
-- 
+
 ###How to use
 Just clone the project or download project and run it on a webserver to use the AJAX and PHP functionalities used.
