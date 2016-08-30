@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: ViewManager.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: ViewManager.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * @class
  * The View Mangager used for interactions with bpmn-js and other components such as the CorrespondenceManager
  * @param {String} htmlDivSource Id of the div element the source model is to be displayed in
@@ -21,7 +49,7 @@ with association data load source and target models into respective modellers
  */
 
 ViewManager.prototype.loadModels = function() {
-    if(tool.correspondenceManager.association != undefined && tool.correspondenceManager.association != null) {
+    if(tool.correspondenceManager.association != undefined &amp;&amp; tool.correspondenceManager.association != null) {
         var association = tool.correspondenceManager.association;
 
         if(this.sourceView != null) {
@@ -116,7 +144,7 @@ ViewManager.prototype.loadSource = function(filePath) {
                         if(selectedElements.length > 0) {
                             var excludedTypes = ["bpmn:Process", "label", "bpmn:SequenceFlow", "bpmn:Lane", "bpmn:Collaboration", "bpmn:Participant"];
                             var exclude = false;
-                            for(var k = 0; k < excludedTypes.length; k++) {
+                            for(var k = 0; k &lt; excludedTypes.length; k++) {
                                 if(e.element.type == excludedTypes[k]) {
                                     exclude = true;
                                     break;
@@ -151,7 +179,7 @@ ViewManager.prototype.loadSource = function(filePath) {
                 if(shapeType != 'label' || shapeType != 'connection') {
                     console.log("ViewManager: Deleted element " + elementId + " with type " + shapeType);
                     var foundCorr = correspondenceManager.getCorrBySource(elementId);
-                    if(foundCorr != null && foundCorr != undefined) {
+                    if(foundCorr != null &amp;&amp; foundCorr != undefined) {
                         console.log("ViewManager: Removing source id " + elementId + " from correspondence.");
                         correspondenceManager.removeSourceElementFromCorrespondence(foundCorr, elementId);
                         var corrList = tool.correspondenceManager.correspondenceList;
@@ -270,7 +298,7 @@ ViewManager.prototype.loadTarget = function(filePath) {
                         if(selectedElements.length > 0) {
                             var excludedTypes = ["bpmn:Process", "label", "bpmn:SequenceFlow", "bpmn:Lane", "bpmn:Collaboration", "bpmn:Participant"];
                             var exclude = false;
-                            for(var k = 0; k < excludedTypes.length; k++) {
+                            for(var k = 0; k &lt; excludedTypes.length; k++) {
                                 if(e.element.type == excludedTypes[k]) {
                                     exclude = true;
                                     break;
@@ -305,7 +333,7 @@ ViewManager.prototype.loadTarget = function(filePath) {
  */
 ViewManager.prototype.saveModels = function (association) {
     if(association) {
-        if(this.sourceView && this.targetView) {
+        if(this.sourceView &amp;&amp; this.targetView) {
             var sourceFilePath = association.sourceFile;
             var sourceName = association.sourceModel;
             var targetFilePath = association.targetFile;
@@ -417,7 +445,7 @@ ViewManager.prototype.makeCorrespondencesConsistentWithViews = function (sourceV
     var sourcesToDelete = [];
     var targetsToDelete = [];
 
-    for(var i = 0; i < correspondenceList.length; i++) {
+    for(var i = 0; i &lt; correspondenceList.length; i++) {
         //in the process of removing an element a corr might get spliced to null, therefore a check
         if(correspondenceList[i] != null) {
 
@@ -432,7 +460,7 @@ ViewManager.prototype.makeCorrespondencesConsistentWithViews = function (sourceV
             //cycle through sources and remove elements which do not exist in the source view (model) from the correspondence
             //if many- type
             if(corrSource instanceof Array) {
-                for(var j = 0; j < corrSource.length; j++) {
+                for(var j = 0; j &lt; corrSource.length; j++) {
                     var elementId = corrSource[j];
                     existingSource = sourceElementRegistry.get(elementId);
                     if(existingSource == undefined) {
@@ -455,7 +483,7 @@ ViewManager.prototype.makeCorrespondencesConsistentWithViews = function (sourceV
             //cycle through targets and remove elements which do not exist in the target view (model) from the correspondence
             //if many- type
             if(corrTarget instanceof Array) {
-                for(var k = 0; k < corrTarget.length; k++) {
+                for(var k = 0; k &lt; corrTarget.length; k++) {
                     var elementId = corrTarget[k];
                     existingTarget = targetElementRegistry.get(elementId);
                     if(existingTarget == undefined) {
@@ -479,7 +507,7 @@ ViewManager.prototype.makeCorrespondencesConsistentWithViews = function (sourceV
         }
     }
 
-    for(var s = 0; s < sourcesToDelete.length; s++) {
+    for(var s = 0; s &lt; sourcesToDelete.length; s++) {
         var elementId = sourcesToDelete[s];
         var foundCorr = tool.correspondenceManager.getCorrBySource(elementId);
         if(foundCorr != null) {
@@ -487,7 +515,7 @@ ViewManager.prototype.makeCorrespondencesConsistentWithViews = function (sourceV
             tool.correspondenceManager.removeSourceElementFromCorrespondence(foundCorr, elementId);
         }
     }
-    for(var t = 0; t < targetsToDelete.length; t++) {
+    for(var t = 0; t &lt; targetsToDelete.length; t++) {
         var elementId = targetsToDelete[t];
         var foundCorr = tool.correspondenceManager.getCorrByTarget(elementId);
         if(foundCorr != null) {
@@ -515,7 +543,7 @@ ViewManager.prototype.highlightCorrespondenceBySource = function (sourceElementI
     var sourceCanvas = this.sourceView.get('canvas');
     var targetCanvas = this.targetView.get('canvas');
 
-    if(correspondence != null && existingElement != undefined) {
+    if(correspondence != null &amp;&amp; existingElement != undefined) {
         console.log("Corr found by Source for elementId " + sourceElementId + ":");
         console.log(correspondence);
         /*var elementRegistrySource = this.sourceView.get('elementRegistry');
@@ -536,11 +564,11 @@ ViewManager.prototype.highlightCorrespondenceBySource = function (sourceElementI
             targetCanvas.addMarker(targetIds, 'highlight-green');
         } else if (correspondence.corrType == "onemany") {
             sourceCanvas.addMarker(sourceIds, 'highlight-yellow');
-            for(var i = 0; i < targetIds.length ; i++) {
+            for(var i = 0; i &lt; targetIds.length ; i++) {
                 targetCanvas.addMarker(targetIds[i], 'highlight-yellow');
             }
         } else if (correspondence.corrType == "manyone") {
-            for(var j = 0; j < sourceIds.length; j++) {
+            for(var j = 0; j &lt; sourceIds.length; j++) {
                sourceCanvas.addMarker(sourceIds[j], 'highlight-yellow');
             }
             targetCanvas.addMarker(targetIds, 'highlight-yellow');
@@ -558,7 +586,7 @@ ViewManager.prototype.highlightCorrespondenceBySource = function (sourceElementI
         console.log("No correspondence found for element id " + sourceElementId);
         sourceCanvas.addMarker(sourceElementId, 'highlight-red');
         return null;
-    } else if (correspondence != null && existingElement == undefined) {
+    } else if (correspondence != null &amp;&amp; existingElement == undefined) {
         console.log("Correspondence found for element id " + sourceElementId + " but element does not exist in source model.");
         return null;
     }
@@ -580,7 +608,7 @@ ViewManager.prototype.highlightCorrespondenceByTarget = function (targetElementI
     var sourceCanvas = this.sourceView.get('canvas');
     var targetCanvas = this.targetView.get('canvas');
 
-    if(correspondence != null && existingElement != undefined) {
+    if(correspondence != null &amp;&amp; existingElement != undefined) {
         console.log("Corr found by Target for elementId " + targetElementId + ":");
         console.log(correspondence);
 
@@ -600,11 +628,11 @@ ViewManager.prototype.highlightCorrespondenceByTarget = function (targetElementI
             targetCanvas.addMarker(targetIds, 'highlight-green');
         } else if (correspondence.corrType == "onemany") {
             sourceCanvas.addMarker(sourceIds, 'highlight-yellow');
-            for(var i = 0; i < targetIds.length ; i++) {
+            for(var i = 0; i &lt; targetIds.length ; i++) {
                 targetCanvas.addMarker(targetIds[i], 'highlight-yellow');
             }
         } else if (correspondence.corrType == "manyone") {
-            for(var j = 0; j < sourceIds.length; j++) {
+            for(var j = 0; j &lt; sourceIds.length; j++) {
                 sourceCanvas.addMarker(sourceIds[j], 'highlight-yellow');
             }
             targetCanvas.addMarker(targetIds, 'highlight-yellow');
@@ -620,7 +648,7 @@ ViewManager.prototype.highlightCorrespondenceByTarget = function (targetElementI
         console.log("No correspondence found for element id " + targetElementId);
         targetCanvas.addMarker(targetElementId, 'highlight-red');
         return null;
-    } else if (correspondence != null && existingElement == undefined) {
+    } else if (correspondence != null &amp;&amp; existingElement == undefined) {
         console.log("Correspondence found for element id " + targetElementId + " but element does not exist in target model.");
         return null;
     }
@@ -644,11 +672,11 @@ ViewManager.prototype.removeAllHighlights = function() {
     console.log(allTargetElements);
     console.log(Object.keys(allTargetElements));
     */
-    for (var i = 0; i < allSourceElements.length; i++) {
+    for (var i = 0; i &lt; allSourceElements.length; i++) {
         this.removeHighlight(allSourceElements[i], sourceCanvas);
     };
 
-    for (var j = 0; j < allTargetElements.length; j++) {
+    for (var j = 0; j &lt; allTargetElements.length; j++) {
         this.removeHighlight(allTargetElements[j], targetCanvas);
     };
 };
@@ -689,16 +717,16 @@ ViewManager.prototype.highlightElements = function () {
     var red = "highlight-red";
 
     //gather all elements in source, find correspondences via source, highlight via source, else put into notFound bin
-    for(var i = 0; i < sourceElements.length; i++) {
+    for(var i = 0; i &lt; sourceElements.length; i++) {
         var foundCorr = tool.correspondenceManager.getCorrBySource(sourceElements[i].id);
         if(foundCorr != null) {
-            if(sourceElements[i].type != "bpmn:Process" && sourceElements[i].type != "label" && sourceElements[i].type != "bpmn:SequenceFlow"  && sourceElements[i].type != "bpmn:Lane" && sourceElements[i].type != "bpmn:Collaboration" && sourceElements[i].type != "bpmn:Participant") {
+            if(sourceElements[i].type != "bpmn:Process" &amp;&amp; sourceElements[i].type != "label" &amp;&amp; sourceElements[i].type != "bpmn:SequenceFlow"  &amp;&amp; sourceElements[i].type != "bpmn:Lane" &amp;&amp; sourceElements[i].type != "bpmn:Collaboration" &amp;&amp; sourceElements[i].type != "bpmn:Participant") {
                 var corrType = foundCorr.corrType;
-                if(corrType == "oneone" && sourceCorrIds[foundCorr.source] == undefined) {
+                if(corrType == "oneone" &amp;&amp; sourceCorrIds[foundCorr.source] == undefined) {
                     sourceCorrIds[foundCorr.source] = foundCorr.source;
                     targetCorrIds[foundCorr.target] = foundCorr.target;
                     tool.viewManager.highlightCorrespondenceBySource(sourceElements[i].id);
-                } else if (corrType == "onezero" && sourceCorrIds[foundCorr.source] == undefined) {
+                } else if (corrType == "onezero" &amp;&amp; sourceCorrIds[foundCorr.source] == undefined) {
                     sourceCorrIds[foundCorr.source] = foundCorr.source;
                     tool.viewManager.highlightCorrespondenceBySource(sourceElements[i].id);
                 } else if (corrType == "manyone" || corrType == "onemany") {
@@ -713,26 +741,26 @@ ViewManager.prototype.highlightElements = function () {
                     if(!(tElements instanceof Array)) {
                         tElements = [tElements];
                     }
-                    for(var j = 0; j < sElements.length; j++) {
+                    for(var j = 0; j &lt; sElements.length; j++) {
                         if(sourceCorrIds[sElements[j]] == undefined) {
                             sourceCorrIds[sElements[j]] = sElements[j];
                             tool.viewManager.highlightCorrespondenceBySource(sourceElements[i].id);
-                            for(var k = 0; k < tElements.length; k++) {
+                            for(var k = 0; k &lt; tElements.length; k++) {
                                 targetCorrIds[tElements[k]] = tElements[k];
                             }
                         }
                     }
                 }
             }
-        } else if ((foundCorr == null || foundCorr == undefined) && sourceElements[i].type != "bpmn:Process" && sourceElements[i].type != "label" && sourceElements[i].type != "bpmn:SequenceFlow"  && sourceElements[i].type != "bpmn:Lane" && sourceElements[i].type != "bpmn:Collaboration" && sourceElements[i].type != "bpmn:Participant") {
+        } else if ((foundCorr == null || foundCorr == undefined) &amp;&amp; sourceElements[i].type != "bpmn:Process" &amp;&amp; sourceElements[i].type != "label" &amp;&amp; sourceElements[i].type != "bpmn:SequenceFlow"  &amp;&amp; sourceElements[i].type != "bpmn:Lane" &amp;&amp; sourceElements[i].type != "bpmn:Collaboration" &amp;&amp; sourceElements[i].type != "bpmn:Participant") {
             notFoundSources[sourceElements[i].id] = sourceElements[i].id;
         }
     }
 
     //check matching target ids already put in targetCorrIds bin, if not in it, then prep for red highlight
-    for(var i = 0; i < targetElements.length; i ++) {
-        if(targetElements[i].type != "bpmn:Process" && targetElements[i].type != "label" && targetElements[i].type != "bpmn:SequenceFlow" && targetElements[i].type != "bpmn:Lane" && targetElements[i].type != "bpmn:Collaboration"  && targetElements[i].type != "bpmn:Participant") {
-            if(targetCorrIds[targetElements[i].id] == undefined && tool.viewManager.highlightCorrespondenceByTarget(targetElements[i].id) == null) {
+    for(var i = 0; i &lt; targetElements.length; i ++) {
+        if(targetElements[i].type != "bpmn:Process" &amp;&amp; targetElements[i].type != "label" &amp;&amp; targetElements[i].type != "bpmn:SequenceFlow" &amp;&amp; targetElements[i].type != "bpmn:Lane" &amp;&amp; targetElements[i].type != "bpmn:Collaboration"  &amp;&amp; targetElements[i].type != "bpmn:Participant") {
+            if(targetCorrIds[targetElements[i].id] == undefined &amp;&amp; tool.viewManager.highlightCorrespondenceByTarget(targetElements[i].id) == null) {
                 notFoundTargets[targetElements[i].id] = targetElements[i].id;
             }
         }
@@ -746,11 +774,11 @@ ViewManager.prototype.highlightElements = function () {
         this.highlightElement(elementId, targetCanvas, red);
     }
 /*
-    for(var i = 0; i < notFoundSources.length; i++) {
+    for(var i = 0; i &lt; notFoundSources.length; i++) {
         this.highlightElement(notFoundSources[i], sourceCanvas, red);
     }
 
-    for(var i = 0; i < notFoundTargets.length; i++) {
+    for(var i = 0; i &lt; notFoundTargets.length; i++) {
         this.highlightElement(notFoundTargets[i], targetCanvas, red);
     }
 */
@@ -768,21 +796,21 @@ ViewManager.prototype.highlightMatchedSourceElements = function() {
     var sourceElements = this.sourceView.get('elementRegistry').getAll();
     var excludedTypes = ["bpmn:Process", "label", "bpmn:SequenceFlow"];
     //Shapes.id
-    for(var i = 0; i < sourceElements.length; i++) {
+    for(var i = 0; i &lt; sourceElements.length; i++) {
         var foundCorr = tool.correspondenceManager.getCorrBySource(sourceElements[i].id);
         if(foundCorr != null) {
             var exclude = false;
-            for(var k = 0; k < excludedTypes.length; k++) {
+            for(var k = 0; k &lt; excludedTypes.length; k++) {
                 if(sourceElements[i].type == excludedTypes[k]) {
                     exclude = true;
                     break;
                 }
             }
-            if(!exclude && foundCorr.corrType == "oneone") {
+            if(!exclude &amp;&amp; foundCorr.corrType == "oneone") {
                 sourceElementsToHighlightGreen.push(sourceElements[i].id);
-            } else if (!exclude && foundCorr.corrType == "onezero") {
+            } else if (!exclude &amp;&amp; foundCorr.corrType == "onezero") {
                 sourceElementsToHighlightBlue.push(sourceElements[i].id);
-            } else if (!exclude && (foundCorr.corrType == "manyone" || foundCorr.corrType == "onemany")) {
+            } else if (!exclude &amp;&amp; (foundCorr.corrType == "manyone" || foundCorr.corrType == "onemany")) {
                 sourceElementsToHighlightYellow.push(sourceElements[i].id);
             }
         }
@@ -793,13 +821,13 @@ ViewManager.prototype.highlightMatchedSourceElements = function() {
     var yellow = "highlight-yellow";
     var canvas = this.sourceView.get('canvas');
 
-    for(var j = 0; j < sourceElementsToHighlightGreen.length; j++) {
+    for(var j = 0; j &lt; sourceElementsToHighlightGreen.length; j++) {
         this.highlightElement(sourceElementsToHighlightGreen[j], canvas, green);
     }
-    for(var k = 0; k < sourceElementsToHighlightBlue.length; k++) {
+    for(var k = 0; k &lt; sourceElementsToHighlightBlue.length; k++) {
         this.highlightElement(sourceElementsToHighlightBlue[k], canvas, blue);
     }
-    for(var l = 0; l < sourceElementsToHighlightYellow.length; l++) {
+    for(var l = 0; l &lt; sourceElementsToHighlightYellow.length; l++) {
         this.highlightElement(sourceElementsToHighlightYellow[l], canvas, yellow);
     }
 };
@@ -815,11 +843,11 @@ ViewManager.prototype.highlightUnmatchedSourceElements = function() {
     var excludedTypes = ["bpmn:Process", "label", "bpmn:SequenceFlow"];
     //TODO exclude types such as process, sequenceflow via shape.type
     //Shapes.id
-    for(var i = 0; i < sourceElements.length; i++) {
+    for(var i = 0; i &lt; sourceElements.length; i++) {
         var foundCorr = tool.correspondenceManager.getCorrBySource(sourceElements[i].id);
         if(foundCorr == null) {
             var exclude = false;
-            for(var k = 0; k < excludedTypes.length; k++) {
+            for(var k = 0; k &lt; excludedTypes.length; k++) {
                 if(sourceElements[i].type == excludedTypes[k]) {
                     exclude = true;
                 }
@@ -829,7 +857,7 @@ ViewManager.prototype.highlightUnmatchedSourceElements = function() {
             }
         }
     }
-    for(var j = 0; j < sourceElementsToHighlight.length; j++) {
+    for(var j = 0; j &lt; sourceElementsToHighlight.length; j++) {
         this.highlightElement(sourceElementsToHighlight[j], canvas, color);
     }
 
@@ -885,7 +913,7 @@ ViewManager.prototype.getSelectedTarget = function () {
  */
 ViewManager.prototype.transformSelectionsIntoId = function (selection) {
     var selectionIds = [];
-    for(var i = 0; i < selection.length; i++) {
+    for(var i = 0; i &lt; selection.length; i++) {
         if (typeof selection[i] === "string") {
             selectionIds.push(selection[i]);
         } else {
@@ -904,10 +932,10 @@ ViewManager.prototype.createCorrespondenceFromSelection = function () {
     //TODO check for allowed types
     var allowed = true;
     var excludedTypes = ["bpmn:Process", "label", "bpmn:SequenceFlow", "bpmn:Lane", "bpmn:Collaboration", "bpmn:Participant"];
-    for(var i = 0; i < selectedSource.length; i++) {
+    for(var i = 0; i &lt; selectedSource.length; i++) {
         var elementType = this.sourceView.get('elementRegistry').get(selectedSource[i]).type;
 
-        for(var ex = 0; ex < excludedTypes.length; ex++) {
+        for(var ex = 0; ex &lt; excludedTypes.length; ex++) {
             if(elementType == excludedTypes[ex]) {
                 allowed = false;
                 console.log("ViewManager: Source selection for new correspondence contains an element type which is not allowed: " + elementType);
@@ -915,10 +943,10 @@ ViewManager.prototype.createCorrespondenceFromSelection = function () {
         }
     }
 
-    for(var j = 0; j < selectedTarget.length; j++) {
+    for(var j = 0; j &lt; selectedTarget.length; j++) {
         var elementType = this.targetView.get('elementRegistry').get(selectedTarget[j]).type;
 
-        for(var ex2 = 0; ex2 < excludedTypes.length; ex2++) {
+        for(var ex2 = 0; ex2 &lt; excludedTypes.length; ex2++) {
             if(elementType == excludedTypes[ex2]) {
                 allowed = false;
                 console.log("ViewManager: Target selection for new correspondence contains an element type which is not allowed: " + elementType);
@@ -930,7 +958,7 @@ ViewManager.prototype.createCorrespondenceFromSelection = function () {
         //create the correspondence
         var newCorrespondenceFromSelections = tool.correspondenceManager.createCorrespondence(selectedSource, selectedTarget);
         //add the newly created correspondence
-        if(newCorrespondenceFromSelections != null && newCorrespondenceFromSelections != undefined) {
+        if(newCorrespondenceFromSelections != null &amp;&amp; newCorrespondenceFromSelections != undefined) {
             tool.correspondenceManager.addCorrespondence(newCorrespondenceFromSelections);
         }
     }
@@ -942,14 +970,14 @@ ViewManager.prototype.deleteSelectedElementFromCorrespondence = function () {
     var selectedSource = this.getSelectedSource();
     var selectedTarget = this.getSelectedTarget();
 
-        for (var k = 0; k < selectedSource.length; k++) {
+        for (var k = 0; k &lt; selectedSource.length; k++) {
             var elementId = selectedSource[k];
             var foundCorr = tool.correspondenceManager.getCorrBySource(elementId);
             if (foundCorr != null) {
                 tool.correspondenceManager.removeSourceElementFromCorrespondence(foundCorr, elementId);
             }
         }
-        for(var l = 0; l < selectedTarget.length; l++) {
+        for(var l = 0; l &lt; selectedTarget.length; l++) {
             var elementId = selectedTarget[l];
             var foundCorr = tool.correspondenceManager.getCorrByTarget(elementId);
             if (foundCorr != null) {
@@ -970,8 +998,8 @@ ViewManager.prototype.verticalConsistency = function () {
     var unmatched = [];
     var bpmnPrefix = "bpmn:";
     //all elements except for labels, connections, sequenceFlows and the process element itself are deemed relevant here
-    for(var i = 0; i < allShapes.length; i++) {
-        if(allShapes[i].type != 'label' && allShapes[i].type != 'connection' && allShapes[i].type != bpmnPrefix + "Process" && allShapes[i].type != bpmnPrefix + "SequenceFlow") {
+    for(var i = 0; i &lt; allShapes.length; i++) {
+        if(allShapes[i].type != 'label' &amp;&amp; allShapes[i].type != 'connection' &amp;&amp; allShapes[i].type != bpmnPrefix + "Process" &amp;&amp; allShapes[i].type != bpmnPrefix + "SequenceFlow") {
             var shapeId = allShapes[i].id;
             var shape = allShapes[i];
             relevantMatches = relevantMatches + 1;
@@ -1006,7 +1034,7 @@ ViewManager.prototype.verticalConsistency = function () {
     //table headers
     var tr = document.createElement("tr");
     var headerTexts = ["Overall Elements", "Relevant Elements", "Matched Elements", "Unmatched Elements"];
-    for(var i = 0; i < headerTexts.length; i++) {
+    for(var i = 0; i &lt; headerTexts.length; i++) {
         var th = document.createElement("th");
         th.appendChild(document.createTextNode(headerTexts[i]));
         tr.appendChild(th);
@@ -1015,7 +1043,7 @@ ViewManager.prototype.verticalConsistency = function () {
     //table data
     tr = document.createElement("tr");
     var headerContent = [allShapes.length, relevantMatches, matches, unmatched.length];
-    for(var j = 0; j < headerContent.length; j++) {
+    for(var j = 0; j &lt; headerContent.length; j++) {
         var th = document.createElement("th");
         th.appendChild(document.createTextNode(headerContent[j]));
         tr.appendChild(th);
@@ -1035,15 +1063,15 @@ ViewManager.prototype.verticalConsistency = function () {
 
         tr = document.createElement("tr");
         headerTexts = ["Element Id", "Element Name", "Element Type", "Focus"];
-        for(var i = 0; i < headerTexts.length; i++) {
+        for(var i = 0; i &lt; headerTexts.length; i++) {
             var th = document.createElement("th");
             th.appendChild(document.createTextNode(headerTexts[i]));
             tr.appendChild(th);
         }
         table.appendChild(tr);
 
-        for(var k = 0; k < unmatched.length; k++) {
-            //if(unmatched[k].type != 'label' && allShapes[i].type != 'connection') {
+        for(var k = 0; k &lt; unmatched.length; k++) {
+            //if(unmatched[k].type != 'label' &amp;&amp; allShapes[i].type != 'connection') {
                 tr = document.createElement("tr");
                 var idTextNode = document.createTextNode(unmatched[k].id);
                 var td = document.createElement("td");
@@ -1098,7 +1126,7 @@ ViewManager.prototype.verticalConsistency = function () {
 
         tr = document.createElement("tr");
         headerTexts = ["Element Id", "Element Name", "Element Type", "Focus"];
-        for(var i = 0; i < headerTexts.length; i++) {
+        for(var i = 0; i &lt; headerTexts.length; i++) {
             var th = document.createElement("th");
             th.appendChild(document.createTextNode(headerTexts[i]));
             tr.appendChild(th);
@@ -1179,7 +1207,7 @@ ViewManager.prototype.focusCorrespondenceElements = function (correspondence) {
                 var sElement = sourceElementRegistry.get(correspondence.source);
                 this.focusOnElement(sourceView, sElement, 'single');
                 var targetElements = [];
-                for(var j = 0; j < correspondence.target.length; j++) {
+                for(var j = 0; j &lt; correspondence.target.length; j++) {
                     var element = targetElementRegistry.get(correspondence.target[j]);
                     targetElements.push(element);
                 }
@@ -1187,7 +1215,7 @@ ViewManager.prototype.focusCorrespondenceElements = function (correspondence) {
                 break;
             case "manyone":
                 var sourceElements = [];
-                for(var i = 0; i < correspondence.source.length; i++) {
+                for(var i = 0; i &lt; correspondence.source.length; i++) {
                     var element = sourceElementRegistry.get(correspondence.source[i]);
                     sourceElements.push(element);
                 }
@@ -1238,17 +1266,17 @@ ViewManager.prototype.focusOnElement = function (view, element, scalingMode) {
             maxX,
             maxY;
 
-        for(var i = 0; i < elements.length; i++) {
+        for(var i = 0; i &lt; elements.length; i++) {
             var bbox = elements[i];
             var x = bbox.x,
                 y = bbox.y,
                 height = bbox.height || 0,
                 width  = bbox.width  || 0;
 
-            if (x < minX || minX === undefined) {
+            if (x &lt; minX || minX === undefined) {
                 minX = x;
             }
-            if (y < minY || minY === undefined) {
+            if (y &lt; minY || minY === undefined) {
                 minY = y;
             }
 
@@ -1310,7 +1338,7 @@ ViewManager.prototype.displayCorrespondenceTableAll = function (divId, correspon
     var sourceElementRegistry = sourceView.get('elementRegistry');
     var targetElementRegistry = targetView.get('elementRegistry');
 
-    for(var c = 0; c < correspondenceList.length; c++) {
+    for(var c = 0; c &lt; correspondenceList.length; c++) {
         var table = document.createElement("table");
 
         var corr = correspondenceList[c];
@@ -1376,7 +1404,7 @@ ViewManager.prototype.displayCorrespondenceTableAll = function (divId, correspon
                 table.appendChild(sHeaderRow);
                 table.appendChild(sTableRow[0]);
                 table.appendChild(tHeaderRow);
-                for(var i = 0; i < tTableRow.length; i++) {
+                for(var i = 0; i &lt; tTableRow.length; i++) {
                     table.appendChild(tTableRow[i]);
                 }
                 break;
@@ -1385,7 +1413,7 @@ ViewManager.prototype.displayCorrespondenceTableAll = function (divId, correspon
                 var tTableRow = createTableRow(corrTarget, targetElementRegistry, 'target');
 
                 table.appendChild(sHeaderRow);
-                for(var i = 0; i < sTableRow.length; i++) {
+                for(var i = 0; i &lt; sTableRow.length; i++) {
                     table.appendChild(sTableRow[i]);
                 }
                 table.appendChild(tHeaderRow);
@@ -1410,7 +1438,7 @@ ViewManager.prototype.displayCorrespondenceTableAll = function (divId, correspon
 
         var tableRows = [];
 
-        for(var i = 0; i < elementIds.length; i++) {
+        for(var i = 0; i &lt; elementIds.length; i++) {
             var tr = document.createElement("tr");
             var texts = [];
             var element = registry.get(elementIds[i]);
@@ -1429,7 +1457,7 @@ ViewManager.prototype.displayCorrespondenceTableAll = function (divId, correspon
             //button.onclick = function() { tool.viewManager.focusOnElementByTableEntry(view, id) };
             button.setAttribute('onClick', "tool.viewManager.focusOnElementByTableEntry('" + view + "','" + id + "')");
 
-            for(var t = 0; t < texts.length; t++) {
+            for(var t = 0; t &lt; texts.length; t++) {
                 var td = document.createElement("td");
                 var textNode = document.createTextNode(texts[t]);
                 td.appendChild(textNode);
@@ -1446,7 +1474,7 @@ ViewManager.prototype.displayCorrespondenceTableAll = function (divId, correspon
         var sHeaders = ["Source Id(s)", "Name", "BPMN-Type"];
 
         var tableHeaderRow = document.createElement("tr");
-        for(var i = 0; i < sHeaders.length; i++) {
+        for(var i = 0; i &lt; sHeaders.length; i++) {
             var tableHead = document.createElement("th");
             var headerTextNode = document.createTextNode(sHeaders[i]);
             tableHead.appendChild(headerTextNode);
@@ -1461,7 +1489,7 @@ ViewManager.prototype.displayCorrespondenceTableAll = function (divId, correspon
         var tHeaders = ["Target Id(s)", "Name", "BPMN-Type"];
 
         var tableHeaderRow = document.createElement("tr");
-        for(var i = 0; i < tHeaders.length; i++) {
+        for(var i = 0; i &lt; tHeaders.length; i++) {
             var tableHead = document.createElement("th");
             var headerTextNode = document.createTextNode(tHeaders[i]);
             tableHead.appendChild(headerTextNode);
@@ -1555,7 +1583,7 @@ ViewManager.prototype.displayCorrespondenceTable = function (divId, corresponden
             table.appendChild(sHeaderRow);
             table.appendChild(sTableRow[0]);
             table.appendChild(tHeaderRow);
-            for(var i = 0; i < tTableRow.length; i++) {
+            for(var i = 0; i &lt; tTableRow.length; i++) {
                 table.appendChild(tTableRow[i]);
             }
             break;
@@ -1564,7 +1592,7 @@ ViewManager.prototype.displayCorrespondenceTable = function (divId, corresponden
             var tTableRow = createTableRow(corrTarget, targetElementRegistry, 'target');
 
             table.appendChild(sHeaderRow);
-            for(var i = 0; i < sTableRow.length; i++) {
+            for(var i = 0; i &lt; sTableRow.length; i++) {
                 table.appendChild(sTableRow[i]);
             }
             table.appendChild(tHeaderRow);
@@ -1585,7 +1613,7 @@ ViewManager.prototype.displayCorrespondenceTable = function (divId, corresponden
 
         var tableRows = [];
 
-        for(var i = 0; i < elementIds.length; i++) {
+        for(var i = 0; i &lt; elementIds.length; i++) {
             var tr = document.createElement("tr");
             var texts = [];
             var element = registry.get(elementIds[i]);
@@ -1604,7 +1632,7 @@ ViewManager.prototype.displayCorrespondenceTable = function (divId, corresponden
             //button.onclick = function() { tool.viewManager.focusOnElementByTableEntry(view, id) };
             button.setAttribute('onClick', "tool.viewManager.focusOnElementByTableEntry('" + view + "','" + id + "')");
 
-            for(var t = 0; t < texts.length; t++) {
+            for(var t = 0; t &lt; texts.length; t++) {
                 var td = document.createElement("td");
                 var textNode = document.createTextNode(texts[t]);
                 td.appendChild(textNode);
@@ -1621,7 +1649,7 @@ ViewManager.prototype.displayCorrespondenceTable = function (divId, corresponden
         var sHeaders = ["Source Id(s)", "Name", "BPMN-Type"];
 
         var tableHeaderRow = document.createElement("tr");
-        for(var i = 0; i < sHeaders.length; i++) {
+        for(var i = 0; i &lt; sHeaders.length; i++) {
             var tableHead = document.createElement("th");
             var headerTextNode = document.createTextNode(sHeaders[i]);
             tableHead.appendChild(headerTextNode);
@@ -1636,7 +1664,7 @@ ViewManager.prototype.displayCorrespondenceTable = function (divId, corresponden
         var tHeaders = ["Target Id(s)", "Name", "BPMN-Type"];
 
         var tableHeaderRow = document.createElement("tr");
-        for(var i = 0; i < tHeaders.length; i++) {
+        for(var i = 0; i &lt; tHeaders.length; i++) {
             var tableHead = document.createElement("th");
             var headerTextNode = document.createTextNode(tHeaders[i]);
             tableHead.appendChild(headerTextNode);
@@ -1662,4 +1690,26 @@ ViewManager.prototype.focusOnElementByTableEntry = function (view, id) {
     var element = view.get('elementRegistry').get(id);
     var scalingMode = 'single';
     this.focusOnElement(view, element, scalingMode);
-};
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Correspondence.html">Correspondence</a></li><li><a href="CorrespondenceManager.html">CorrespondenceManager</a></li><li><a href="ProjectBrowser.html">ProjectBrowser</a></li><li><a href="Tool.html">Tool</a></li><li><a href="ViewManager.html">ViewManager</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Aug 30 2016 08:28:43 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

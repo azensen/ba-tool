@@ -1,4 +1,5 @@
 /**
+ * @class
  * Creates a new instance of ProjectBrowser and binds a function to be called for every click on an item or node in the project browser
  *
  * @param treeDiv  Id of the div element the project browser is to be displayed in
